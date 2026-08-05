@@ -1,0 +1,61 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "BotFlow",
+  "description": "BotFlow, CRM-платформа для управления Telegram-ботами: конструктор воронок, переписки, рассылки, ИИ-оператор, трекер.",
+  "colors": {
+    "primary": "#3B82F6",
+    "light": "#60A5FA",
+    "dark": "#2563EB"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude"]
+  },
+  "navigation": {
+    "languages": [
+      {
+        "language": "ru",
+        "default": true,
+        "groups": [
+          { "group": "Начало", "pages": ["ru/index", "ru/getting-started"] },
+          { "group": "Конструктор", "pages": ["ru/constructor", "ru/ai-operator", "ru/variables", "ru/bot-settings"] },
+          { "group": "CRM", "pages": ["ru/messenger", "ru/broadcasts", "ru/tags", "ru/filters", "ru/subscribers"] },
+          { "group": "Трекер", "pages": ["ru/tracker", "ru/campaigns", "ru/landings", "ru/postbacks", "ru/reports", "ru/domains-proxies"] },
+          { "group": "Аккаунт", "pages": ["ru/billing", "ru/referral", "ru/settings"] }
+        ]
+      },
+      {
+        "language": "en",
+        "groups": [
+          { "group": "Overview", "pages": ["en/index"] }
+        ]
+      },
+      {
+        "language": "es",
+        "groups": [
+          { "group": "Resumen", "pages": ["es/index"] }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Открыть BotFlow",
+      "href": "https://botflow.cc"
+    }
+  },
+  "footer": {
+    "socials": {
+      "website": "https://botflow.cc"
+    }
+  }
+}
