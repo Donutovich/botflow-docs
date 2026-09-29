@@ -1,0 +1,223 @@
+---
+title: "AI operator"
+description: "Persona, knowledge base, first message and AI reminders, model and budget of the virtual operator."
+icon: "robot"
+---
+
+The AI operator runs a live conversation with a subscriber instead of a human. It is plugged in through the
+"AI operator" block in the [flow builder](/en/constructor) and talks exactly like an ordinary operator in a
+conversation. The shared settings (persona, model, language, knowledge base, budget) live in the bot's
+"AI Settings" section. The goal of each particular dialog is set right in the funnel's AI block.
+
+## How to connect it
+
+<Steps>
+  <Step title="Switch the AI operator on" icon="toggle-on">
+    In the bot section open "AI Settings" and turn on the top toggle. While it is off, "AI operator" blocks in the flow builder do not answer.
+  </Step>
+  <Step title="Describe the persona and pick a model" icon="user">
+    In the "Persona" field set out who runs the conversation and how. Below, choose the language model that will generate the replies.
+  </Step>
+  <Step title="Add an AI block in the flow builder" icon="diagram-project">
+    On the [flow builder](/en/constructor) canvas add an "AI operator" block (one of the block types). On the "Goal" tab describe what the AI leads the conversation towards in this block.
+  </Step>
+  <Step title="Set up the transitions" icon="arrow-right">
+    Draw arrows from the AI block to the next steps. The condition on each arrow is written in words, and the AI decides when it is met.
+  </Step>
+</Steps>
+
+<Note>
+  The AI settings are available to managers and company administrators. The "Operator" role does not see them.
+  The daily budget and message translation are switched on by a company administrator only.
+</Note>
+
+## Persona
+
+The persona sets out who runs the conversation: name, role, manner of speech, background (where the operator
+works, what they offer). It affects the tone and behaviour more than the choice of model does.
+
+- Write positively, that is, what the operator should do rather than only what to avoid.
+- Keep the description short and to the point: long paragraphs blur the operator's behaviour.
+- Example: "A friendly service consultant. Helps people work things out, answers to the point, no officialese".
+
+Hard bans (topics, promises, actions the operator never takes) go into the "Restrictions" field inside the
+"Advanced settings". The writing manner (tone, phrase length, emotion) is configured there too, in
+"Conversation style".
+
+## Model
+
+The model generates the replies. The list opens as a search by name: type part of the name and choose a model
+from the catalogue.
+
+- The choice of model affects the quality of the replies and how reliably arrow transitions, dialog memory and
+  answer pauses hold.
+- For international funnels take a strong multilingual model.
+
+<Tip>
+  If the model you need is not in the list, you can type its name by hand. The AI operator keeps working.
+</Tip>
+
+## Language
+
+The "Language" section defines what language the operator answers in. The way it is chosen is set by the "How to
+choose the reply language" field, which defaults to detecting it from the message.
+
+- **Detect from the message.** The AI answers in the language of the subscriber's last message. The default mode.
+- **Always one language.** The AI always answers in the chosen language.
+- **Mirror the dialog language.** The AI keeps the language the dialog started in.
+
+The "Default language" is set separately: the language of the first message, while the subscriber has not
+written anything yet (for example, when they enter the funnel by a command rather than by text). As soon as the
+subscriber writes, the AI adapts to their language in the "detect" and "mirror" modes.
+
+By default this field is set to auto, based on the subscriber. The language of the first message is then chosen
+by priority: first the language set in the settings, then the subscriber's device language, then the general
+fallback language.
+
+<Info>
+  To fix the language of the first message rigidly, choose a specific language in "Default language" instead of
+  the automatic option.
+</Info>
+
+In the "Always one language" mode a "Knows only this language" toggle appears. With it the operator does not
+understand messages in other languages and reacts as a real person who does not know them would.
+
+## Block goal and transitions
+
+The persona, model and language are shared across the whole bot. Each AI block has its own goal, set in the flow
+builder. The "AI operator" sits in the flow builder next to the other block types: "Start condition", "Dialog
+state" and "Fallback".
+
+- **Block goal.** On the "Goal" tab describe what the AI leads the conversation towards here. For example: bring
+  them to a payment, answer questions about the plan, handle objections and lead to an application.
+- **Transitions.** Arrows from the AI block define where to move next. On an arrow, in the field for a condition
+  the AI decides on, you write the condition in words, for example "the client confirmed they are ready to make
+  a deposit". The AI evaluates it from what the other side says. An empty condition works as a fallback
+  transition.
+
+## Messages the AI starts itself
+
+The AI can write not only in reply but on its own. These are two different cases, both configured in the AI
+block: the first message on entering the block, and AI reminders to a subscriber who went quiet.
+
+### The first message on entry
+
+The "Goal" tab has a "Write first on entry" toggle.
+
+- **On.** The AI opens the dialog itself when a subscriber enters the block.
+- **Off.** The AI waits for the subscriber's first message and only then answers.
+
+The language of that first message comes from the "Default language" (see the section above).
+
+### AI reminders
+
+If a subscriber goes quiet, the AI can bring them back into the dialog. On the "Reminders" tab of the AI block,
+in the "Reminder type" field, choose the option where the AI decides when and what to write. The AI picks the
+moment and the wording itself. The text does not come from templates: the AI composes it from the conversation
+context and what it already knows about the subscriber. Three fields set the frequency:
+
+- **Maximum reminders.** How many times the AI will remind them (from 1 to 10).
+- **No more often than once every (min).** No more than one reminder per that many minutes.
+- **No less often than once every (min).** At least one reminder per that many minutes.
+
+The AI stops reminding as soon as the subscriber answers, moves on, or the limit runs out. Reminders are not sent
+to people who blocked the bot.
+
+<Note>
+  Ordinary (non-AI) blocks have reminders too, but there they are timer-based prepared messages: a ready chain of
+  messages with delays from the moment of entering the block. More in [Flow builder](/en/constructor).
+</Note>
+
+## Knowledge base
+
+The knowledge base is what makes the AI answer from your materials rather than invent things. Add your terms,
+answers to frequent questions, withdrawal rules, a description of bonuses.
+
+<Steps>
+  <Step title="Add a material" icon="plus">
+    Press "Add", give it a name (optional) and paste the material's text. Any language is supported.
+  </Step>
+  <Step title="Wait for indexing" icon="hourglass">
+    The material gets the "Indexing" status, then "Ready". The AI starts answering from it once it is "Ready".
+  </Step>
+  <Step title="The AI answers from your materials" icon="comments">
+    Materials become a search by meaning. For a subscriber's question the AI finds the matching passage and answers from it rather than from general knowledge.
+  </Step>
+</Steps>
+
+Up to 200 materials can be added per bot. A material can be edited or deleted at any time, and after an edit it
+is re-indexed.
+
+<Tip>
+  The knowledge base works while the AI operator is switched on.
+</Tip>
+
+## The AI stays human
+
+The operator behaves like a real employee and never hints that it is an AI.
+
+- The subscriber sees no signs of automation: no "I'm a bot", no "I'm an AI", no service phrases. The operator
+  always answers that they are a real person.
+- When a real human is needed (a complicated case, or the subscriber makes no progress towards the goal for a
+  long time), the dialog is quietly switched to manual and lands with an operator in the
+  [Messenger](/en/messenger) (called "Messages" in the bot menu). The subscriber notices nothing, and no handover
+  is announced.
+- The "Switch to manual after N replies in the block" setting (in "Advanced settings", the "Generation" section)
+  limits how many rounds the AI runs on its own before handing over to an operator. A value of 0 removes the
+  limit.
+
+## Budget
+
+Spending on AI replies is limited by daily budgets and by the company balance.
+
+- **Daily AI budget (this bot).** The maximum charged for this bot's AI replies per day. On reaching the limit
+  the AI stays silent until midnight (UTC) and continues the next day. An empty field means no limit. The card
+  shows how much of the limit has been spent today.
+- **Daily AI budget (whole company).** A shared limit for every bot of the company, set in the
+  [company settings](/en/settings). The bot limit and the company limit apply at the same time: whichever is
+  reached first takes effect.
+- **Balance.** Overall spending is also limited by the company balance, details in [Billing](/en/billing).
+
+<Warning>
+  Only a company administrator changes the daily budget and message translation. A manager sees the other AI
+  settings but not the budget.
+</Warning>
+
+## Extras
+
+The cards below and the "Advanced settings" hold the finer parameters.
+
+<Columns cols={2}>
+  <Card title="Memory about the person" icon="brain">
+    The AI remembers stable facts about the person (what they want, what worries them, their constraints) and takes them into account in later conversations. Off by default; switching it on increases token spending.
+  </Card>
+  <Card title="Media recognition" icon="image">
+    A photo is treated as an attachment: the AI describes the picture and the text on it. Voice, audio, video and video messages are not recognised yet, and are marked as coming soon.
+  </Card>
+  <Card title="Message translation" icon="language">
+    The operator translates the dialog's messages into the operator's language and shows a preview of the outgoing message in the subscriber's language. Switched on by a company administrator; the AI operator must be enabled.
+  </Card>
+  <Card title="Generation" icon="sliders">
+    Fine-tuning of the reply: reply style ("Default", "Livelier", "Stricter" or a custom one for manual tuning), emoji and length. Choosing a style is usually enough.
+  </Card>
+  <Card title="Typing realism" icon="keyboard">
+    Delays and splitting a reply into several messages so the conversation looks human: a pause before answering, pauses between messages and the number of messages in one reply.
+  </Card>
+</Columns>
+
+## Related sections
+
+<Columns cols={2}>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Where the AI block lives: its goal, transition arrows, reminders.
+  </Card>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    Where a dialog handed to a live operator ends up.
+  </Card>
+  <Card title="Billing" icon="wallet" href="/en/billing">
+    Balance and charges for AI replies.
+  </Card>
+  <Card title="Settings" icon="gear" href="/en/settings">
+    The daily AI budget for the whole company.
+  </Card>
+</Columns>

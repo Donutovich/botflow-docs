@@ -1,0 +1,224 @@
+---
+title: "Reportes"
+description: "Registros de conversiones y clics: postbacks entrantes, entrega a Facebook CAPI, clics con geo y dispositivos, el constructor de filtros y la exportación a CSV."
+icon: "table"
+---
+
+Los reportes son dos registros dentro del tracker: «Conversiones» y «Clics». Muestran los eventos de tráfico fila por fila:
+qué clic llegó, quién inició el bot, qué postback envió la red de afiliados y qué hizo la plataforma con él. Aquí se
+revisan los casos en disputa y se exportan datos, en lugar de mirar totales (para los totales está el
+[panel del tracker](/es/tracker)).
+
+## Dónde encontrarlo
+
+En el menú izquierdo de la empresa abra «Tracker» y después la pestaña «Reportes». Dentro de la sección hay dos subpestañas
+arriba:
+
+<Columns cols={2}>
+  <Card title="Conversiones" icon="receipt">
+    El registro de los postbacks de las redes y de los eventos salientes a Facebook CAPI. Se abre por defecto.
+  </Card>
+  <Card title="Clics" icon="arrow-pointer">
+    El registro de todos los clics en sus enlaces de tracking con geo, dispositivo y parámetros sub.
+  </Card>
+</Columns>
+
+<Info>
+  Los reportes los ven los miembros con un rol en el tracker («Comprador», «Líder de compradores») y los administradores de
+  la empresa con el permiso «Tracker». Un miembro sin rol en el tracker no ve la sección. Sobre cómo otorgar el acceso vea
+  [Configuración](/es/settings).
+</Info>
+
+## Herramientas comunes a los dos registros
+
+Los dos registros están construidos igual y comparten un conjunto de herramientas arriba.
+
+| Herramienta | Qué hace |
+|---|---|
+| **Período** | «Hoy», «Ayer», «Últimos 7 días», «Últimos 30 días», «Todo el tiempo», «Período». Cada período es un rango de fechas de calendario: «Hoy» muestra la fecha de hoy, «Últimos 7 días» exactamente siete fechas incluida la de hoy. Por defecto el registro abre en el día de hoy. |
+| **Búsqueda** | Búsqueda rápida por cadena (en conversiones por `click_id`, en clics por `click_id` o parámetros sub). |
+| **Filtro** | Un constructor de condiciones con campos y operadores (en detalle abajo). |
+| **Columnas** | El botón muestra y oculta columnas de la tabla. La elección se recuerda para esta empresa. |
+| **Exportar CSV** | Exporta la selección actual a un archivo CSV. |
+| **Cargar más** | El registro se carga en páginas de 50 filas, y el botón carga la siguiente. |
+
+<Tip>
+  Una fila de cualquiera de los registros se puede expandir con un clic: se abre una ficha con todos los campos del evento.
+  En conversiones son todos los parámetros del postback tal como los envió la red, el cuerpo de la petición a Facebook y la
+  respuesta; en clics es la ficha completa del clic por grupos (geo, dispositivo, parámetros sub, FB, suscriptor, señales).
+</Tip>
+
+## Conversiones
+
+El registro reúne dos flujos de eventos en un solo hilo:
+
+<Columns cols={2}>
+  <Card title="Entrantes" icon="arrow-down-left">
+    Postbacks de las redes de afiliados: registro, FTD, RD. La plataforma los hace coincidir con un suscriptor por `click_id`.
+  </Card>
+  <Card title="Salientes" icon="arrow-up-right">
+    Eventos que la plataforma envía de vuelta a Facebook por la Conversion API (CAPI) en las campañas de FB.
+  </Card>
+</Columns>
+
+<Info>
+  Los envíos de postbacks S2S no entran en este registro: el suyo vive en [Postbacks S2S](/es/s2s-postbacks), en la pestaña
+  «Registro».
+</Info>
+
+La dirección se cambia con el filtro «Todos / Entrantes / Salientes». En la tabla los entrantes llevan una flecha hacia
+dentro y los salientes una flecha hacia fuera.
+
+### Columnas
+
+Por defecto se ven: hora, dirección, `click_id`, resultado del procesamiento, fuente, campaña. Con el botón «Columnas» se
+pueden agregar «Tipo» (el estado del evento) y «Error» (el texto del error, si el evento no pasó).
+
+### El resultado de un postback entrante
+
+La columna «Resultado» muestra qué hizo la plataforma con un postback. Es la respuesta principal a «la red dice que envió un
+FTD a las 17:42 y no lo veo».
+
+| Resultado | Qué significa |
+|---|---|
+| `success` | El postback se aceptó y se vinculó a un suscriptor. |
+| `no_click_match` | El `click_id` del postback no se encontró: el clic no llegó a la plataforma o el id es incorrecto. |
+| `duplicate` | Ese evento ya llegó antes, el repetido se rechazó. |
+| `invalid_status` | La red envió un estado que la plataforma no acepta. |
+| `invalid_token` | El postback llegó con una clave de red incorrecta. |
+| `rejected_transition` | Un orden de eventos no permitido para este clic (por ejemplo, un depósito repetido antes del primero). |
+| `rate_limited` | La red envió eventos con demasiada frecuencia y parte no se aceptó. Revise la frecuencia de envío de su lado. |
+| `error` | El evento no se pudo procesar. El texto del error se ve en la columna «Error»; si se repite, escriba a soporte. |
+
+### Salientes a Facebook CAPI
+
+Para las filas de dirección «Salientes» la misma columna muestra el estado de entrega a Facebook: «Enviando» (en curso),
+«Entregado» (Facebook lo aceptó), «Error» (no se pudo enviar). La misma entrega se ve en la página de la campaña, en el
+bloque «Entrega a Facebook CAPI». Sobre qué eventos van a CAPI y cómo configurarlo vea
+[Tracker: descripción general](/es/tracker) y [Postbacks](/es/postbacks).
+
+<Note>
+  La búsqueda en conversiones es por `click_id` exacto. Introduzca el `click_id` de una conversión en disputa y una sola
+  consulta muestra todo su rastro: si llegó el postback, con qué resultado, si el evento salió a Facebook. Si el registro
+  está abierto en un período estrecho y la fila falta, cambie el período a «Todo el tiempo»: el postback pudo llegar antes.
+</Note>
+
+## Clics
+
+El registro de todos los clics en los enlaces de tracking de la empresa. A cada clic se le asigna un `click_id`, al que
+después se vinculan el inicio del bot, el suscriptor y las conversiones.
+
+### Columnas
+
+Hay muchas columnas, y el conjunto se configura con el botón «Columnas». Cubren casi toda la ficha del clic:
+
+<Columns cols={2}>
+  <Card title="Identificación" icon="fingerprint">
+    Hora, `click_id`, IP, Referer, User-Agent, campaña, bot, fuente.
+  </Card>
+  <Card title="Geo" icon="location-dot">
+    País, ciudad, región, idioma, ASN y AS Organization (la red proveedora).
+  </Card>
+  <Card title="Dispositivo" icon="mobile">
+    Tipo de dispositivo, modelo, sistema operativo y versión, navegador y versión.
+  </Card>
+  <Card title="Desglose de FB" icon="facebook">
+    `fb_campaign`, `fb_adset`, `fb_ad`, placement. Los valores vienen de las macros de Facebook.
+  </Card>
+  <Card title="Parámetros sub" icon="tags">
+    `sub1` … `sub5` de su enlace de tracking.
+  </Card>
+  <Card title="Suscriptor y señales" icon="user-check">
+    El suscriptor (si el clic llegó al bot), «Único», señales de bot y proxy, «LP view».
+  </Card>
+</Columns>
+
+La plaquita de la columna «Suscriptor» lleva a la conversación con esa persona (vea [Mensajes](/es/messenger)). Las señales
+«Bot» y «Proxy» marcan tráfico sospechoso, «Único» marca el primer clic desde ese dispositivo, y «LP view» significa que el
+clic llegó de verdad a una visita del landing.
+
+### Tipo de clic: landing, /start, orgánico
+
+Un clic en el landing y un inicio del bot son eventos distintos, y en el registro se distinguen por la columna «Tipo»:
+
+| Tipo | Qué es |
+|---|---|
+| **Landing** | Una visita por el enlace de tracking, normalmente a través de un landing con píxel. |
+| **TG /start** | Un inicio directo del bot por un enlace `t.me` con el código de la campaña, sin landing. Es ya una entrada al embudo. |
+| **Organic** | Un inicio del bot sin campaña: la persona encontró el bot por su cuenta y envió `/start`. Cae en la campaña «Organic». |
+
+<Note>
+  Un clic en el landing es una llegada a la promo-página, y puede no llegar nunca al bot. Iniciar el bot con `/start` crea un
+  suscriptor y abre el embudo. Un flujo en vivo de eventos con pestañas separadas «Clics» e «Inicios del bot» está en el
+  bloque «Actividad» del [panel del tracker](/es/tracker); al hacer clic en una fila se llega al registro «Clics» filtrado por
+  ese `click_id`.
+</Note>
+
+<Tip>
+  La búsqueda en clics busca por `click_id` o por cualquiera de los parámetros sub. Cuando escribe una consulta, el período
+  cambia automáticamente a «Todo el tiempo», para que el clic que busca no quede fuera por las fechas elegidas. Al borrar la
+  consulta el período vuelve al día de hoy.
+</Tip>
+
+## El constructor de filtros
+
+El botón «Filtro» abre el constructor de condiciones. Usted arma una regla con tres partes: campo, operador y valor; las
+condiciones dentro de un grupo se unen con «Y» u «O», y los grupos entre sí con «O». Así encuentra, por ejemplo, todos los
+clics de un conjunto de anuncios concreto del último día que no tienen suscriptor.
+
+Los campos están agrupados por significado: «Identificación», «Geo», «Dispositivo», «Señales», «FB», «Marcas sub»,
+«Suscriptor», y en el registro de conversiones además «Resultado». En el registro de conversiones se filtra por `click_id`,
+campaña, fuente, resultado del procesamiento, estado y texto del error.
+
+Hay dieciséis operadores, y el conjunto disponible depende del tipo de campo:
+
+| Grupo | Operadores |
+|---|---|
+| **Texto** | igual a, distinto de, contiene, no contiene, empieza con, termina con, coincide con regex, no coincide con regex |
+| **Listas** | tiene alguna de, no tiene ninguna de |
+| **Números** | mayor que, menor que, mayor o igual, menor o igual |
+| **Vacío** | vacío, con valor |
+
+## Exportación a CSV
+
+El botón «Exportar CSV» exporta la selección actual respetando todos los filtros, el período y la búsqueda. Una exportación
+devuelve hasta 200 filas a la vez, así que para cortes grandes acote primero la selección con un filtro o un período. El
+archivo se abre en Excel o Google Sheets, o se sube a su propio tracker.
+
+<Warning>
+  `click_id` es el identificador de atribución del dinero: vincula un depósito futuro a un suscriptor y una campaña concretos.
+  En los reportes solo se puede ver y buscar por él; sustituirlo a mano no está permitido, porque si no el dinero se vincula a
+  la persona equivocada. Más en [Postbacks](/es/postbacks).
+</Warning>
+
+## Visibilidad por rol
+
+Los registros muestran solo los datos a los que usted tiene acceso.
+
+| Rol | Qué se ve en los reportes |
+|---|---|
+| **Comprador** | Clics y conversiones solo de sus propias campañas. Los parámetros del postback se muestran de forma abreviada. |
+| **Líder de compradores** | Las campañas de todos sus compradores y las suyas. |
+| **Administrador de la empresa** | Todos los clics y conversiones de la empresa, con todos los campos del evento completos. |
+
+<Info>
+  El rol en el tracker se otorga aparte del rol en el equipo. Cómo configurarlo se describe en
+  [Configuración](/es/settings).
+</Info>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+    El panel, las métricas del embudo, las campañas y los enlaces de tracking de donde vienen estos clics y conversiones.
+  </Card>
+  <Card title="Postbacks" icon="arrows-rotate" href="/es/postbacks">
+    Cómo una red envía eventos a su URL de postback y cómo leerlos en el registro de conversiones.
+  </Card>
+  <Card title="Campañas" icon="bullseye" href="/es/campaigns">
+    Configuración de fuentes, landings y el FB Pixel, y los desgloses de la página de una campaña.
+  </Card>
+  <Card title="Filtros" icon="filter" href="/es/filters">
+    El constructor de condiciones, el mismo que se usa para suscriptores y audiencias de difusión.
+  </Card>
+</Columns>

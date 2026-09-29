@@ -1,0 +1,567 @@
+---
+title: "Flow builder"
+description: "How to assemble a bot's scenario: blocks, conditions, arrows, messages, media and buttons."
+icon: "diagram-project"
+---
+
+A bot in BotFlow runs on blocks. Each block is a step of the scenario: it sends a message and waits for the
+subscriber to write or press something. From there the bot follows arrows to the next block, reacting to the
+subscriber's words, button presses and tracker events. The schema is assembled with the mouse on the canvas of the
+"Flow builder" section, and no code is needed.
+
+<Note>
+  A new bot arrives with a ready starter funnel: a "Start condition" block on the `/start` command is already
+  connected by an arrow with a 3-second delay to a "Dialog state" block. Fill the "Dialog state" with your welcome
+  message and build the schema onwards from it.
+</Note>
+
+## Block types
+
+There are seven block types in all. Each is responsible for its own kind of step.
+
+<Columns cols={2}>
+  <Card title="Start condition" icon="play">
+    The entry point into the funnel. It fires when an incoming message or event matched its condition. Such a block must have at least one condition, otherwise it never starts.
+  </Card>
+  <Card title="Dialog state" icon="comment-dots">
+    An ordinary step of the conversation. It sends a message and waits for an answer, then leads on by arrows. It never starts itself: you can only get into it by an arrow, by a timeout, through the "Move to block" action or from a campaign.
+  </Card>
+  <Card title="Fallback" icon="life-ring">
+    The backup block: checked last. It answers "help", "menu" or "cancel" anywhere in the funnel and does not knock the subscriber off their current step. To actually lead them onwards, add the "Move to block" action. You can also send somebody into this block deliberately: with an arrow or a branch of a "Condition" block. Then it becomes an ordinary step for them and they follow its arrows.
+  </Card>
+  <Card title="Condition" icon="arrows-split-up-and-left">
+    A split by the subscriber's data: tags, deposits, country, variables. It checks branches top to bottom and immediately leads the subscriber down the first matching one. It sends no message of its own and waits for no answer. More below.
+  </Card>
+  <Card title="A/B test" icon="percent">
+    Splits subscribers between several paths in the percentages you set: 50/50, say, or 70/30. It sends no message of its own and waits for no answer, just like "Condition". The shares you set hold even on small traffic. More below.
+  </Card>
+  <Card title="AI operator" icon="robot">
+    Hands the conversation to the virtual operator. The block has no ready text of its own: the model writes the reply. The persona, model and language are configured on the [AI operator](/en/ai-operator) page, while the block itself holds the "Block goal" and the "Write first on entry" toggle.
+  </Card>
+  <Card title="Draft" icon="file-pen">
+    A placeholder. It does not fire until you switch it to a working type. Handy for parking a block while keeping its settings.
+  </Card>
+</Columns>
+
+<Note>
+  The type of an existing block is changed in the right-hand panel, in the "Block type" list. The "Message",
+  "Actions" and "Reminders" tabs stay put: switch the type back and they are in play again. The bot checks
+  "Keywords" only on a "Start condition" and on a Fallback. You can fill them in on a placeholder too, to switch it
+  to a working type later, and when switching to a type that does not check them you get a warning that they will
+  no longer fire.
+</Note>
+
+<Warning>
+  Switching to "Condition" or "A/B test" does not preserve the arrows leaving the block. For an "A/B test" they
+  become paths into the same blocks and get percentages, but the firing condition and the delay are not carried
+  over: the paths of an "A/B test" have none. An arrow leading into the same block, and arrows beyond the ten
+  paths, are not carried over at all. For a "Condition" the arrows leave the canvas and each branch's transition
+  has to be set again. Switching the type back does not bring the arrows back: that is what the "Undo" button on
+  the builder's top bar or Ctrl+Z does, and only until the page is reloaded.
+</Warning>
+
+<Info>
+  For every message from a subscriber the bot checks blocks in order: first the arrow out of the block the
+  subscriber currently stands on, then the start conditions, and last of all the Fallback. If several blocks
+  matched, only one fires: the one you added later. That is why the same words should not live in two start
+  conditions, otherwise the newer block keeps overriding the older one. An "any answer" arrow is checked after the
+  arrows with a specific condition.
+</Info>
+
+## Conditions: what a block reacts to
+
+A condition is a line a block or an arrow uses to decide whether an incoming message matches. How exactly to
+compare is chosen in the "Match type" list next to the "Keywords" field. On an arrow the same field is labelled
+"Firing condition", and the list of ready values next to it is called "Source buttons".
+
+| Match type | What it does | Example |
+|---|---|---|
+| Ignoring typos and inexactness | Fires even with typos. This is the default type on a block, while a new arrow opens on "Contains keywords". | `hi; consultation; buy` |
+| Contains keywords | Looks for a word or phrase inside the message, case-insensitive. Understands `(A\|B)` groups. | `buy; price; (plan\|tariff)` |
+| Exact match | The message must match in full, case-insensitive. | `Start` |
+| Regular expression | A search by regular expression, case-sensitive. Here `;` does not split alternatives. | `^(hi\|hello).*` |
+
+The grammar is the same for a block condition and an arrow condition:
+
+- `;` separates alternatives and works as OR: `buy; pay; order`.
+- `(A|B)` groups words in keyword mode: `(plan|tariff) (change|switch)`.
+- `{{ }}` substitutes the subscriber's data right into the condition. You can simply write a variable as the
+  condition: it substitutes its value, and the block fires if the incoming message matched it.
+- A variable can be compared: `{{ status }} != paid` or `{{ price }} > 100`. The operators are `==`, `!=`, `>`,
+  `>=`, `<`, `<=`. For `==` and `!=` the comparison is a case-insensitive string one, for the rest it is numeric.
+- Alternatives in one field can be mixed with `;`: `buy; {{ vip }} >= 5; order`.
+
+<Info>
+  There is no separate AND in the grammar. Several alternatives through `;` also work as OR: the block fires if at
+  least one matched. Only the "AI operator" block understands the meaning of a message; an ordinary arrow compares
+  the text literally. Splitting subscribers by their data with AND and OR, for example "had an FTD and country is
+  RU", is what the "Condition" block does (see below).
+</Info>
+
+<Note>
+  `{{ tag }}` is the start parameter from the bot's launch link: if the subscriber followed
+  `t.me/your_bot?start=123`, then `{{ tag }}` becomes `123`. The value is fixed once, on the first `/start`. So a
+  start block with the condition `/start; {{ tag }}` catches both a plain command launch and a launch with a
+  parameter from a link.
+</Note>
+
+<Note>
+  An empty condition field means "any message from the subscriber". If, however, the condition is only a variable
+  and the subscriber has no value for it, such a condition matches nothing.
+</Note>
+
+## Arrows and timeouts
+
+An arrow (a connection) leads from one block to another. To join two blocks, hover over the dot at the bottom of
+the first block and drag a line to the dot at the top of the second. "Condition" and "A/B test" have no bottom
+dot: their dots sit on the branches and paths themselves, see below.
+
+Clicking an arrow opens the "Connection" panel on the right. It has the "Firing condition" and "Source buttons"
+fields, the "Wait for any answer from the subscriber" toggle and "Timeout before transition". What you fill in here
+is what decides how the arrow fires. The arrow's label on the canvas shows its condition and the timeout you set,
+and hovering shows the type name: "Auto transition", "On message", "On button press" or "After timeout". The last
+two items in the list below are not separate types but combinations of settings.
+
+- **Auto transition.** An empty arrow with no timeout. It fires right after the block sent its message and does not
+  wait for the subscriber. If several such arrows leave a block, only one fires and you cannot choose which: keep
+  one per block and make the split with a "Condition" or "A/B test" block.
+- **On message.** Fires when the subscriber writes text matching the "Firing condition".
+- **On button press.** Catches a click on this block's Callback inline button. You don't pick this arrow type
+  directly: insert the button you need into the arrow's condition from the "Source buttons" list, and the arrow
+  becomes "On button press" by itself.
+- **After timeout.** An empty arrow with a timeout fires on a timer from the moment of entering the block. You set
+  the delay in the "Timeout before transition" field in seconds, minutes, hours or days. The subscriber's answer
+  does not cancel the timer: if the person answered and stayed in the same block, the transition still happens.
+- **On a condition with a timeout.** When an arrow has both a "Firing condition" and a timeout, the countdown is
+  started by the condition matching. While the subscriber has not written anything matching, the timer stands still
+  and no transition happens. After a match the transition happens after the set time.
+- **Wait for any answer from the subscriber.** The arrow passes on any answer, text or click, without checking a
+  condition. It never fires on its own and is checked last, so it does not override arrows with a specific
+  condition. A timeout combines with this mode: the countdown starts AFTER the subscriber's answer, and the
+  transition happens the set time after it. If the subscriber stays silent, no transition happens at all.
+
+A timeout is a delay AFTER the arrow fires, and what starts the countdown depends on the arrow itself:
+
+| What is set on the arrow | The countdown starts |
+| --- | --- |
+| a timeout only | from entering the block |
+| "Wait for any answer" and a timeout | from the subscriber's answer |
+| a firing condition and a timeout | from the condition matching |
+
+<Note>
+  The hint under the "Timeout before transition" field always shows which of the three cases you ended up with.
+</Note>
+
+<Warning>
+  An empty arrow with a timeout fires the set time after entering the block. The subscriber's messages do not
+  cancel it: if they answered and stayed in the same block, the transition still happens on the timer. It only
+  fails to fire when the subscriber has already moved to another block by then.
+
+  If the arrow waits for an answer or checks a condition, the timer stands still until it fires. While the
+  subscriber is silent or writes something that does not match, no transition happens at all. Repeated answers do
+  not restart the countdown: it runs from the first firing. That is why "wait a day and remind them" is done with
+  an empty arrow with a timeout into a separate block. There is no separate delay block in the builder.
+</Warning>
+
+## The "Condition" block: a split by the subscriber's data
+
+The "Condition" block directs a subscriber by their data: tags, deposits, country, variables and saved filters.
+
+Inside the block there is a list of branches. As soon as a subscriber lands in the block, the branches are checked
+top to bottom and the first matching one wins: the subscriber goes straight into its block. The "Condition" block
+sends no message of its own and waits for no answer. In the schema it works as a split between two funnel steps.
+
+<Info>
+  The block checks the data at the moment the subscriber enters it: by an arrow, by a timeout, through the "Move to
+  block" action, from a campaign, or when an operator moves the subscriber into the block by hand from "Messages".
+  It never fires on its own.
+</Info>
+
+<Note>
+  The "Condition" block has no "Message", "Actions" or "Reminders" tabs: it only routes subscribers. To apply a tag,
+  send a request or write a message, lead the branch into a block where that is configured.
+</Note>
+
+### How to set it up
+
+<Steps>
+  <Step title="Add branches" icon="list-ol">
+    Press "Add condition". The order of branches top to bottom is the priority: the first matching one among those with a transition set wins. A branch can be renamed, moved up or down. There are up to 20 branches per block.
+  </Step>
+  <Step title="Assemble the branch's condition" icon="filter">
+    The condition is assembled by the same builder as in subscribers and broadcasts: field, operator, value, AND and OR groups. The list of fields and operators is described in [Filters](/en/filters). A saved filter can also be a branch's condition. Inside a branch the condition applies immediately: there is no "Apply" button and no subscriber counter here, and changes are saved together with the schema.
+  </Step>
+  <Step title="Set the transition" icon="arrow-right">
+    Choose the target block in the "Transition" field or drag an arrow from the dot to the right of the branch on the canvas. Every branch and the default branch have a dot. The list holds every working block of the bot, including the "Fallback": a branch can lead a subscriber into it too.
+  </Step>
+  <Step title="Set the default branch" icon="arrows-turn-right">
+    Everyone who matched no branch goes there. It is optional: without it the subscribers who matched nothing go nowhere and stay where they stood before the split.
+  </Step>
+</Steps>
+
+<Note>
+  There are up to twenty branches in one "Condition" block. At the limit the add button switches off and a note
+  about the limit of 20 conditions appears next to it.
+</Note>
+
+<Warning>
+  A branch with no condition catches nobody. A branch with no transition is skipped entirely: a subscriber who
+  matched it is checked further down the list and may go into the next branch or into the default one. Both are
+  marked with an icon right on the block, so an unfinished split is visible on the canvas.
+</Warning>
+
+<Warning>
+  A branch must lead to a working block. If the target block was deleted or stayed in the "Draft" type, the
+  transition does not fire: the subscriber stays on the previous step and the default branch does not pick them up.
+</Warning>
+
+<Note>
+  If you delete the block a branch led to, the branch is deleted together with its condition. Subscribers are
+  checked against the remaining branches and may go into the next matching one or into the default branch. If you
+  delete the block the default branch led to, it is left with no transition and has to be set up again. To bring a
+  deleted block back, press "Undo" in the notification or Ctrl+Z: the block comes back, the branches return to
+  their places with their previous conditions, and the campaigns that led into that block lead into it again. Undo
+  works until the page is reloaded. Deleting selected blocks cannot be undone, even when a single block is
+  selected: the confirmation dialog warns that the action is irreversible.
+</Note>
+
+<Note>
+  When a schema is copied into another bot, conditions on tags, filters, campaigns and funnel blocks mean nothing
+  there: all of those belong to their own bot. So such a branch's condition is cleared entirely, together with
+  neighbouring conditions like "Made FTD" or deposit amounts, and the branch is marked as having no condition.
+  Branches without such conditions are carried over unchanged. After copying, check the splits and reassemble the
+  cleared conditions.
+</Note>
+
+<Note>
+  You can copy **part** of a schema too: select the blocks you need and copy them. If the selected blocks lead into
+  blocks you did not select, copying does not start and you get a message about it. Add the missing blocks to the
+  selection or copy the whole schema.
+</Note>
+
+### Example
+
+A subscriber reaches the "Condition" block after the welcome. The first branch, "VIP": "Made FTD" equals "Yes" and
+"Deposits count" greater than three, with a transition into a block with a personal offer. The second branch:
+"Country" equals RU, with a transition into the main Russian funnel. The default branch leads into the general menu.
+A subscriber from RU who had an FTD and more than three deposits goes down the first branch and never reaches the
+general menu. A subscriber from RU without an FTD lands in the second branch, and everybody else in the default one.
+
+## The "A/B test" block: splitting traffic by percentage
+
+The "A/B test" block splits subscribers between several paths in the percentages you set. It is useful for sending
+subscribers to different welcomes, landings or follow-up scenarios and comparing them.
+
+The block sends no message of its own and waits for no answer: like "Condition", it works as a split between funnel
+steps. The difference is that "Condition" looks at the subscriber's data while "A/B test" simply distributes
+traffic.
+
+<Info>
+  The shares you set hold even with a small number of subscribers: at 50/50 the first goes down one path and the
+  second down the other.
+</Info>
+
+<Note>
+  A subscriber who lands in the block again goes down **the same path** as the first time: one person will not see
+  both variants, and the comparison stays honest.
+</Note>
+
+### How to set it up
+
+<Steps>
+  <Step title="Add paths" icon="list-ol">
+    At least two paths are needed: while there are fewer, the block says so and does not split subscribers. Press "Add variant" and choose the block it leads to. There is another way: drag an arrow from the plus dot at the bottom of the block on the canvas, and the variant is created together with the arrow. There are up to ten paths per block; at the limit the button switches off and a note about the limit of 10 variants appears next to it.
+  </Step>
+  <Step title="Set the percentages" icon="percent">
+    Every path has its own percentage field. The "Total" row under the list shows the sum, and the block saves only when it is exactly 100. While the sum is different you see "Changes not saved" and the block carries an icon on the canvas: the numbers you typed stay on screen but are not in play yet.
+  </Step>
+  <Step title="Or split evenly" icon="equals">
+    The "Split evenly" checkbox removes the fields and divides traffic into equal shares itself. The share is recalculated from the number of working paths, so you don't have to fix it by hand every time there are more or fewer paths.
+  </Step>
+  <Step title="Check the transitions" icon="arrow-right">
+    Every path has a target block in its "Transition" field. The list holds every working block of the bot. Two paths may lead into one and the same block: that is allowed.
+  </Step>
+</Steps>
+
+### Editing paths on the canvas
+
+Each path is drawn on the canvas as an arrow, so you can work with it right there.
+
+- Clicking an arrow or its percentage opens the "Connection" panel on the right with that arrow's percentage and a
+  "Delete arrow" button.
+- "Delete arrow" removes the path itself as well. Its percentage goes to the last path with a non-zero share, so
+  the sum stays 100.
+- If you delete a target block, the paths that led into it go too, and their percentages are distributed the same
+  way.
+- An "A/B test" arrow has neither a firing condition nor a delay: the path is chosen as soon as the subscriber lands
+  in the block.
+
+### When a path gets nobody
+
+<Warning>
+  A path with zero percent gets no subscribers at all. The list notes under it that with 0% a subscriber cannot land
+  in that variant. That is a way to switch a path off temporarily without deleting it.
+</Warning>
+
+If the target block was deleted or stayed a placeholder, the path stops getting subscribers: a note appears next to
+it saying why it does not work ("Block deleted", "Block in draft"), and the arrow on the canvas becomes dashed. Its
+share is **divided between the working paths** in proportion to their percentages. The percentages you typed stay in
+place: switch the placeholder to a working type and the path works again with its previous percentage.
+
+A subscriber who used to go down such a path will this time go down one of the working ones. When the path works
+again, they return to it.
+
+If no path can work, an icon appears next to the block's name on the canvas and the right-hand panel says
+subscribers will not be able to land in any variant. That means subscribers will stop in this block.
+
+### Example
+
+In a funnel you want to compare two welcomes. After the start condition put an "A/B test" with two paths at 50
+percent: the first leads into a block with a short welcome, the second into one with a long welcome. Both then
+converge into one registration block. When you decide which welcome works better, set the weaker path to 0 percent:
+subscribers go only down the second one, and you don't have to take the schema apart for that.
+
+## A block's message: text, media and buttons
+
+A block's content is configured on the "Message" tab.
+
+### Text
+
+A block's message supports Telegram's basic formatting: bold, italic, underline, strikethrough, monospace, code,
+links, spoiler and quote. The "Rich formatting" toggle adds headings, tables, lists and sub/sup and raises the limit
+to 32,768 characters in one message. It is available for text messages and switches off when media is attached to
+the block: with media the basic formatting remains. The same mode exists in [Broadcasts](/en/broadcasts). The "Show
+link previews" toggle decides whether a link card is expanded. Telegram's limits: up to 4096 characters of text and
+up to 1024 in a media caption.
+
+### Media
+
+Five kinds of media can be attached to a block: Photo, Video, Video message, Voice message, Audio.
+
+The platform accepts JPG, PNG, GIF and WEBP images, MP4, MOV and WEBM video, MP3, M4A and OGG audio: these are the
+formats Telegram shows as media rather than as a file. A file in another format is rejected by the editor at
+selection time, with a hint about what can be uploaded. A photo from an iPhone in HEIC cannot be uploaded, save it
+as JPG.
+
+- Several photos and videos go out as one album. Voice messages, audio and video messages are sent as separate
+  messages.
+- A video message is sent without a caption, so it cannot be combined with text in one block. As soon as the block
+  has text, the "Video message" option in the "Send as" list becomes unavailable with a hint that a video message
+  cannot have a caption, and a video message already chosen switches to "Video". If you need both text and a video
+  message: keep the video message in a block without text and send the text from the previous block.
+- An album is sent without buttons. While a block has two or more photos or videos, buttons are unavailable, and
+  the "Remove the subscriber's reply keyboard" toggle is marked as unavailable with an album: it cannot be ticked,
+  though one already ticked can be cleared. Voice messages, audio and video messages do not group into an album, and
+  buttons work with them.
+- When you upload a square video up to 60 seconds long, the bot sends it as a video message by default. The type can
+  be switched in "Send as" right on the file, and the bot sends it as the type you chose.
+
+<Note>A file is uploaded straight into the block. An external link or a file path cannot be used.</Note>
+
+### Inline buttons
+
+Each inline button takes its own row. The button type is picked with a switch:
+
+- **URL.** Opens a link.
+- **Callback.** Caught by a scenario block on a press.
+- **Copy.** Copies text to the subscriber's clipboard, a promo code for example.
+- **Insert text.** Puts prepared text into the subscriber's input field, so all they have to do is send it.
+
+A button can be given a style: "Regular", "Primary", "Success", "Danger" (in the button menu they are marked with
+coloured dots). `{{ }}` substitution works in a button's text and value, for example `{{ click_id }}` in a link.
+Telegram's limits: a callback up to 64 bytes, a link up to 2048 characters, copied text up to 256.
+
+<Note>
+  **How a button leads onwards.** A Callback button is caught by a scenario block by its value, the text you typed
+  into its callback. There are two ways to catch a press:
+
+  - With an arrow from the same block: insert the button into the arrow's condition from the "Source buttons" list,
+    and the value is filled in with one click.
+  - With a separate "Start condition" block whose "Keywords" hold the same callback value. Such a block catches the
+    press from anywhere in the funnel, even if the subscriber has already left the block with the button.
+</Note>
+
+<Note>
+  You cannot set your own reply keyboard (the ordinary buttons under the input field) in a block; a block works with
+  inline buttons. There is only the "Remove the subscriber's reply keyboard" toggle: it hides a reply keyboard the
+  subscriber received earlier.
+</Note>
+
+## Moving a schema to another bot
+
+The "Copy to bot…" item in the "…" menu moves blocks from the current bot into another one. Two modes are available.
+
+| Mode | What it does |
+| --- | --- |
+| **Add to the existing schema** | The copied blocks appear alongside what is already in the target bot. |
+| **Replace the schema** | The target bot's blocks are deleted and replaced by the copied ones. |
+
+<Warning>
+  "Replace the schema" deletes everything that was in the target bot. Before deleting, the platform creates a
+  snapshot of the schema, so you can roll back through "Version history" in the same menu.
+</Warning>
+
+You can copy part of a schema too: switch on the block selection mode, mark the ones you need and choose "Copy to
+bot…". Transitions between the copied blocks are preserved, while transitions to blocks that stayed in the source
+bot do not appear in the copy.
+
+## Version history
+
+The "Version history" item in the "…" menu opens the list of schema snapshots. A snapshot is created automatically
+before a schema replacement and is kept for 30 days. A rollback from a snapshot itself creates another snapshot, so
+you can return to the state before the rollback too.
+
+<Tip>
+  This is the only way to bring back a funnel that was accidentally replaced or broken. If something went wrong,
+  start here rather than rebuilding the schema.
+</Tip>
+
+## Working with several blocks
+
+The selection mode is switched on with the button on the canvas ("Enable block selection mode"). In it:
+
+- blocks are marked by pressing them, and the selected ones are highlighted;
+- **"Duplicate"** creates copies of the selected blocks next to them;
+- **"To clipboard"** copies the selection so you can paste it into another bot's schema;
+- an individual block's panel has "Copy block ID": that identifier is what you use when a block is named in an
+  external API request.
+
+## The builder on a phone
+
+On a phone the builder opens in a simplified form: instead of the canvas there is a list of blocks you can open and
+edit. At the top there is a "Pinned" group: a block goes into it through the "Pin for quick mobile access" toggle in
+its panel. That way the blocks you edit often (texts, split conditions) stay at hand while the rest of the schema
+stays out of the way.
+
+## Actions after sending
+
+The "Actions" tab configures what happens after the block has sent its message. Four actions are available:
+
+- **Add tag.** Marks the conversation with a tag. Tags are created and managed in [Tags](/en/tags).
+- **Remove tag.** Removes a tag from the conversation.
+- **Move to block.** Changes the subscriber's current position and does not send the target block's message. The
+  subscriber's next message is checked against the target block's conditions, and an arrow that fires some time
+  after entering a block starts its countdown from the moment of the move.
+- **Send API request.** Sends a request when the subscriber reaches the block. A target switch picks one of two
+  modes, see below.
+
+<Warning>
+  "Move to block" leads only to a working block: a placeholder in the "Draft" type is not offered in the target
+  list. If the target block was deleted or switched to "Draft" after the action was set up, the move does not fire
+  and the subscriber stays where they are.
+</Warning>
+
+<Note>
+  If you delete the block an action led to, the action itself stays but its target is cleared: choose it again.
+</Note>
+
+### Send API request
+
+The action fires at the moment the subscriber reaches the block. The target is chosen in the target list, and the
+fields appear after the choice.
+
+- **External URL.** Sends a request to your address at a partner or a third-party service. The method is picked with
+  the GET and POST buttons under the address field. Variables from the list are substituted into the link on
+  sending, for example `{{ click_id }}`. For money postbacks to an affiliate use
+  [S2S Postbacks](/en/s2s-postbacks): it keeps a delivery log and is built for amounts.
+- **Another bot.** Sends a callback into another bot of yours. Only a bot where you have the manager role can be
+  chosen. In the target bot the callback is caught exactly like an inline button press: by an "On button press"
+  arrow or by a start condition with the same value (see "Inline buttons" above). The value must match the condition
+  in the target bot exactly, up to 256 characters. The subscriber does not see this message, and the callback
+  creates no new conversation.
+
+<Note>If access to the target bot is lost, the action is marked as unavailable and has to be set up again.</Note>
+
+<Note>There is no capturing of a response into a variable and no running of your own code in actions.</Note>
+
+## Reminders for those who went quiet
+
+If a subscriber got stuck in a block and does not move on, you can bring them back with a reminder on the
+"Reminders" tab. First switch on "Reminders enabled" and the settings appear. The "AI operator" block additionally
+gets a "Reminder type" list with two modes:
+
+- **Prepared messages on a timer.** You write the steps yourself, and the delays are counted from entering the
+  block.
+- **The AI decides when and what to write.** Available in the "AI operator" block only. The model picks the moment
+  and the text itself, based on the conversation context and what is known about the subscriber, within the "no more
+  often" and "no less often" settings and the reminder limit.
+
+Both modes stop as soon as the subscriber answers, moves further along the funnel or blocks the bot.
+
+## Variables
+
+The subscriber's data is substituted into text, buttons and conditions through `{{ }}`. Variable names are written
+in Latin and exactly as they appear in the list. The full reference is in [Variables](/en/variables).
+
+- **System:** `first_name`, `last_name`, `full_name`, `username`, `user_id`, `telegram_id`, `date_of_birth`,
+  `created_at`, `tag` (the start parameter from the launch link, see above).
+- **Dynamic:** filled in after a postback from an affiliate and holding the latest event's data. `click_id` (the
+  identifier for affiliate links), `event.payout` (the event amount), `event.currency` (the currency),
+  `event.trader_id` (the account identifier at the partner), `event.device_type` (the device type),
+  `event.os_version` (the OS version), `event.link_type` (the link type).
+- **Custom:** variables you create for the bot yourself. By default such a variable holds its value per subscriber,
+  and the "Global" checkbox makes the value the same across the whole bot.
+
+<Warning>
+  Variable names are written in Latin and exactly as in the list. `{{ first_name }}` works, while a translated name
+  substitutes nothing. Invented tokens like `{{ name }}`, `{{ chat_id }}` or `{{ phone }}` also produce an empty
+  string. The `{{ }}` braces must not be changed.
+</Warning>
+
+## System events and conversions
+
+A start condition and arrows fire not only on text but on events too. Ready events are inserted into a block's
+condition from the "System events" list, with no typing needed (an arrow has no such list, and there the event is
+typed by hand):
+
+- Blocked the bot and Unblocked the bot.
+- Join request and Request approved (for channel invite campaigns).
+- Reaction.
+- Tracker conversions: Registration, Deposit, Repeat deposit, Withdrawal and other postbacks. For where those events
+  come from see [Tracker](/en/tracker).
+
+## Example: a small funnel
+
+<Steps>
+  <Step title="A start condition on /start" icon="play">
+    Create a "Start condition" block. In the "Keywords" field type `/start`, and in the "Match type" list choose "Contains keywords" (the default is "Ignoring typos and inexactness"). In the message, say hello: `Hi, {{ first_name }}!` and add two Callback inline buttons: "Catalogue" and "Ask a question".
+  </Step>
+  <Step title="Split the subscriber by buttons" icon="arrows-split-up-and-left">
+    Drag two arrows from the start block: insert its own button into each one's condition from the "Source buttons" list. Lead one arrow to the "Catalogue" block and the other to the "Question" block.
+  </Step>
+  <Step title="The «Catalogue» state" icon="comment-dots">
+    Create a "Dialog state" block and send a photo and a description in it. On the "Actions" tab add "Add tag", for example "Viewed the catalogue", so you can collect those subscribers into a broadcast later.
+  </Step>
+  <Step title="A Fallback on «help»" icon="life-ring">
+    Add a "Fallback" block with the condition `help; support` in "Contains keywords" mode. It answers with a hint anywhere in the funnel and does not knock the subscriber off their current step.
+  </Step>
+  <Step title="A reminder by timeout" icon="clock">
+    From the "Catalogue" block drag an "After timeout" arrow of 1 day into a separate reminder block. If the subscriber writes nothing within a day, they get a gentle nudge. Any message from them before that cancels the reminder.
+  </Step>
+</Steps>
+
+<Tip>
+  The schema saves itself, and the status is visible in the header ("Saved"). The easiest way to check a funnel is
+  live: open the bot in Telegram and send it `/start`. All of a bot's conversations are collected in the Messenger
+  (called "Messages" in the bot menu).
+</Tip>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="AI operator" icon="robot" href="/en/ai-operator">
+    The persona, model and language of the virtual operator for the "AI operator" block.
+  </Card>
+  <Card title="Bot settings" icon="gear" href="/en/bot-settings">
+    The name, description and about text subscribers see in Telegram.
+  </Card>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    How an operator takes a conversation over by hand and hands it back to the AI.
+  </Card>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    Mass messages by subscriber tags and filters, with rich formatting.
+  </Card>
+  <Card title="Flow builder API" icon="code" href="/en/api-konstruktora">
+    Starting a funnel with a callback and reading subscriber data by API key from your own services.
+  </Card>
+</Columns>

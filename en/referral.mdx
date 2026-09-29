@@ -1,0 +1,137 @@
+---
+title: "Referral programme"
+description: "Named referral links, a 10% commission from your referrals' spending, offers for invitees, per-link statistics and withdrawal in USDT-TRC20."
+icon: "share-nodes"
+---
+
+Invite clients through your links and earn a commission from their spending. The "Referral programme" section opens
+from the profile menu, is available to any account and consists of the **Links**, **Referrals** and **Payouts**
+tabs.
+
+## How it works
+
+<Steps>
+  <Step title="Create a link and share it" icon="link">
+    Every account has a main link, and you can create more, one per channel. The link leads to sign-up, and the companies invited through it appear in your referral list.
+  </Step>
+  <Step title="Your referral uses the platform" icon="users">
+    When an invited company spends its balance on running bots and on messages, you are credited a commission from that spending.
+  </Step>
+  <Step title="Withdraw what you earned" icon="wallet">
+    The commission accumulates on the programme's balance. Once the amount reaches the minimum, request a payout in USDT-TRC20.
+  </Step>
+</Steps>
+
+## The "Links" tab
+
+At the top of the section you see your main referral link with a "Copy" button and the commission rate. Below there
+are all-time metric cards and a 30-day chart of accruals.
+
+<Columns cols={2}>
+  <Card title="Referrals" icon="user-group">
+    How many companies signed up through your links.
+  </Card>
+  <Card title="To be paid" icon="coins">
+    The accumulated commission available for withdrawal.
+  </Card>
+  <Card title="In progress" icon="clock">
+    The amount of withdrawal requests still being executed.
+  </Card>
+  <Card title="Paid out" icon="circle-check">
+    How much has already been paid to you, all time.
+  </Card>
+</Columns>
+
+The spending of invited companies is shown per referral on the "Referrals" tab.
+
+Below the overview comes link management. For each link the table shows: the name, the link code with a copy button,
+the offer and the landing, plus statistics for the period: clicks, sign-ups, conversions and commission. Conversions
+are how many people invited through the link topped up their balance. The main link cannot be deleted.
+
+### Creating a link
+
+The "Create link" button opens the form:
+
+<Steps>
+  <Step title="Name" icon="pen">
+    A name for the channel that makes sense to you, for example "Telegram channel". Only you see it, and it helps tell links apart in the statistics.
+  </Step>
+  <Step title="Offer" icon="gift">
+    An offer is the proposition for the invitee. The platform's main offer applies by default. The offer is **fixed to the link and does not change after creation**: to use another offer, create a new link.
+  </Step>
+  <Step title="Landing" icon="browser">
+    The page the invitee lands on. The home page by default.
+  </Step>
+</Steps>
+
+A ready link can be copied with the copy button in the row or from the "⋯" menu. The same menu has "Edit" (name and
+landing) and "Archive". The main link cannot be archived.
+
+## Commission
+
+The default commission rate is **10%** and is shown above the metric cards.
+
+The commission is calculated from your referrals' **spending**: the fees for running bots and for messages. Spending
+on AI operator replies is **not** part of the commission base. The accumulated amount is shown above the metric
+cards, and the breakdown per invitee is on the "Referrals" tab.
+
+## The "Referrals" tab
+
+An anonymised breakdown by invitee: a "Referral #" label, the sign-up date and the amounts. For each referral you
+see:
+
+| Column | What it shows |
+| --- | --- |
+| Referral | The invitee's anonymised label. |
+| Date | When they signed up. |
+| Stage | Signup, Active or Conversion. |
+| Source | The name of the link they came through. |
+| Offer | Which offer was applied. |
+| Spending | How much the invitee spent. |
+| Your commission | How much was credited to you from them. |
+
+## The "Payouts" tab
+
+Payouts go in USDT over the TRON network (TRC-20), straight to the blockchain.
+
+<Steps>
+  <Step title="Enter the wallet address" icon="wallet">
+    The "Wallet address" field. Check the address: the transfer goes to the network and cannot be reversed.
+  </Step>
+  <Step title="Enter the amount" icon="coins">
+    The "Withdrawal amount" field. Above the form you see the available balance, and the "All" button fills in the whole available amount. There is a minimum withdrawal amount, stated in the form.
+  </Step>
+  <Step title="Request the payout" icon="paper-plane">
+    Press "Withdraw". The request goes through review, and after approval the funds go to the network.
+  </Step>
+</Steps>
+
+Withdrawal requests are collected in a table with the date, amount, status and a link to the transaction. While the
+review and the transfer are in progress the status updates by itself. Below there is a "History": every operation of
+the programme, commission accruals with a plus and payouts with a minus.
+
+| Status | What it means |
+| --- | --- |
+| Pending | The request is created and waiting for review. |
+| Approved | The request passed review. |
+| Processing | The payout is being prepared for sending. |
+| Sent | The transfer went to the network and confirmations are being collected (a confirmation counter is shown). |
+| Completed | The funds are credited, and a transaction link is available. |
+| Rejected | The request was rejected, with the reason given. |
+| Failed | Sending did not succeed, with the reason given. |
+
+<Info>
+  If you already have a request in progress, its amount is shown in a separate note under the form, so you can see
+  how much is already on its way.
+</Info>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Billing" icon="wallet" href="/en/billing">
+    The company balance, top-ups in USDT-TRC20 and what spending is made of.
+  </Card>
+  <Card title="Platform overview" icon="house" href="/en/index">
+    How the company, the workspace and bots are organised.
+  </Card>
+</Columns>

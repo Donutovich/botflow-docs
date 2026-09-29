@@ -1,0 +1,208 @@
+---
+title: "Difusiones"
+description: "Difusiones masivas: bots, contenido, audiencia y programación, medios y álbumes, variables, estados y estadísticas."
+icon: "paper-plane"
+---
+
+Una difusión envía un mensaje a un grupo de suscriptores a la vez: a mano en el momento del lanzamiento o según una programación. Una difusión se crea desde un workspace y en ella puede elegir uno o varios bots de ese workspace. Cada bot tiene su propia audiencia y su propia entrega.
+
+Una difusión respeta los límites de Telegram, pero va a la velocidad máxima permitida.
+
+<Steps>
+  <Step title="Elija los bots" icon="robot">
+    La sección «Difusiones» → el botón «Nueva difusión». Marque uno o varios bots dentro del workspace. Aquí mismo puede poner un nombre a la difusión: lo ven solo usted y los administradores, los suscriptores nunca.
+  </Step>
+  <Step title="Arme el mensaje" icon="pen">
+    Texto con formato, medios y álbumes, botones inline. En el texto funcionan variables como `{{ first_name }}`. Antes de lanzar puede enviarse un mensaje de prueba a usted o a cualquier suscriptor.
+  </Step>
+  <Step title="Defina la audiencia" icon="filter">
+    Todos los suscriptores activos del bot, o una selección por filtro: guardado o armado en el momento.
+  </Step>
+  <Step title="Envíe o programe" icon="clock">
+    De inmediato o en una fecha y hora concretas. Hasta que se lanza, la difusión se guarda como borrador y se autoguarda.
+  </Step>
+</Steps>
+
+## El asistente de difusión
+
+El asistente tiene cuatro pasos: «Bots», «Contenido», «Audiencia», «Programación». La barra de pasos está arriba y los botones «Atrás» y «Siguiente» abajo. En el último paso, en lugar de «Siguiente», aparece «Crear y enviar» (al enviar ahora) o «Programar» (al enviar en una fecha).
+
+El asistente se abre con el botón «Nueva difusión» en la sección «Difusiones» a nivel de workspace, y los bots vienen de ese workspace. En el paso «Bots» marque uno o varios; la casilla de la fila del workspace selecciona todos sus bots a la vez. Con varios bots elegidos, el mismo mensaje va a los suscriptores de cada uno. Cada bot envía por su cuenta, así que los contadores (destinatarios, entregados, errores) se calculan por bot y se suman en la ficha de la difusión.
+
+<Note>
+En un mismo bot va solo una difusión a la vez. Si el bot ya está enviando algo, una difusión nueva espera a que se libere y arranca por sí sola. Así la plataforma mantiene el ritmo dentro de los límites de Telegram y usted nunca tiene que fijar retrasos a mano.
+</Note>
+
+Al editar una difusión iniciada en un bot concreto, el bot ya está fijado y el paso «Bots» se omite: el asistente abre directamente en «Contenido».
+
+## Audiencia
+
+El paso «Audiencia» ofrece dos opciones:
+
+- **Todos los suscriptores activos**: envío a todos los que no bloquearon el bot.
+- **Filtro**: una selección de suscriptores por campos. Puede elegir un filtro guardado o armar las condiciones en el propio asistente.
+
+Los filtros pertenecen a un bot concreto, así que la selección por filtro está disponible solo cuando hay exactamente un bot elegido. Con varios bots queda la opción «Todos los suscriptores activos». Un filtro se guarda desde el constructor de condiciones en «Mensajes», «Suscriptores» o en el propio asistente de difusión (vea [Filtros](/es/filters)), y para armar condiciones en el momento se usa el mismo constructor que en la [Mensajería](/es/messenger).
+
+De la audiencia siempre se excluyen los suscriptores que bloquearon el bot y los bloqueados por un administrador.
+
+<Tip>
+El número de destinatarios se calcula en el momento en que arranca la difusión, no antes: en la audiencia entran todos los que cumplen la condición al lanzarla.
+</Tip>
+
+## Texto y variables
+
+El texto del mensaje admite formato: negrita, cursiva, subrayado, tachado, spoiler, cita, código, enlaces, listas. El formato se conserva al pegar desde otra fuente.
+
+### Variables
+
+Una variable en el texto se reemplaza por los datos de un suscriptor concreto en el momento del envío. Al hacer clic en la etiqueta de una variable en el editor, el token se copia y usted lo pega en el texto. Los tokens de las variables están siempre en inglés y se escriben tal como están; no se traducen ni se cambian.
+
+Variables de sistema:
+
+| Variable | Qué se sustituye |
+| --- | --- |
+| `{{ first_name }}` | Nombre |
+| `{{ last_name }}` | Apellido |
+| `{{ full_name }}` | Nombre y apellido |
+| `{{ username }}` | @username |
+| `{{ telegram_id }}` | Telegram ID |
+| `{{ user_id }}` | El identificador del suscriptor en BotFlow |
+| `{{ created_at }}` | Fecha de suscripción |
+| `{{ date_of_birth }}` | Fecha de nacimiento |
+| `{{ tag }}` | El parámetro del enlace de inicio del bot |
+| `{{ click_id }}` | El click ID del suscriptor |
+
+Las variables de evento se rellenan después del primer postback de un suscriptor y sustituyen los datos del último evento. Es un conjunto fijo de seis campos:
+
+| Variable | Qué se sustituye |
+| --- | --- |
+| `{{ event.payout }}` | El monto del evento |
+| `{{ event.currency }}` | La moneda |
+| `{{ event.trader_id }}` | El identificador de la cuenta en el socio |
+| `{{ event.device_type }}` | Dispositivo |
+| `{{ event.os_version }}` | Sistema operativo |
+| `{{ event.link_type }}` | Tipo de enlace |
+
+Además de las de sistema, un bot tiene variables personalizadas con sus propios valores. Son distintas en cada bot, así que la ayuda con las variables personalizadas está disponible cuando hay un solo bot elegido. La lista completa y la gestión de variables están en [Variables](/es/variables).
+
+<Tip>
+Si el campo de un suscriptor está vacío (no tiene nombre, digamos), la variable se reemplaza por una cadena vacía. Un suscriptor nunca ve un `{{ first_name }}` crudo en el texto.
+</Tip>
+
+### Formato enriquecido
+
+El formato enriquecido agrega encabezados, tablas, listas, sub/sup y hasta 32 768 caracteres en un mensaje. El mismo modo existe en el [editor de flujos](/es/constructor). Se activa para mensajes de texto largos y funciona solo sin medios.
+
+<Note>
+El editor avisa si el texto supera el límite de Telegram para un mensaje normal o para una leyenda de medios.
+</Note>
+
+## Medios y álbumes
+
+Al mensaje se le puede adjuntar una foto, un video, un audio, un mensaje de voz o un videomensaje. Límites de tamaño: fotos hasta 10 MB, video y audio hasta 50 MB.
+
+Varios archivos se agrupan en un álbum según las reglas de Telegram:
+
+- **Fotos y videos** se agrupan en un solo álbum (de 2 a 10 archivos, mezclar fotos y videos está permitido).
+- **El audio** no se puede adjuntar junto con fotos y videos; cada archivo de audio sale en su propio mensaje.
+- **Los mensajes de voz y los videomensajes** siempre se envían como mensajes aparte.
+
+La plataforma detecta el tipo del archivo subido por sí misma, pero un video y un videomensaje son indistinguibles por formato, así que para ellos hay una elección explícita de subtipo. Si se adjunta una sola imagen o video, el texto sale como leyenda del medio. Un álbum se envía sin botones: Telegram envía un grupo de medios sin teclado, así que mientras una difusión tenga dos o más fotos o videos, los botones no están disponibles.
+
+La plataforma acepta imágenes JPG, PNG, GIF y WEBP, video MP4, MOV y WEBM, audio MP3, M4A y OGG: son los formatos que Telegram muestra como medios y no como archivo. Un archivo de otro formato lo rechaza el editor al elegirlo, con una indicación de lo que se puede subir. Una foto de un iPhone en HEIC no se puede subir, guárdela en JPG.
+
+<Info>
+Con varios bots elegidos no hace falta subir el archivo para cada bot: la plataforma lo prepara para cada uno por sí misma.
+</Info>
+
+## Botones
+
+Debajo del mensaje puede agregar botones inline. El primer campo del botón es el texto que lleva, el segundo es la acción. El tipo de acción se elige con un interruptor:
+
+- **URL**: abre un enlace. El enlace se puede escribir sin `https://` o como `@username`, y se completa automáticamente.
+- **Callback**: lo captura un bloque del escenario en el [editor de flujos](/es/constructor) (hasta 64 bytes).
+- **Copiar**: copia el texto indicado al portapapeles del suscriptor con un toque. Cómodo para códigos promocionales.
+- **Insertar texto**: pone un texto preparado en el campo de entrada del suscriptor, y a él solo le queda enviarlo.
+
+A un botón se le puede dar un estilo: «Normal», «Primary», «Success», «Danger». En el texto de los botones también funcionan las variables.
+
+## Envío de prueba
+
+El paso «Contenido» tiene el botón «Enviar prueba». Envía el mensaje tal como está a un suscriptor elegido o a usted, con las variables ya sustituidas, para que vea el resultado real antes de un lanzamiento masivo. Con varios bots primero se elige el bot de la prueba y después el destinatario. Al lado siempre se ve una burbuja de vista previa al estilo de Telegram, que muestra el mensaje tal como lo recibirá el suscriptor.
+
+## Programación y envío diferido
+
+El paso «Programación» tiene dos modos:
+
+- **Ahora**: la difusión arranca justo después de confirmar.
+- **Programar**: usted elige fecha y hora, y la difusión arranca en ese momento.
+
+No se puede fijar una hora en el pasado. Una difusión programada se muestra en la lista con el estado «Programada» y su fecha de inicio, y en la vista previa con una nota de para cuándo está programada. Antes de que arranque se puede editar, y desde el menú de la ficha se puede lanzar antes de tiempo o cancelar.
+
+## Borradores
+
+Hasta que se lanza, una difusión se autoguarda como borrador. Si cierra el asistente con cambios sin guardar, la plataforma ofrece guardar el borrador, y al volver puede continuar desde el mismo punto o empezar de nuevo.
+
+Un borrador sin nombre se nombra con las primeras palabras del mensaje, y si todavía no hay texto, recibe un nombre con la fecha y la hora.
+
+Un borrador terminado se puede duplicar desde el menú de la ficha con «Duplicar»: se crea una copia como borrador con el mismo contenido y el mismo conjunto de bots, pero sin programación.
+
+<Note>
+Un borrador que le falten datos para lanzarse (ningún bot elegido o un mensaje vacío) no se enviará. El asistente indica qué campos hay que rellenar.
+</Note>
+
+## Estados y estadísticas
+
+La lista de difusiones se filtra por estado: «Todas», «Borradores», «Programadas», «Enviando», «Enviadas», «Canceladas».
+
+Los estados de una difusión:
+
+| Estado | Significado |
+| --- | --- |
+| Borrador | todavía no lanzada, se autoguarda |
+| Programada | espera su hora |
+| Enviando | la entrega está en curso |
+| Completada | entregada a toda la audiencia |
+| Parcial | terminó en algunos bots, con errores en otros |
+| Cancelada | detenida a mano |
+| Fallida | la entrega no se logró |
+
+Durante y después del envío, la ficha y la vista previa muestran estadísticas: «Destinatarios», «Entregados», «Sin chat», «Bloquearon», «Fallidos». Los contadores se actualizan en tiempo real. Un borrador no tiene estadísticas; en su lugar muestra cuándo se guardó.
+
+<Info>
+El estado **«Sin chat»** significa que el bot no tiene un chat privado con esos suscriptores. Telegram no permite escribir primero hasta que el suscriptor escriba al bot (un caso frecuente: la persona entró por un enlace de invitación y nunca respondió). Esos suscriptores no cuentan como que bloquearon el bot y quedan disponibles para difusiones en cuanto escriban. Sobre los enlaces de invitación vea [Tracker](/es/tracker).
+</Info>
+
+## Límite del historial de difusiones
+
+<Info>
+Se guardan las últimas 100 difusiones por bot (los borradores no cuentan para el límite). Cuando hay más, las difusiones ya terminadas más antiguas se eliminan automáticamente para que nada se acumule.
+</Info>
+
+Junto con una difusión antigua se eliminan también sus mensajes en las conversaciones de los suscriptores. Si necesita conservar el contenido de una difusión por mucho tiempo, guarde su texto por separado.
+
+## Permisos y saldo
+
+Lanzar una difusión está disponible para el rol «Gerente» y superiores en los bots correspondientes. El rol «Operador» no lanza difusiones.
+
+Antes del lanzamiento la plataforma revisa el saldo de la empresa. Si no hay fondos suficientes para una difusión a la audiencia actual, el lanzamiento no se realiza. Las recargas y la tarificación están en [Facturación](/es/billing).
+
+## Mensajes automáticos por evento
+
+La sección «Difusiones» sirve para envíos únicos y programados a sus suscriptores. Si necesita que un mensaje salga automáticamente en respuesta a una acción del suscriptor (se suscribió, pulsó un botón, llegó un postback por un evento), eso se configura como escenario en el [editor de flujos](/es/constructor): allí viven las cadenas de bienvenida, los mensajes de seguimiento y los embudos por disparadores. De una conversación en vivo que continúa por sí sola se encarga el bloque del [operador con IA](/es/ai-operator).
+
+<Columns cols={2}>
+  <Card title="Editor de flujos" icon="wand-magic-sparkles" href="/es/constructor">
+    Cadenas automáticas y embudos por disparadores: bienvenidas, seguimientos, reacciones a eventos.
+  </Card>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    Diálogos con los suscriptores. En el menú del bot esta sección se llama «Mensajes».
+  </Card>
+  <Card title="Filtros" icon="filter" href="/es/filters">
+    Selecciones guardadas de suscriptores que definen la audiencia de una difusión.
+  </Card>
+  <Card title="Facturación" icon="credit-card" href="/es/billing">
+    Saldo y tarificación de los mensajes enviados.
+  </Card>
+</Columns>

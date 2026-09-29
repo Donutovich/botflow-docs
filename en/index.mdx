@@ -1,0 +1,150 @@
+---
+title: "Overview"
+description: "How the BotFlow platform is organised: company, workspace and bots, and where to find each feature."
+icon: "house"
+---
+
+BotFlow brings work with Telegram subscribers into one place: a funnel builder, conversations through bots, broadcasts, an AI operator and a conversion tracker. You don't need separate services for chat, broadcasts and analytics.
+
+This page shows how the platform is organised and where to go for each feature. If you are just starting, open [Getting started](/en/getting-started).
+
+<Info>
+  An account has three levels: **company** (the top level) → **workspace** (a space for a group of bots and
+  a team) → **bots** inside the workspace. The company is created automatically when you sign up, while the
+  workspace and the bots you add yourself.
+</Info>
+
+## Three levels of the platform
+
+<Columns cols={3}>
+  <Card title="Company" icon="building">
+    The top level of the account: team and roles, domains, the traffic tracker and billing. Everything shared across the project.
+  </Card>
+  <Card title="Workspace" icon="folder">
+    A space for a group of bots and a team. Each one has its own bots, broadcasts, campaigns and access
+    grants, so different projects never overlap.
+  </Card>
+  <Card title="Bot" icon="robot">
+    Connected inside a workspace. A bot's sections are grouped by the work you do: conversations, audience, setup.
+  </Card>
+</Columns>
+
+<Tip>
+  You switch levels in the navigation bar at the top: Company › Workspace › Bot. The sections of the current
+  level are always on the left.
+</Tip>
+
+## Company level
+
+The top level of the account. Everything shared across the project lives here: incoming traffic, the team, domains and payment.
+
+<Columns cols={2}>
+  <Card title="Tracker" icon="chart-line" href="/en/tracker">
+    Clicks, conversions and postbacks in one place. Optimises traffic buying in FB and Telegram Ads for
+    events: registrations, deposits and redeposits.
+  </Card>
+  <Card title="Reports" icon="chart-simple" href="/en/reports">
+    Live statistics on funnels, campaigns and subscribers.
+  </Card>
+  <Card title="Team and settings" icon="users" href="/en/settings">
+    Members, roles and access to bots and the tracker.
+  </Card>
+  <Card title="Domains and proxies" icon="globe" href="/en/domains-proxies">
+    Your own domains for links and proxies for the tracker.
+  </Card>
+  <Card title="Billing" icon="wallet" href="/en/billing">
+    Balance, top-ups in USDT-TRC20 and spending on tokens and bot operation.
+  </Card>
+  <Card title="Postbacks" icon="arrows-rotate" href="/en/postbacks">
+    Receiving events from affiliate networks: registration, deposit, redeposit.
+  </Card>
+  <Card title="S2S Postbacks" icon="arrow-up-right-from-square" href="/en/s2s-postbacks">
+    Sending conversion events to external services.
+  </Card>
+</Columns>
+
+## Workspace level
+
+A space for a group of bots and a team. It holds the list of bots and everything you launch for the whole group at once: broadcasts, campaigns and landings.
+
+<Columns cols={2}>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    Mass broadcasts with media, buttons and scheduling. Automatic messages triggered by an event are set up
+    in the flow builder.
+  </Card>
+  <Card title="Campaigns" icon="bullhorn" href="/en/campaigns">
+    Traffic campaigns: source, domain, landing and buyer.
+  </Card>
+  <Card title="Landings" icon="window-maximize" href="/en/landings">
+    Generated and uploaded landings with a link into the bot.
+  </Card>
+</Columns>
+
+<Tip>
+  Ctrl+K (Cmd+K on a Mac) opens the command palette: search it to find bots, sections and actions without
+  walking the menu. The same palette opens from the "Command…" button in the header.
+</Tip>
+
+## Bot level
+
+A bot's sections are grouped by an operator's work: conversations, audience and setup.
+
+### Conversations
+
+<Columns cols={2}>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    A single list of chats with subscribers: operators reply by hand or hand the conversation to the AI
+    operator, apply tags and filter dialogs. In the bot menu this section is called "Messages".
+  </Card>
+</Columns>
+
+### Audience
+
+<Columns cols={2}>
+  <Card title="Subscribers" icon="address-book" href="/en/subscribers">
+    The full table of subscribers with their data, tags, funnel stage and tracking. Filters and bulk actions.
+  </Card>
+  <Card title="Tags" icon="tag" href="/en/tags">
+    Labels for splitting subscribers. Tags are handy for filtering and for launching broadcasts.
+  </Card>
+  <Card title="Filters" icon="filter" href="/en/filters">
+    Filters are not a separate menu item: they live inside "Messages", "Subscribers", broadcasts and the
+    "Condition" block. Chat list modes, quick funnel filters and your own condition sets.
+  </Card>
+</Columns>
+
+### Setup
+
+<Columns cols={2}>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    A visual funnel builder: message and condition blocks joined by transitions.
+  </Card>
+  <Card title="AI Settings" icon="wand-magic-sparkles" href="/en/ai-operator">
+    Persona, knowledge base, first message and reminders, model and budget of the AI operator.
+  </Card>
+  <Card title="Variables" icon="brackets-curly" href="/en/variables">
+    Values like `{{first_name}}` for substitution into messages and conditions.
+  </Card>
+  <Card title="Bot settings" icon="gear" href="/en/bot-settings">
+    Bot profile and avatar, activity, token, limits, moving between workspaces and API keys.
+  </Card>
+  <Card title="Flow builder API" icon="code" href="/en/api-konstruktora">
+    Starting a funnel and sending a callback from your code with the bot's API key.
+  </Card>
+</Columns>
+
+<Note>
+  Not sure where to start? Walk through [Getting started](/en/getting-started): connecting the first bot and
+  building the first funnel take a few minutes.
+</Note>
+
+## Documentation for AI
+
+You can hand the documentation to a language model. The button at the top of every page copies it as Markdown
+or opens it in ChatGPT and Claude, and appending `.md` to any page returns its text, for example
+`docs.botflow.cc/en/constructor.md`.
+
+<Tip>
+  Hand those pages to your AI assistant so it builds funnels and answers based on the real product. The
+  single-file version of the guide, `docs.botflow.cc/llms-full.txt`, carries the Russian text.
+</Tip>

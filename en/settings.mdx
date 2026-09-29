@@ -1,0 +1,281 @@
+---
+title: "Settings"
+description: "Company and workspaces, team roles, invitations, access grants, groups and the company's general settings."
+icon: "gear"
+---
+
+In this section you manage the company's structure: invite your team, grant access to bots, gather operators into
+groups and set the general settings. Domains and proxies live in
+[Domains and proxies](/en/domains-proxies).
+
+## Company and workspaces
+
+Everything in BotFlow lives inside a **company**. It is the top level: the team, workspaces, bots, domains, the
+tracker and billing all belong to the company. One person may have several companies and switches between them in
+the header ("My companies").
+
+A **workspace** groups the bots of one team or client inside a company. Each workspace has its own bots and its own
+team with access grants. It is the main way to separate projects.
+
+<Columns cols={2}>
+  <Card title="Company" icon="building">
+    The top level. The team, roles, domains, tracker and billing are configured at company level. The owner sees every bot and every campaign; an administrator sees every bot, and campaigns with the "Tracker" capability enabled.
+  </Card>
+  <Card title="Workspace" icon="layer-group">
+    A group of bots for one team or client. Its own bots, its own access grants and its own groups. A member is granted access per workspace.
+  </Card>
+</Columns>
+
+```
+Company "Your team"
+├─ Team (members and company roles)
+├─ Workspace "Marketing"
+│  ├─ Bot A
+│  └─ Bot B
+├─ Workspace "Client #2"
+│  └─ Bot C
+├─ Tracker (campaigns, domains, conversions)
+└─ Billing
+```
+
+<Info>
+  The company owner and administrators have access to every workspace and bot automatically. The owner always sees
+  the tracker's campaigns, and an administrator sees them with the "Tracker" capability enabled. A member is granted
+  bot access separately, by a role on a workspace.
+</Info>
+
+## How roles work
+
+Permissions in BotFlow come at two levels. A role **in the company** defines what a member sees at company level:
+the team, domains, tracker, billing. A role **on bots** defines what they do in particular workspaces and
+conversations. The same person can be an ordinary company member and a manager on several bots at once.
+
+### Role in the company
+
+<Columns cols={3}>
+  <Card title="Owner" icon="crown">
+    One per company. Only the owner renames the company, transfers ownership, manages billing and deletes the company. Sees every bot and every tracker campaign automatically.
+  </Card>
+  <Card title="Administrator" icon="user-shield">
+    Manages the company: invites members, connects domains, grants tracker access, edits the general settings. Sees every bot, and the tracker and billing with the matching capabilities enabled (see below). Only the owner can grant the "Administrator" role to somebody else.
+  </Card>
+  <Card title="Member" icon="users">
+    The base role. On its own it sees no company settings, domains, tracker or billing. Bot access is granted separately, by a role on a workspace.
+  </Card>
+</Columns>
+
+<Note>
+  A member without administrator rights does not see company-level sections. Landings, the tracker and domains are
+  available to the "Administrator" role and above with the "Tracker" capability enabled, and billing with the
+  "Billing" capability enabled.
+</Note>
+
+### Role on bots
+
+When an administrator grants a member access to a workspace, they choose one of these roles. It applies to every bot
+of that workspace.
+
+| Role | What they can do |
+| --- | --- |
+| **Manager** | Full access to the bot: scenarios, broadcasts, subscribers, conversations. |
+| **Controller** | Everything an operator can do, plus tracker access. Does not launch broadcasts and does not edit scenarios. |
+| **Operator** | Reads and replies in conversations, does not edit scenarios. |
+| **Anonymous operator** | The same as an operator, but sees subscribers anonymised as "User #N". The name and username are hidden. |
+
+<Info>
+  Anonymisation is for teams where operators are not supposed to see subscribers' personal data. The company owner
+  and administrators always see the real data; masking does not apply to them.
+</Info>
+
+### Disclosure requests
+
+An anonymous operator can request a particular subscriber's data with a button in the conversation. The request goes
+to the "Disclosure requests" section for a manager: it shows who is asking and about which subscriber, and the
+request can be approved or denied. After approval the operator sees that subscriber's real name and username, while
+everybody else stays anonymised for them.
+
+### Administrator capabilities
+
+An administrator's access can be tuned precisely. The member access panel has an "Administrator capabilities" block
+with two toggles:
+
+| Toggle | What it opens |
+| --- | --- |
+| **Tracker** | Campaigns, reports, deposit amounts and domains. With the toggle off the administrator does not see the tracker. |
+| **Billing** | The company's balance, top-ups and charge history. With the toggle off the "Billing" section is unavailable to them. |
+
+Both are on by default, so a freshly invited administrator sees everything.
+
+Next to them there is the "Access scope": all workspaces or selected ones. An administrator of selected workspaces
+manages those only, and the company's billing is unavailable to them.
+
+## Inviting members
+
+Invitations work by email. An administrator or the owner can invite a new person, but the "Administrator" role in an
+invitation is available to the owner only: an administrator invites members. The "Invite" button opens the single
+access panel: a member's whole access is set on one screen in one go.
+
+<Steps>
+  <Step title="Open «Members»" icon="users">
+    Company settings, the "Team" group, the "Members" section. The "Invite" button on the right is available to administrators.
+  </Step>
+  <Step title="Enter the email" icon="envelope">
+    Enter an email. To invite several people at once, switch to the "Multiple" tab and paste all the addresses together.
+  </Step>
+  <Step title="Set the company role" icon="user-shield">
+    "Member" or "Administrator". The "Administrator" role is available to the company owner only. An administrator sees every bot, so the workspace access below does not need setting up for them.
+  </Step>
+  <Step title="Set up tracker and bot access" icon="key">
+    For a member, choose the tracker role right here (no access, buyer or team lead buyer) and tick the workspaces with a role on them (manager, controller, operator or anonymous operator). It all goes out in one invitation.
+  </Step>
+  <Step title="Send the link" icon="link">
+    The "Create link" button issues an invitation link. Copy it and send it to the person through any channel you like: email, Telegram, any messenger. Through the link they sign up and land in your company.
+  </Step>
+</Steps>
+
+<Note>
+  An invitation is valid for 7 days. Until the person accepts it, it sits in the "Awaiting acceptance" block. There
+  you can copy the link again, resend it (a new link with a reset deadline is created) or revoke it.
+</Note>
+
+### Managing members
+
+In the "Members" table each person shows their role, access, join date and last activity. The "Manage access" item
+in the row (or "Grant access" in the access column) opens the same panel, now titled "Member access". On one screen
+an administrator changes the company role, the tracker role and workspace access, and the changes are applied with
+"Save".
+
+Only the owner can change another administrator's role, grant them the "Billing" capability or remove them from the
+company.
+
+Separately, the member row menu lets you remove them from the company: all their access to bots and the tracker is
+revoked at once and they lose access to the company. The owner cannot be removed; to change the owner there is
+ownership transfer.
+
+## Workspace access and groups
+
+A member's access to bots is granted at workspace level. One grant gives a role on every bot of the workspace,
+including bots added to it later. Access is configured from the member's row ("Workspace access") or right in the
+invitation.
+
+### Access groups
+
+The "Access" page inside a workspace has a "Groups" tab. An access group joins bots and members with one role. That
+is convenient for rotating operator teams: add a person to the group and they get a single role on all of its bots;
+remove them from the group and the access is revoked. Each member's role stays under the administrator's control.
+
+## Tracker access
+
+The tracker has its own roles, separate from team roles: they define which members see campaigns. A tracker role is
+granted in the same member access panel, together with the company role and the workspaces.
+
+<Columns cols={2}>
+  <Card title="Buyer" icon="user">
+    Sees their own campaigns only. Every buyer is tied to a team lead: in the panel they are picked from the "Team leads" list or from the company's owner and administrators.
+  </Card>
+  <Card title="Team lead buyer" icon="user-shield">
+    Sees their own campaigns and the campaigns of all the buyers under them.
+  </Card>
+</Columns>
+
+The "Hide deposit amounts" toggle hides the deposit amount and EPC columns from a member in the tracker's reports. The company
+owner and administrators with the "Tracker" capability see every campaign without a separate grant, and their
+tracker role does not need configuring.
+
+<Tip>
+  A tracker role is unrelated to a role on bots. An operator can be a buyer in the tracker, and a manager can have
+  no campaign access at all. Configure the two levels independently. More on clicks and conversions in
+  [Tracker: overview](/en/tracker).
+</Tip>
+
+## Company settings
+
+The "Settings" section is available to administrators and to the owner. The list of categories is on the left,
+grouped by topic.
+
+<Columns cols={3}>
+  <Card title="Company" icon="building">
+    General settings: name, logo, daily AI budget and ownership transfer.
+  </Card>
+  <Card title="Team" icon="users" href="/en/logs">
+    Members and invitations. The audit log with the history of changes in the company.
+  </Card>
+  <Card title="Integrations" icon="plug">
+    The Cloudflare API token for domains. Affiliate networks are connected in "Tracker", the "Postbacks" tab.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/en/tracker-settings">
+    Conversion types, custom metrics, automations, blacklists and whitelists for traffic.
+  </Card>
+  <Card title="Billing" icon="wallet">
+    Balance, top-ups and charge history. Available to administrators and to the owner.
+  </Card>
+</Columns>
+
+Individual actions on the "Company" tab:
+
+<Columns cols={3}>
+  <Card title="Name and logo" icon="signature">
+    An administrator changes the logo. Only the owner can rename the company.
+  </Card>
+  <Card title="Daily AI budget" icon="robot">
+    A ceiling on charges for AI replies across all bots of the company per day. On reaching it the AI stays silent until midnight UTC and continues the next day. A separate limit for a particular bot is set on its AI page.
+  </Card>
+  <Card title="Ownership transfer" icon="right-left">
+    The owner passes the role to another member and stays in the company as an administrator. They lose the right to delete the company and to transfer ownership, while billing access stays with them: if it is no longer needed, turn off the "Billing" capability in the member access panel.
+  </Card>
+</Columns>
+
+<Note>
+  Deleting a company goes through support. That is deliberate, so an accidental press does not irreversibly remove
+  every bot, subscriber and broadcast.
+</Note>
+
+## Workspaces
+
+The order of work with a workspace: create it, add bots, grant access.
+
+<Steps>
+  <Step title="Create a workspace" icon="folder-plus">
+    In the "Workspaces" section press "New workspace" and set a name (for example, "Marketing"). Bots and members are added later.
+  </Step>
+  <Step title="Add bots" icon="robot">
+    Connect bots into the workspace. How to do that is described in [Getting started](/en/getting-started).
+  </Step>
+  <Step title="Set up the team" icon="user-plus">
+    On the workspace's "Access" page grant members individual roles on bots or gather them into access groups.
+  </Step>
+</Steps>
+
+The workspace settings let you change the name and the avatar. Renaming a workspace, changing its avatar and
+deleting it can be done by a company administrator or the owner. Deletion works only once every bot has been
+removed from the workspace or moved elsewhere; the bots' own data is kept.
+
+## Domains and proxies
+
+Your own domains are needed for tracking links and landings: without a connected domain tracking links do not work.
+Proxies are needed so Facebook events go out from your address. Both live in the "Tracker" section and are available
+to administrators and to the owner.
+
+<Card title="Domains and proxies" icon="globe" href="/en/domains-proxies">
+  Connecting domains in Manual (CNAME) and CF API modes, checking the status, assigning proxies to bots.
+</Card>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Tracker and campaigns" icon="chart-line" href="/en/tracker">
+    Clicks, conversions, postbacks and traffic metrics.
+  </Card>
+  <Card title="Billing" icon="wallet" href="/en/billing">
+    Balance, top-ups and charge history.
+  </Card>
+  <Card title="Messages" icon="comments" href="/en/messenger">
+    How operators reply to subscribers.
+  </Card>
+  <Card title="Domains and proxies" icon="globe" href="/en/domains-proxies">
+    Connecting domains and proxies for tracking.
+  </Card>
+  <Card title="Password and sessions" icon="lock" href="/en/account-security">
+    Changing your password and the list of devices that signed in to your account.
+  </Card>
+</Columns>

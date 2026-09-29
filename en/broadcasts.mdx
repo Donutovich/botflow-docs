@@ -1,0 +1,208 @@
+---
+title: "Broadcasts"
+description: "Mass broadcasts: bots, content, audience and schedule, media and albums, variables, statuses and statistics."
+icon: "paper-plane"
+---
+
+A broadcast sends one message to a group of subscribers at once: by hand at launch or on a schedule. A broadcast is created from a workspace, and you can pick one or several bots of that workspace in it. Each bot has its own audience and its own delivery.
+
+A broadcast runs within Telegram's limits, but at the maximum allowed speed.
+
+<Steps>
+  <Step title="Choose the bots" icon="robot">
+    The "Broadcasts" section → the "New broadcast" button. Tick one or several bots inside the workspace. You can also set the broadcast name here: only you and the admins see it, subscribers never do.
+  </Step>
+  <Step title="Assemble the message" icon="pen">
+    Formatted text, media and albums, inline buttons. Variables like `{{ first_name }}` work in the text. Before launching you can send a test message to yourself or to any subscriber.
+  </Step>
+  <Step title="Set the audience" icon="filter">
+    All active subscribers of the bot, or a selection by filter: saved or assembled on the spot.
+  </Step>
+  <Step title="Send or schedule" icon="clock">
+    Immediately or at a specific date and time. Until it is launched the broadcast is stored as a draft and autosaved.
+  </Step>
+</Steps>
+
+## The broadcast wizard
+
+The wizard has four steps: "Bots", "Content", "Audience", "Schedule". The step bar is at the top, the "Back" and "Next" buttons at the bottom. On the last step, instead of "Next" you get "Create and send" (when sending now) or "Schedule" (when sending on a date).
+
+The wizard opens from the "New broadcast" button in the "Broadcasts" section at workspace level, and the bots come from that workspace. On the "Bots" step tick one or several; the checkbox on the workspace row selects all of its bots at once. With several bots chosen, the same message goes to the subscribers of each of them. Each bot sends on its own, so the counters (recipients, delivered, errors) are calculated per bot and summed in the broadcast card.
+
+<Note>
+Only one broadcast runs on a single bot at a time. If the bot is already sending something, a new broadcast waits for it to finish and starts by itself. That is how the platform keeps the pace within Telegram's limits, so you never need to set delays by hand.
+</Note>
+
+When you edit a broadcast started on a specific bot, the bot is already fixed and the "Bots" step is skipped: the wizard opens straight on "Content".
+
+## Audience
+
+The "Audience" step offers two options:
+
+- **All active subscribers**: sending to everyone who has not blocked the bot.
+- **Filter**: a selection of subscribers by fields. You can pick a saved filter or assemble the conditions right in the wizard.
+
+Filters belong to a specific bot, so selecting by filter is available only when exactly one bot is chosen. With several bots the "All active subscribers" option remains. A filter is saved straight from the condition builder in "Messages", "Subscribers" or in the broadcast wizard itself (see [Filters](/en/filters)), and assembling conditions on the spot uses the same filter builder as in the [Messenger](/en/messenger).
+
+Subscribers who blocked the bot and those blocked by an administrator are always excluded from the audience.
+
+<Tip>
+The number of recipients is calculated at the moment the broadcast starts, not in advance: everyone matching the condition at launch falls into the audience.
+</Tip>
+
+## Text and variables
+
+The message text supports formatting: bold, italic, underline, strikethrough, spoiler, quote, code, links, lists. Formatting is preserved when you paste from another source.
+
+### Variables
+
+A variable in the text is replaced with the data of a specific subscriber at the moment of sending. Clicking a variable label in the editor copies the token, and you then paste it into the text. Variable tokens are always in English and written exactly as they are; they must not be translated or changed.
+
+System variables:
+
+| Variable | What is substituted |
+| --- | --- |
+| `{{ first_name }}` | First name |
+| `{{ last_name }}` | Last name |
+| `{{ full_name }}` | First and last name |
+| `{{ username }}` | @username |
+| `{{ telegram_id }}` | Telegram ID |
+| `{{ user_id }}` | The subscriber's identifier in BotFlow |
+| `{{ created_at }}` | Subscription date |
+| `{{ date_of_birth }}` | Date of birth |
+| `{{ tag }}` | The parameter from the bot start link |
+| `{{ click_id }}` | The subscriber's click ID |
+
+Event variables are filled in after the first postback for a subscriber and substitute the data of the latest event. This is a fixed set of six fields:
+
+| Variable | What is substituted |
+| --- | --- |
+| `{{ event.payout }}` | The event amount |
+| `{{ event.currency }}` | Currency |
+| `{{ event.trader_id }}` | The account identifier at the partner |
+| `{{ event.device_type }}` | Device |
+| `{{ event.os_version }}` | OS |
+| `{{ event.link_type }}` | Link type |
+
+Besides the system ones, a bot has custom variables with your own values. They differ from bot to bot, so the hint with custom variables is available when a single bot is chosen. The full list and variable management are in [Variables](/en/variables).
+
+<Tip>
+If a subscriber's field is empty (no first name, say), the variable is replaced with an empty string. A subscriber never sees a raw `{{ first_name }}` in the text.
+</Tip>
+
+### Rich formatting
+
+Rich formatting adds headings, tables, lists, sub/sup and up to 32,768 characters in one message. The same mode exists in the [flow builder](/en/constructor). It switches on for long text messages and works only without media.
+
+<Note>
+The editor warns you if the text exceeds Telegram's limit for an ordinary message or for a media caption.
+</Note>
+
+## Media and albums
+
+You can attach a photo, video, audio, voice message or video message to the message. File size limits: photos up to 10 MB, video and audio up to 50 MB.
+
+Several files are grouped into an album by Telegram's rules:
+
+- **Photos and videos** group into a single album (from 2 to 10 files, mixing photos and videos is fine).
+- **Audio** cannot be attached together with photos and videos; each audio file goes as its own message.
+- **Voice and video messages** are always sent as separate messages.
+
+The platform detects the type of an uploaded file itself, but video and video message are indistinguishable by format, so there is an explicit subtype choice for them. If a single picture or video is attached, the text goes as the media caption. An album is sent without buttons: Telegram sends a media group without a keyboard, so while a broadcast has two or more photos or videos, buttons are unavailable.
+
+The platform accepts JPG, PNG, GIF and WEBP images, MP4, MOV and WEBM video, MP3, M4A and OGG audio: these are the formats Telegram shows as media rather than as a file. A file in another format is rejected by the editor at selection time, with a hint about what can be uploaded. A photo from an iPhone in HEIC cannot be uploaded, save it as JPG.
+
+<Info>
+With several bots chosen you don't need to upload the file for each bot: the platform prepares it for each one itself.
+</Info>
+
+## Buttons
+
+You can add inline buttons under the message. The first button field is the text on it, the second one is the action. The action type is picked with a switch:
+
+- **URL**: opens a link. The link may be written without `https://` or as `@username`, and it is completed automatically.
+- **Callback**: caught by a scenario block in the [flow builder](/en/constructor) (up to 64 bytes).
+- **Copy**: copies the given text to the subscriber's clipboard in one tap. Handy for promo codes.
+- **Insert text**: puts prepared text into the subscriber's input field, so all they have to do is send it.
+
+A button can be given a style: "Regular", "Primary", "Success", "Danger". Variables work in button text as well.
+
+## Test send
+
+The "Content" step has a "Send test" button. It sends the message as it currently stands to a chosen subscriber or to you, with variables already substituted, so you see the real result before a mass launch. With several bots you first choose the bot for the test, then the recipient. A Telegram-style preview bubble is always visible next to it, showing the message exactly as a subscriber will receive it.
+
+## Schedule and delayed sending
+
+The "Schedule" step has two modes:
+
+- **Now**: the broadcast starts right after you confirm.
+- **Schedule**: you pick a date and time, and the broadcast starts at that moment.
+
+A time in the past cannot be set. A scheduled broadcast is shown in the list with the "Scheduled" status and its start date, and in the preview with a note about when it is scheduled for. Before it starts you can edit it, and from the card menu you can launch it ahead of time or cancel it.
+
+## Drafts
+
+Until a broadcast is launched it is autosaved as a draft. If you close the wizard with unsaved edits, the platform offers to save the draft, and when you come back you can continue from the same place or start over.
+
+A draft without a name is named after the first words of the message, and if there is no text yet, it gets a name with the date and time.
+
+A finished draft can be duplicated from the card menu with "Duplicate": a copy is created as a draft with the same content and the same set of bots, but without a schedule.
+
+<Note>
+A draft that lacks the data to launch (no bot chosen or an empty message) will not be sent. The wizard points out which fields need filling in.
+</Note>
+
+## Statuses and statistics
+
+The broadcast list is filtered by status: "All", "Drafts", "Scheduled", "Sending", "Sent", "Cancelled".
+
+The statuses of a broadcast itself:
+
+| Status | Meaning |
+| --- | --- |
+| Draft | not launched yet, autosaved |
+| Scheduled | waiting for its time |
+| Sending | delivery in progress |
+| Completed | delivered to the whole audience |
+| Partial | finished for some bots, errors for others |
+| Cancelled | stopped by hand |
+| Failed | delivery did not succeed |
+
+During and after sending, the card and the preview show statistics: "Recipients", "Delivered", "No chat", "Blocked", "Failed". The counters update in real time. A draft has no statistics; instead it shows when it was saved.
+
+<Info>
+The **"No chat"** status means the bot has no private chat with those subscribers. Telegram does not allow writing first until the subscriber writes to the bot (a common case: the person joined through an invite link and never replied). Such subscribers do not count as having blocked the bot and become available for broadcasts as soon as they write. For invite links see [Tracker](/en/tracker).
+</Info>
+
+## Broadcast history limit
+
+<Info>
+The last 100 broadcasts are kept per bot (drafts don't count towards the limit). Once there are more, the oldest already finished broadcasts are deleted automatically so nothing piles up.
+</Info>
+
+An old broadcast's messages in subscriber conversations are deleted together with it. If you need to keep a broadcast's content for a long time, store its text separately.
+
+## Permissions and balance
+
+Launching a broadcast is available to the "Manager" role and above on the relevant bots. The "Operator" role does not launch broadcasts.
+
+Before launching, the platform checks the company balance. If there are not enough funds for a broadcast to the current audience, the launch does not go through. Top-ups and pricing are in [Billing](/en/billing).
+
+## Automatic messages triggered by an event
+
+The "Broadcasts" section is for one-off and scheduled sends to your subscribers. If you need a message to go out automatically in response to a subscriber's action (they subscribed, pressed a button, a postback arrived for an event), that is set up as a scenario in the [flow builder](/en/constructor): welcome chains, follow-up messages and trigger-based funnels live there. A live conversation that continues by itself is handled by the [AI operator](/en/ai-operator) block.
+
+<Columns cols={2}>
+  <Card title="Flow builder" icon="wand-magic-sparkles" href="/en/constructor">
+    Automatic chains and trigger-based funnels: welcomes, follow-ups, reactions to events.
+  </Card>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    Dialogs with subscribers. In the bot menu this section is called "Messages".
+  </Card>
+  <Card title="Filters" icon="filter" href="/en/filters">
+    Saved subscriber selections that define a broadcast audience.
+  </Card>
+  <Card title="Billing" icon="credit-card" href="/en/billing">
+    Balance and pricing of sent messages.
+  </Card>
+</Columns>

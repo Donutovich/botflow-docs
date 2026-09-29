@@ -1,0 +1,251 @@
+---
+title: "Postbacks"
+description: "Recepción de conversiones de las redes de afiliados: conexión de una red, coincidencia por click_id, eventos del embudo, envío a Facebook CAPI y transiciones automáticas en el embudo."
+icon: "arrows-rotate"
+---
+
+Un postback es un mensaje de una red de afiliados que informa de que su suscriptor realizó una acción objetivo: se
+registró, hizo un primer depósito, recargó de nuevo. La red envía ese evento de servidor a servidor, y BotFlow lo hace
+coincidir con un suscriptor concreto por `click_id` y lo registra en el historial de conversiones.
+
+El clic y el inicio del bot los registra la plataforma por sí misma, mientras que un registro o un depósito solo los conoce
+la red de afiliados. Después de un postback el evento se ve en la ficha del suscriptor, en los reportes y en las métricas
+Reg2Dep, Click2FTD, FTD, RD y EPC.
+
+## Cómo funciona
+
+<Steps>
+  <Step title="Usted da al suscriptor un enlace con click_id" icon="link">
+    En el enlace de registro del anunciante se sustituye el `click_id` de un suscriptor concreto. Llega junto con el paso al bot (`t.me/<bot>?start=<click_id>`) y queda vinculado a esa persona.
+  </Step>
+  <Step title="La red recuerda el click_id" icon="floppy-disk">
+    Al registrarse, el suscriptor pasa el `click_id` a la red por un parámetro de su enlace. La red lo guarda junto a la nueva cuenta del cliente.
+  </Step>
+  <Step title="El suscriptor realiza una acción" icon="user-check">
+    El suscriptor se registra, hace un depósito o recarga de nuevo del lado del anunciante.
+  </Step>
+  <Step title="La red envía un postback" icon="arrows-rotate">
+    La red envía una petición a su URL de postback y pasa en ella ese mismo `click_id`, el tipo de evento y el monto.
+  </Step>
+  <Step title="La plataforma lo hace coincidir y lo registra" icon="check-double">
+    BotFlow encuentra el clic por `click_id`, vincula el evento al suscriptor y a la campaña y escribe la conversión en el historial. Desde allí se ve en los reportes, en la ficha del suscriptor y en las métricas.
+  </Step>
+</Steps>
+
+<Warning>
+  `click_id` vincula un depósito futuro a un suscriptor y una campaña concretos. Se determina en el momento en que el enlace
+  se envía al suscriptor. No se debe sustituir ni cambiar a mano: un `click_id` ajeno vincula el dinero al suscriptor
+  equivocado, y un postback con un `click_id` de otra empresa se rechaza (el resultado `cross_tenant_rejected`). Por la misma
+  razón, un postback que llega mucho después del clic no se vinculará al suscriptor.
+</Warning>
+
+## Integraciones
+
+La recepción de postbacks se configura en el tracker, en la pestaña **Postbacks**. Aquí conecta una red de afiliados, ve su
+estado y comprueba que la recepción de eventos funciona.
+
+### Conectar una red
+
+El botón **Agregar** abre la página «Nueva integración». Usted elige una plantilla, opcionalmente pone un nombre y comprueba
+el parámetro `click_id`. Después de crearla, la plataforma muestra de inmediato los URL de postback listos, y usted los copia
+en el panel de la red.
+
+En la lista de plantillas hay seis opciones: Pocket Option, Quotex, Alfaleads, 1xBet, AdsEmpire y una genérica para cualquier
+otra red.
+
+<Columns cols={2}>
+  <Card title="Una plantilla lista de red" icon="plug">
+    Para Pocket Option y la plantilla genérica la plataforma entrega URL de postback listos con el parámetro `click_id` ya sustituido. Solo queda copiarlos en el panel de la red.
+  </Card>
+  <Card title="Las demás plantillas" icon="sliders">
+    Para Quotex, Alfaleads, 1xBet y AdsEmpire el mapeo de estados viene pre-rellenado: usted lo revisa y toma los URL de postback de sus eventos.
+  </Card>
+</Columns>
+
+<Tip>
+  El nombre es opcional, pero viene bien si conecta varias redes del mismo tipo: por el nombre las distingue en la lista y en
+  el registro de conversiones.
+</Tip>
+
+### Estado y el botón «Prueba»
+
+Cada red conectada tiene un estado (**Activa** o **Deshabilitada**) y un botón **Prueba**. «Prueba» envía un postback de
+prueba con un `click_id` ficticio y muestra el resultado del procesamiento: así comprueba todo el camino desde aceptar la
+petición hasta escribir en el historial de conversiones, sin esperar un depósito real. Junto al botón la plataforma muestra
+el `click_id` de prueba con el que puede encontrar esa ejecución en los reportes.
+
+<Info>
+  La lista de redes se filtra por estado (Todas, Activas, Deshabilitadas) y por nombre. Una lista vacía significa simplemente
+  que todavía no hay redes conectadas.
+</Info>
+
+## La página de la integración
+
+Al hacer clic en una integración de la lista se abre su página. Arriba están el estado y los botones «Activar» y
+«Deshabilitar», y debajo las pestañas con toda la configuración.
+
+<Steps>
+  <Step title="Resumen" icon="gear">
+    La clave del postback (parte del URL público) y el parámetro `click_id` en el que la red pone el clic. La clave se puede renovar. Los URL de postback antiguos se siguen aceptando 7 días más después de renovarla: ese tiempo alcanza para reemplazarlos en el panel de la red, y después dejan de funcionar.
+  </Step>
+  <Step title="Postback URL" icon="link">
+    Los URL de postback entrantes, uno por evento. La red los llama para informar de una conversión. Copie el que necesite y péguelo en la configuración de postbacks del panel de la red.
+  </Step>
+  <Step title="Mapeo" icon="right-left">
+    La correspondencia de estados: a la izquierda el nombre del estado que envía la red, a la derecha nuestro evento (registro, depósito, depósito repetido, retiro y otros). Si la red envía su propio nombre de estado, defina la correspondencia aquí.
+  </Step>
+  <Step title="Enlaces" icon="user-plus">
+    Los enlaces salientes para leads que usted entrega a los suscriptores. La plataforma sustituye el `click_id` en el URL final por sí misma.
+  </Step>
+  <Step title="Registro" icon="list">
+    El registro de los postbacks entrantes de esta integración: hora, `click_id`, estado y resultado del procesamiento. Muestra si los eventos llegan y si coinciden con suscriptores.
+  </Step>
+</Steps>
+
+Para las redes listas (Pocket Option, digamos) los URL de postback y el parámetro `click_id` ya están configurados, y solo
+queda copiar los URL en el panel. Al deshabilitar una integración, los enlaces existentes para leads dejan de funcionar, pero
+el historial de eventos en las fichas de los suscriptores se conserva.
+
+## La plantilla genérica
+
+Si no hay una integración lista, elija la plantilla genérica en la lista. En la lista de conexiones esa integración se marca
+con el tipo «Custom». La lógica es la misma, solo que usted configura el acoplamiento a mano.
+
+<Steps>
+  <Step title="Indique el parámetro click_id" icon="pen">
+    Determine en qué parámetro su red escribe el `click_id`. Sin eso la plataforma no puede saber a qué suscriptor pertenece un evento.
+  </Step>
+  <Step title="Tome los URL de postback listos" icon="link">
+    La plataforma entrega un URL por evento. Normalmente hacen falta tres: registro, primer depósito y depósito repetido.
+  </Step>
+  <Step title="Pegue los URL en el panel de la red" icon="arrows-rotate">
+    En la configuración de postbacks de la red ponga nuestro `click_id`, el tipo de evento y el monto del depósito en los parámetros correspondientes del URL.
+  </Step>
+</Steps>
+
+Un URL de postback pasa tres valores: el `click_id` del suscriptor, el tipo de evento y el monto del depósito.
+
+```
+https://<su-url-de-postback>?click_id={click_id}&status=<evento>&amount={amount}
+```
+
+Aquí `{click_id}` y `{amount}` son macros de la red, que ella reemplaza con valores reales en el momento del envío, mientras
+`<evento>` es el estado que la plataforma asocia a su propio tipo de conversión.
+
+<Note>
+  Los valores `{click_id}` y `{amount}` entre llaves son variables de la red de afiliados, no de BotFlow. Consulte la
+  documentación de su red para saber cómo se llaman esas macros: varían entre redes.
+</Note>
+
+## Qué eventos llegan
+
+Cada postback lleva un tipo de evento. La red envía su propio nombre de estado, y la plataforma lo asocia a su propio tipo de
+conversión.
+
+| Evento | Qué es |
+|---|---|
+| **Registro** | El suscriptor se registró con el anunciante. |
+| **FTD** (depósito) | Un primer depósito con monto. |
+| **RD** (depósito repetido) | Una recarga repetida con monto. |
+| **Retiro de fondos** | El suscriptor retiró fondos. |
+| **Evento periódico del socio** | Un evento repetido de la red de afiliados. |
+| **Confirmación de correo** | El suscriptor confirmó su correo. |
+
+Los eventos de depósito (FTD y RD) llevan monto, y es justamente de ellos que se calculan los importes de depósitos y el EPC. Los eventos
+internos del embudo (una suscripción al bot, el primer mensaje de un suscriptor, una visita del landing) los registra la
+plataforma misma y no requieren postback.
+
+<Info>
+  No confunda un clic en el landing con un inicio del bot. Un clic en el landing es una llegada a la promo-página, y puede no
+  llegar nunca al bot. Iniciar el bot con `/start` crea un suscriptor y abre el embudo. Un postback, en cambio, se vincula a un
+  suscriptor por el `click_id` del clic con el que llegó. Más sobre el camino del clic en
+  [Tracker: descripción general](/es/tracker).
+</Info>
+
+## Transiciones automáticas en el embudo por un postback
+
+Además de quedar en el historial, un postback puede mover a un suscriptor por el embudo de inmediato. Cuando llega un evento,
+queda disponible al instante para las flechas del editor de flujos: si un bloque tiene una flecha configurada para ese evento,
+el suscriptor pasa automáticamente al paso correspondiente. No hace falta la participación de un operador, y la IA continúa la
+conversación sabiendo ya que el suscriptor se registró o hizo un depósito.
+
+En el [Editor de flujos](/es/constructor), en una flecha entre bloques, están disponibles los eventos de sistema de la red:
+
+| Evento disparador | Cuándo se dispara |
+|---|---|
+| **Registro** | Llegó un postback de registro. |
+| **Depósito** | Llegó un postback de primer depósito (FTD). |
+| **Depósito repetido** | Llegó un postback de depósito repetido (RD). |
+| **Retiro** | Llegó un postback de retiro de fondos. |
+| **Evento periódico del socio** | Llegó un evento repetido de la red. |
+
+Un escenario típico: después de un registro el suscriptor pasa al paso «ayudamos a hacer el primer depósito», después de un
+FTD al paso «llevamos al depósito repetido», y la IA lleva la conversación teniendo en cuenta lo que ya ocurrió.
+
+<Warning>
+  Una transición automática funciona solo con un suscriptor que tenga `click_id` y un embudo en marcha en los mensajes privados
+  con el bot. Si el suscriptor nunca llegó por un enlace de tracking, no hay con qué hacer coincidir el postback.
+</Warning>
+
+## Envío de eventos a Facebook (CAPI)
+
+Para las campañas de FB los postbacks se pueden enviar más allá, de vuelta a Facebook, por la Conversion API. Así el algoritmo
+publicitario se entera de los depósitos reales y optimiza la compra hacia clientes que pagan.
+
+La lista de eventos para enviar se define en el paso «Tracking» al crear una campaña: tanto los eventos del bot (suscripción,
+contacto) como los postbacks aceptados de la red (registro, FTD, RD). Qué va exactamente a Facebook y cómo configurarlo se
+describe en [Campañas](/es/campaigns). La configuración del dominio y del proxy para el envío está en
+[Dominios y proxies](/es/domains-proxies).
+
+La entrega de eventos se ve en la página de la campaña, el bloque «Entrega a Facebook CAPI», y en el reporte «Conversiones» en
+la pestaña «Salientes»: los estados «Enviando», «Entregado», «Error».
+
+## Comprobación y depuración
+
+Cuando la red dice «enviamos un FTD» y usted no lo ve, hay dos herramientas.
+
+<Columns cols={2}>
+  <Card title="El botón «Prueba»" icon="paper-plane">
+    Envía un postback de prueba y muestra el resultado del procesamiento. Una forma rápida de confirmar que la recepción de eventos funciona en general.
+  </Card>
+  <Card title="El reporte «Conversiones»" icon="receipt">
+    En el tracker, en la pestaña «Reportes», el registro muestra tanto los postbacks entrantes como los eventos salientes a Facebook. La búsqueda es por `click_id` exacto.
+  </Card>
+</Columns>
+
+De cada postback entrante el registro muestra el resultado del procesamiento:
+
+| Resultado | Qué significa |
+|---|---|
+| `success` | El evento coincidió con un suscriptor y se registró. |
+| `no_click_match` | El `click_id` no se encontró: compruebe que la red pasa el parámetro correcto. |
+| `duplicate` | Ese evento ya llegó antes y no se registra de nuevo. |
+| `invalid_status` | El tipo de evento no está asociado: revise la configuración de estados en la red. |
+| `invalid_token` | El postback llegó con una clave de red incorrecta. |
+| `rejected_transition` | Un orden de eventos no permitido para este clic. |
+| `rate_limited` | La red envió eventos con demasiada frecuencia y parte no se aceptó. |
+| `cross_tenant_rejected` | El `click_id` pertenece a otra empresa. |
+| `error` | El evento no se pudo procesar. Los detalles se ven en la fila del registro. |
+
+<Tip>
+  Muchas veces «el postback no llegó» en realidad significa «llegó, pero sin coincidencia de clic». Revise primero el registro
+  «Conversiones» por `click_id`: si la fila está con el resultado `no_click_match`, el problema está en el parámetro `click_id`
+  del lado de la red y no en la recepción.
+</Tip>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Postbacks S2S" icon="arrow-up-right-from-square" href="/es/s2s-postbacks">
+    Envío de eventos de conversión más allá, a servicios externos: el tracker de la fuente o su CRM.
+  </Card>
+  <Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+    Campañas, enlaces de tracking, el camino del clic, métricas y reportes.
+  </Card>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Flechas disparadoras por eventos de postback y construcción del embudo.
+  </Card>
+  <Card title="Reportes" icon="table-list" href="/es/reports">
+    Registros de conversiones y clics con filtros y exportación a CSV.
+  </Card>
+</Columns>

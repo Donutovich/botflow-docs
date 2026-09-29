@@ -1,0 +1,267 @@
+---
+title: "Campañas y fuentes"
+description: "La unidad de tráfico en BotFlow: fuentes Facebook Ads, Telegram y enlace de invitación, el asistente de creación, los enlaces de tracking, los estados y el tráfico orgánico."
+icon: "bullhorn"
+---
+
+Una campaña es la unidad de tráfico. Tiene su propio enlace de tracking, su propia fuente, su propio embudo y sus propias
+estadísticas. Una campaña está vinculada a un bot: allí llegan todos los suscriptores que entran por su enlace. La lista
+de campañas y la creación de una nueva están en la pestaña «Campañas» de la sección «Tracker». Sobre la sección y sus
+métricas vea [Tracker: descripción general](/es/tracker).
+
+## Fuentes de tráfico
+
+Al crear una campaña usted elige una fuente. De ella dependen la forma del enlace, el conjunto de pasos del asistente y
+qué configuraciones necesita.
+
+<Columns cols={3}>
+  <Card title="Facebook Ads" icon="facebook">
+    Un landing con el FB Pixel y la Conversion API. Requiere su propio dominio y un proxy. El enlace pasa por su dominio y lleva parámetros de URL con macros de Facebook.
+  </Card>
+  <Card title="Telegram" icon="telegram">
+    Un enlace `t.me` directo sin landing. Sin píxel y sin proxy, el camino más corto al bot.
+  </Card>
+  <Card title="Enlace de invitación" icon="user-plus">
+    Una solicitud de ingreso a un canal privado: el bot la aprueba automáticamente y escribe primero. El enlace lo genera la plataforma.
+  </Card>
+</Columns>
+
+<Warning>
+  La fuente y el bot no se pueden cambiar después de crear la campaña. La atribución ya está vinculada a ellos, así que
+  para otra fuente u otro bot cree una campaña nueva.
+</Warning>
+
+## Cómo crear una campaña
+
+El botón «Nueva campaña» en la parte superior de la lista abre el asistente. El número de pasos depende de la fuente
+elegida.
+
+| Fuente | Pasos del asistente |
+|---|---|
+| **Facebook Ads** | Básico, Punto de entrada, Tracking, Confirmación (4 pasos) |
+| **Telegram** | Básico, Punto de entrada, Confirmación (3 pasos, sin «Tracking») |
+| **Enlace de invitación** | Básico, «Bot, canal y entrada» (2 pasos) |
+
+A los pasos ya recorridos puede volver haciendo clic en su número. El botón «Siguiente» se activa solo cuando los campos
+obligatorios del paso actual están rellenos.
+
+<Steps>
+  <Step title="Básico" icon="pen">
+    El nombre de la campaña y la fuente de tráfico. El nombre lo ven solo usted y su equipo y nunca entra en el enlace público, así que escríbalo de forma que sea fácil encontrar la campaña en la lista (por ejemplo, `FB Test 2026-05`). Debajo, tres fichas permiten elegir la fuente: Facebook Ads, Telegram o Enlace de invitación.
+  </Step>
+  <Step title="Punto de entrada" icon="robot">
+    El bot, el bloque inicial del embudo y el landing. Para un enlace de invitación este paso se llama «Bot, canal y entrada» y funciona distinto: el bot, el canal de ingreso y el bloque inicial, sin landing. Detalles más abajo.
+  </Step>
+  <Step title="Tracking" icon="link">
+    Solo para Facebook Ads. Dominio, proxy, Facebook Pixel ID, CAPI Access Token, los parámetros de URL del enlace y la lista de eventos para enviar a Facebook. La fuente Telegram no tiene este paso.
+  </Step>
+  <Step title="Confirmación" icon="circle-check">
+    Un resumen de la configuración. El botón «Crear campaña» crea la campaña y le entrega el enlace de tracking listo. Un enlace de invitación no tiene un paso «Confirmación» aparte, y su botón se llama «Crear y generar enlace».
+  </Step>
+</Steps>
+
+### El paso «Punto de entrada»
+
+Aquí define exactamente a dónde llega el suscriptor después del clic.
+
+<Columns cols={3}>
+  <Card title="Bot" icon="robot">
+    El bot al que llevará a los suscriptores de la campaña. El bot se elige una sola vez: no se puede cambiar después de crear la campaña.
+  </Card>
+  <Card title="Bloque inicial" icon="diagram-project">
+    Desde qué bloque del embudo empieza la conversación. «Auto» por defecto: el suscriptor sigue las condiciones de entrada normales de los bloques.
+  </Card>
+  <Card title="Landing" icon="window-maximize">
+    Una promo-página entre el clic y el bot. Para Telegram el landing es opcional; para Facebook el píxel vive en él.
+  </Card>
+</Columns>
+
+Sobre el bloque inicial y cómo influye en la conversación vea [Bloque inicial](#bloque-inicial) más abajo. Sobre los
+landings, sus tipos y su subida vea [Landings](/es/landings).
+
+### El paso «Tracking» (Facebook)
+
+El paso «Tracking» aparece solo con la fuente Facebook Ads y está compuesto de varias secciones.
+
+<Steps>
+  <Step title="Dominio" icon="globe">
+    Su dominio por el que pasará el enlace de tracking. En la lista solo se ofrecen los dominios activos. Sin dominio la campaña se crea como borrador y no se le puede enviar tráfico. La gestión de dominios está en [Dominios y proxies](/es/domains-proxies).
+  </Step>
+  <Step title="Proxy para CAPI" icon="server">
+    Por qué proxy enviar los eventos a Facebook. Facebook no acepta eventos de la Conversion API desde direcciones de servidor, así que para lanzar una campaña de FB el proxy es obligatorio.
+  </Step>
+  <Step title="Facebook Pixel" icon="chart-simple">
+    Pixel ID y CAPI Access Token. Un token guardado no se vuelve a mostrar: el campo conserva una indicación de que ya está definido, y para cambiarlo se introduce uno nuevo. Al lado hay una ayuda sobre dónde obtener el token con instrucciones paso a paso y un botón «Probar conexión»: envía un evento de prueba a Facebook y muestra si Facebook lo aceptó o devolvió un error.
+  </Step>
+  <Step title="Parámetros de URL del enlace" icon="link">
+    Pares de nombre de parámetro y macro que se sustituyen en el enlace de tracking. Cada par se puede activar o desactivar con una casilla, y la macro se puede editar. Facebook rellena macros como `{{ad.id}}` con valores reales en el momento del clic en el anuncio.
+  </Step>
+  <Step title="Eventos CAPI" icon="arrows-turn-right">
+    Qué eventos del embudo enviar de vuelta a la Facebook Conversion API. Se configuran tanto los eventos del bot (suscripción, contacto, visita del landing) como los eventos de los postbacks de la red de afiliados (registro, FTD, RD). Elegir no enviar desactiva un evento concreto. Más sobre la entrega a CAPI abajo.
+  </Step>
+</Steps>
+
+<Note>
+  La fila de la visita del landing en los eventos CAPI se muestra solo si la campaña tiene un landing elegido: sin landing
+  ese evento nunca se dispara, así que la plataforma lo oculta.
+</Note>
+
+## El enlace de tracking
+
+El enlace listo de la campaña es el que usted pega en sus fuentes de tráfico. Su forma depende de la fuente.
+
+Para **Telegram** es un enlace directo al bot con el código de la campaña:
+
+```
+https://t.me/<nombre_del_bot>?start=<codigo_de_campana>
+```
+
+Para **Facebook** el enlace pasa por su dominio y lleva parámetros de URL con macros. Facebook sustituye las macros con
+valores reales en el momento del clic en el anuncio:
+
+```
+https://<su_dominio>/<codigo_de_enlace>?adset_name={{adset.name}}&ad_id={{ad.id}}&campaign_name={{campaign.name}}
+```
+
+Por defecto para Facebook están activados estos pares de parámetro y macro de Facebook:
+
+| Parámetro | Macro de Facebook |
+|---|---|
+| `adset_name` | `{{adset.name}}` |
+| `ad_id` | `{{ad.id}}` |
+| `adset_id` | `{{adset.id}}` |
+| `utm_source` | `{{utm_source}}` |
+| `placement` | `{{placement}}` |
+| `campaign_name` | `{{campaign.name}}` |
+| `site_source_name` | `{{site_source_name}}` |
+| `ad_campaign_id` | `{{campaign.id}}` |
+
+Esos valores llegan al registro «Clics» y a los desgloses de la página de la campaña, así que usted ve qué conjunto de
+anuncios y qué anuncio trajeron el clic. La fuente Telegram no tiene esos parámetros: el enlace lleva directo al bot.
+
+<Warning>
+  Una campaña de FB solo se puede lanzar con su propio dominio: la plataforma no sirve tráfico de FB en el dominio común de
+  la plataforma. Sin dominio la campaña se queda como borrador. Para activar una campaña de FB también es obligatorio un
+  proxy, porque Facebook no acepta eventos de la Conversion API desde direcciones de servidor.
+</Warning>
+
+## Bloque inicial
+
+En el punto de entrada se puede definir el bloque inicial del embudo. Entonces todos los que llegan por ese enlace caen
+directamente en ese bloque al iniciar el bot, saltándose las condiciones de entrada. «Auto» es el valor por defecto, y el
+suscriptor sigue las condiciones normales de los bloques.
+
+<Info>
+  Cambiar el bloque inicial se aplica solo a los suscriptores nuevos. Los diálogos actuales siguen su escenario, y el
+  bloque elegido no los mueve.
+</Info>
+
+Los bloques para elegir se toman del bot de esta campaña. Los bloques activos van primero, mientras los de reserva en el
+tipo «Draft» se muestran con una marca y no se pueden elegir. Sobre los bloques, las condiciones de entrada y los
+disparadores vea [Editor de flujos](/es/constructor).
+
+## Estados y ciclo de vida
+
+Una campaña pasa por cuatro estados.
+
+| Estado | Qué significa |
+|---|---|
+| **Borrador** | Se está configurando, no se debe enviar tráfico (por ejemplo, todavía no hay dominio elegido). |
+| **Activa** | Acepta tráfico, el enlace funciona. |
+| **Pausa** | Detenida temporalmente, se puede devolver al trabajo. |
+| **Archivo** | Retirada de la lista, el landing ya no se abre. Las campañas archivadas se ven con el filtro «Archivo», y desde allí una campaña se puede devolver al trabajo. |
+
+Desde la lista de campañas hay acciones por fila (editar, copiar el enlace, pausar, lanzar, archivar, eliminar) y acciones
+masivas sobre varias campañas seleccionadas a la vez.
+
+<Warning>
+  Solo se puede eliminar una campaña sin clics, y eso no se puede deshacer. Si ya hubo clics, use el archivo para conservar
+  el historial de tráfico y conversiones.
+</Warning>
+
+<Tip>
+  Si edita una campaña en borrador y en ese paso rellena lo que faltaba (un dominio, y para Facebook también un proxy), se
+  lanza al guardar: el estado pasa a «Activa» y no hay que pulsar «Lanzar» a mano.
+</Tip>
+
+## Enlace de invitación
+
+Un enlace de invitación lleva a un canal privado. La persona envía una solicitud de ingreso, el bot la aprueba
+automáticamente y escribe primero al suscriptor por mensajes privados, iniciando el embudo. Aquí no hacen falta landing ni
+píxel, así que esta fuente tiene solo dos pasos: «Básico» y «Bot, canal y entrada».
+
+<Steps>
+  <Step title="Haga al bot administrador del canal" icon="shield-halved">
+    El bot debe ser administrador del canal con el permiso «Agregar miembros». Después de eso el canal aparece por sí solo en la lista del paso «Bot, canal y entrada». Si el bot ya era administrador antes y el canal no está en la lista, quite al bot y vuelva a hacerlo administrador.
+  </Step>
+  <Step title="Elija el bot y el canal" icon="link">
+    La fuente «Enlace de invitación», después el bot, el canal de ingreso y el bloque inicial. Los canales sin el permiso «Agregar miembros» no están disponibles en la lista: sin ese permiso la aprobación de solicitudes no funciona. Si hay un bloque inicial elegido, el suscriptor cae en él justo después de que se apruebe la solicitud; si no, se dispara el bloque del bot con el disparador «Solicitud aprobada».
+  </Step>
+  <Step title="Cree y reparta el enlace" icon="share-nodes">
+    El botón «Crear y generar enlace» le entrega el enlace de invitación listo en la pantalla, y se puede copiar. Péguelo en sus fuentes de tráfico. Cada persona que lo siga y envíe una solicitud será aprobada automáticamente y entrará al embudo por el disparador «Solicitud aprobada».
+  </Step>
+</Steps>
+
+<Warning>
+  En un canal las solicitudes las debe aprobar un solo bot: es una restricción de Telegram, y solo el bot que aprobó una
+  solicitud puede escribir primero a ese suscriptor. Si varios bots aprueban solicitudes en el canal, las solicitudes
+  aprobadas por los demás no llegan al tracker y no sale ningún mensaje al suscriptor.
+</Warning>
+
+El botón «Regenerar» emite un enlace nuevo y revoca el anterior: quien tuviera el enlace previo ya no podrá enviar una
+solicitud con él. Sobre el disparador «Solicitud aprobada» y la construcción del embudo después del ingreso lea
+[Editor de flujos](/es/constructor).
+
+## Envío de eventos a Facebook (CAPI)
+
+Para las campañas de FB BotFlow puede enviar eventos del embudo de vuelta a Facebook por la Conversion API, para que el
+algoritmo optimice la compra. En el paso «Tracking» usted define el Pixel ID, el CAPI Access Token y elige qué enviar.
+
+| Evento | De dónde viene | Por defecto |
+|---|---|---|
+| **Visita del landing** | El píxel del landing | Se envía |
+| **Suscripción** | El bot (una suscripción al bot) | Se envía |
+| **Contacto (primer mensaje)** | El bot (el primer mensaje del suscriptor) | Se envía |
+| **Registro** | Un postback de la red de afiliados | Se envía |
+| **FTD (primer depósito)** | Un postback de la red de afiliados | Se envía como Purchase con el monto |
+| **RD (depósito repetido)** | Un postback de la red de afiliados | No se envía por defecto |
+
+FTD y RD van a Facebook como Purchase con el monto del depósito: es la señal principal para la optimización. RD está
+desactivado por defecto: la optimización de Facebook se construye sobre el primer depósito. Los repetidos se pueden
+activar a mano en el paso «Tracking».
+
+<Info>
+  La entrega de eventos a Facebook se ve en la página de la campaña (el bloque «Entrega a Facebook CAPI») y en el reporte
+  «Conversiones» en la pestaña «Salientes»: los estados «Enviando», «Entregado», «Error». Sobre los postbacks entrantes de
+  las redes de afiliados vea [Postbacks y afiliados](/es/postbacks).
+</Info>
+
+## Tráfico orgánico
+
+La campaña «Organic» se crea automáticamente para un bot y reúne los inicios del bot sin campaña: cuando una persona
+encontró el bot por su cuenta y envió `/start` sin código de campaña. No se puede eliminar ni renombrar, pero se le puede
+asignar un landing, un embudo y un píxel como a cualquier otra campaña.
+
+<Note>
+  Un clic en el landing y un inicio del bot son eventos distintos. Un clic en el landing es una llegada a la promo-página,
+  y puede no llegar nunca al bot. Iniciar el bot con `/start` crea un suscriptor y abre el embudo. En los reportes están
+  separados. Más sobre el camino del clic y las métricas (Click2LP, Click2FTD, Reg2Dep, FTD, RD, EPC) en
+  [Tracker: descripción general](/es/tracker) y [Reportes](/es/reports).
+</Note>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Landings" icon="window-maximize" href="/es/landings">
+    Clones de Telegram y landings «HTML personalizado» entre el clic y el bot.
+  </Card>
+  <Card title="Dominios y proxies" icon="globe" href="/es/domains-proxies">
+    Sus dominios para los enlaces de FB y proxies para enviar eventos a Facebook.
+  </Card>
+  <Card title="Postbacks y afiliados" icon="arrow-right-arrow-left" href="/es/postbacks">
+    Recepción de conversiones de las redes de afiliados por `click_id`.
+  </Card>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Dónde cae un suscriptor después de iniciar el bot: bloques, condiciones, disparadores.
+  </Card>
+</Columns>

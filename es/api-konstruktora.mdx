@@ -1,0 +1,148 @@
+---
+title: "API del editor de flujos"
+description: "Acceso externo a un bot por clave de API: obtener datos de un suscriptor y lanzar un embudo con un callback desde sus scripts y servicios."
+icon: "code"
+---
+
+La API del editor de flujos le permite acceder a un bot desde sus scripts y servicios con una clave. Ahora hay dos acciones
+disponibles: obtener los datos de un suscriptor y lanzar un embudo en el bot enviando un callback en nombre del suscriptor.
+
+## Clave y acceso
+
+Las claves se crean en la configuración del bot, en la sección «Claves de API». La sección está disponible para los
+administradores.
+
+<Steps>
+  <Step title="Cree una clave" icon="key">
+    Abra «Configuración del bot» → «Claves de API» → «Agregar clave de API». Elija los permisos, ponga un nombre y pulse «Generar».
+  </Step>
+  <Step title="Copie el valor" icon="copy">
+    Copie la clave y péguela en su petición. El valor siempre se puede ver después con el botón de copiar de la lista.
+  </Step>
+</Steps>
+
+Los permisos de una clave se eligen al crearla. De ellos depende qué peticiones puede hacer:
+
+| Permiso | Qué permite |
+|---|---|
+| **Leer información de suscriptores** | Obtener los datos de un suscriptor. |
+| **Iniciar el bot** | Lanzar un embudo en el bot enviando un callback. |
+
+<Note>
+  Una clave de solo lectura no sirve para lanzar un embudo. Para lanzarlo hace falta el permiso «Iniciar el bot».
+</Note>
+
+La clave se pasa en el encabezado `Authorization`:
+
+```text
+Authorization: Bearer SU_CLAVE
+```
+
+La dirección base de todas las peticiones:
+
+```text
+https://botflow.cc/api/v1/bot
+```
+
+## Obtener un suscriptor
+
+Devuelve los datos de un suscriptor de ese bot: nombre, username, tag, variables y fecha de suscripción.
+
+- **Método y ruta:** `GET /subscribers/{telegram_id}`
+- **Permiso:** «Leer información de suscriptores»
+
+| Parámetro | Descripción |
+|---|---|
+| `telegram_id` | El Telegram ID del suscriptor, un número entero. |
+
+```bash
+curl https://botflow.cc/api/v1/bot/subscribers/123456789 \
+  -H "Authorization: Bearer SU_CLAVE"
+```
+
+La respuesta:
+
+```json
+{
+  "telegram_id": 123456789,
+  "first_name": "Ann",
+  "last_name": null,
+  "username": "ann",
+  "tag": "vip",
+  "is_blocked": false,
+  "subscribed_at": "2026-08-20T10:00:00+00:00",
+  "variables": { "plan": "gold" }
+}
+```
+
+Si el bot no tiene un suscriptor con ese `telegram_id`, llega una respuesta 404.
+
+## Lanzar un embudo con un callback
+
+Envía un callback al bot en nombre del suscriptor, como si él hubiera pulsado un botón inline. Así puede lanzar la rama del
+embudo que necesite desde su propio servicio.
+
+- **Método y ruta:** `POST /fire-callback`
+- **Permiso:** «Iniciar el bot»
+
+| Parámetro | Descripción |
+|---|---|
+| `telegram_id` | El Telegram ID del suscriptor, un número entero. |
+| `callback_text` | El valor del callback, de 1 a 256 caracteres. Lo capturan las flechas «Al pulsar un botón» y las condiciones de inicio con el mismo valor. |
+
+```bash
+curl -X POST https://botflow.cc/api/v1/bot/fire-callback \
+  -H "Authorization: Bearer SU_CLAVE" \
+  -H "Content-Type: application/json" \
+  -d '{"telegram_id": 123456789, "callback_text": "start_promo"}'
+```
+
+La respuesta es siempre la misma: la petición se aceptó y el embudo arranca justo después:
+
+```json
+{ "status": "accepted" }
+```
+
+### Peticiones repetidas
+
+Si su servicio repite una petición ante un timeout o un corte, agregue el encabezado `Idempotency-Key` con su propio valor
+único por operación:
+
+```text
+Idempotency-Key: promo-2026-09-27-123456789
+```
+
+Con la misma clave y el mismo cuerpo la plataforma devuelve la respuesta guardada y el embudo no arranca una segunda vez. La
+misma clave con un cuerpo distinto es otra operación, y esa petición recibe una respuesta 409. Sin el encabezado el
+comportamiento es el de antes: cada petición lanza el embudo.
+
+<Note>
+  Un callback no crea un suscriptor: debe existir ya en el bot destino. Si el callback no coincidió con ninguna condición, los
+  pasos pendientes del embudo se cancelan. Un embudo lanzado por la API no puede disparar un callback en otro bot.
+</Note>
+
+## Errores
+
+Ante un error llega el código de respuesta correspondiente y un cuerpo con la explicación.
+
+| Código | Qué significa |
+|---|---|
+| **401** | Una clave inválida o deshabilitada. |
+| **403** | La clave no tiene el permiso necesario. |
+| **404** | El suscriptor no se encontró (para la petición de datos del suscriptor). |
+| **409** | El mismo `Idempotency-Key` llegó con un cuerpo de petición distinto. |
+| **422** | Parámetros de petición inválidos. |
+| **423** | El trabajo con el bot no está disponible temporalmente: revise el saldo de la empresa o escriba a soporte. |
+| **429** | Se superó el límite de peticiones. |
+| **503** | La petición no se pudo aceptar por ahora, repítala más tarde. |
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Bloques, condiciones y la acción «Enviar petición API», que también puede enviar un callback.
+  </Card>
+  <Card title="Variables" icon="brackets-curly" href="/es/variables">
+    Qué datos del suscriptor están disponibles y cómo se llaman.
+  </Card>
+</Columns>

@@ -1,0 +1,168 @@
+---
+title: "Tracker: descripción general"
+description: "Qué es el tracker, cómo está organizada la sección, el panel y las métricas del embudo desde el clic hasta el depósito."
+icon: "chart-line"
+---
+
+El tracker vincula el tráfico publicitario con los suscriptores y las conversiones: de dónde vino un clic, quién inició
+el bot y qué pasó después, hasta un depósito. Sobre esos datos se construyen los reportes, las métricas y la
+optimización de la compra.
+
+## Para qué sirve el tracker
+
+<Columns cols={2}>
+  <Card title="Cuenta todo el embudo" icon="filter">
+    La plataforma registra cada clic, inicio de bot, suscripción, registro y depósito y los vincula a un suscriptor concreto por `click_id`.
+  </Card>
+  <Card title="Guarda la fuente de tráfico" icon="tags">
+    De cada suscriptor se ve qué campaña publicitaria, conjunto de anuncios y anuncio trajeron el clic, hasta los parámetros sub.
+  </Card>
+  <Card title="Devuelve eventos a la cuenta publicitaria" icon="facebook">
+    Los registros y los depósitos vuelven a Facebook por la Conversion API, y llegan a las redes de afiliados y a los CRM como postbacks. Los algoritmos publicitarios ven acciones reales y no solo clics.
+  </Card>
+  <Card title="Optimiza la compra hacia eventos" icon="bullseye">
+    Una campaña se puede optimizar no solo hacia el clic, sino hacia cualquier acción del embudo: suscripción, diálogo, registro, primer depósito, depósito repetido.
+  </Card>
+</Columns>
+
+## Cómo está organizada la sección
+
+En el menú izquierdo de la empresa el tracker es una sola opción, «Tracker». Dentro de ella, arriba, hay un menú
+horizontal de ocho pestañas. No es el menú izquierdo: las pestañas cambian el contenido de la sección quedándose en su
+lugar.
+
+| Pestaña | Para qué | Más |
+|---|---|---|
+| **Panel** | Métricas, el embudo y la actividad de las campañas en un período. | más abajo en esta página |
+| **Campañas** | La lista de campañas, enlaces de tracking, estadísticas, edición. | [Campañas](/es/campaigns) |
+| **Landings** | Clones de Telegram y landings «HTML personalizado» para tráfico de FB. | [Landings](/es/landings) |
+| **Postbacks** | Conexión de redes de afiliados para recibir postbacks. | [Postbacks](/es/postbacks) |
+| **Postbacks S2S** | Envío de eventos de conversión a servicios externos. | [Postbacks S2S](/es/s2s-postbacks) |
+| **Reportes** | Registros de conversiones y clics con filtros y exportación a CSV. | [Reportes](/es/reports) |
+| **Dominios** | Sus dominios para los enlaces de tracking de campañas de FB. | [Dominios y proxies](/es/domains-proxies) |
+| **Proxies** | Proxies para enviar eventos a Facebook CAPI. | [Dominios y proxies](/es/domains-proxies) |
+
+<Info>
+  Las secciones del tracker están disponibles para los miembros con un rol en el tracker («Comprador», «Líder de
+  compradores») y para los administradores de la empresa. Un miembro sin rol en el tracker no ve la sección. Un comprador
+  ve sus propias campañas, un líder ve las de sus compradores y las suyas, y un administrador de la empresa ve todo. Cómo
+  otorgar el acceso se describe en [Equipo y configuración](/es/settings).
+</Info>
+
+## El camino del clic
+
+El tracker reúne toda la cadena desde el clic publicitario hasta la conversión.
+
+<Steps>
+  <Step title="Clic en el anuncio" icon="arrow-pointer">
+    Una persona sigue un enlace de tracking. Se registra un clic: geo, dispositivo, navegador, parámetros sub, señales de bot y proxy. Al clic se le asigna un `click_id`.
+  </Step>
+  <Step title="Landing" icon="window-maximize">
+    Para una campaña de FB se abre su landing. La visita se marca como LP view. El botón lleva al bot con un enlace del tipo `t.me/<bot>?start=<click_id>`.
+  </Step>
+  <Step title="Inicio del bot" icon="robot">
+    La persona pulsa el botón y envía `/start`. Aparece un suscriptor y entra al embudo, vinculado a la campaña y al `click_id`.
+  </Step>
+  <Step title="Embudo y conversiones" icon="filter">
+    El suscriptor recorre el embudo: suscripción, primer mensaje, registro, depósitos. Las conversiones de la red de afiliados se vinculan al suscriptor por `click_id`.
+  </Step>
+</Steps>
+
+<Note>
+  Un clic en el landing y un inicio del bot son eventos distintos. Un clic en el landing es una llegada a la
+  promo-página, y puede no llegar nunca al bot. Iniciar el bot con `/start` crea un suscriptor y abre el embudo. En los
+  reportes están separados: los clics en el enlace de tracking en una pestaña, los inicios del bot en otra.
+</Note>
+
+## Panel
+
+El panel reúne el panorama de todas las campañas en el período elegido. El período se cambia con las pestañas: «Hoy»,
+«Ayer», «Últimos 7 días», «Últimos 30 días», «Todo el tiempo» y «Período» («Últimos 7 días» por defecto). Al lado hay un
+filtro por una campaña concreta. Un rango personalizado admite como máximo 365 días.
+
+Cada período es un rango de fechas de calendario y no las últimas N horas: «Hoy» muestra la fecha de hoy desde
+medianoche, «Ayer» el día de ayer completo, «Últimos 7 días» exactamente siete fechas incluida la de hoy. En un período
+personalizado ambas fechas elegidas entran en el rango.
+
+<Note>
+  Las fechas se cuentan en tiempo universal UTC. Si usted trabaja en una zona al este de UTC, los eventos nocturnos por
+  su hora local caen en la fecha UTC anterior.
+</Note>
+
+El panel tiene cuatro partes.
+
+<Columns cols={2}>
+  <Card title="Métricas" icon="gauge">
+    Fichas con las cifras clave: suscripciones, contactos, registros, FTD, RD, CR, R2D. El conjunto de fichas se configura con el selector de métricas. Al hacer clic en una ficha se abre el reporte correspondiente filtrado por campaña.
+  </Card>
+  <Card title="Tendencias" icon="chart-line">
+    Un gráfico de las métricas elegidas a lo largo del tiempo. Una ficha de métrica se puede llevar al gráfico con un indicador de color u ocultarla de él.
+  </Card>
+  <Card title="Actividad" icon="bolt">
+    Un flujo en vivo con dos pestañas: «Clics» (clics en el landing) e «Inicios del bot» (`/start` directos). Una fila lleva al registro «Clics» filtrado por ese `click_id`.
+  </Card>
+  <Card title="Conversiones recientes" icon="receipt">
+    FTD, RD y registros frescos en cuanto abre el tracker, sin cambiar de pestaña. Las plaquitas FTD, RD y Reg filtran los tipos que necesite.
+  </Card>
+</Columns>
+
+<Tip>
+  La ficha «Conversiones recientes» muestra las conversiones frescas al abrir: por la mañana ve FTD, RD y registros sin
+  abrir ningún reporte. Una fila de conversión lleva a la página de la campaña, y la plaquita del suscriptor abre la
+  conversación con él.
+</Tip>
+
+## Métricas del embudo
+
+Las métricas muestran el embudo de tráfico desde el clic hasta el depósito. Los nombres de las métricas son iguales en
+todos los idiomas de la interfaz y se escriben tal como están.
+
+Las etapas del embudo van en este orden: clics, clics únicos, suscripciones al bot, contactos (el primer mensaje del
+suscriptor), registros, FTD, RD.
+
+| Métrica | Significado |
+|---|---|
+| **Click2LP** | La proporción de clics que llegaron a una visita del landing. |
+| **LP2Bot** | La proporción de visitas del landing que pasaron al bot. |
+| **Click2Bot** | Conversión de extremo a extremo del clic al inicio del bot. |
+| **Click2Sub** | Clics convertidos en suscripciones al bot. |
+| **Sub2Con** | Suscripciones convertidas en contactos (suscriptores que respondieron). |
+| **Click2FTD** | Clics convertidos en primeros depósitos. En la lista de campañas y en las fichas del panel se muestra como CR. |
+| **Reg2Dep** | Registros convertidos en depósitos. En las fichas del panel se muestra como R2D. |
+| **EPC** | Importe de depósitos por clic (earnings per click). |
+
+<Info>
+  Además de las métricas listas, una empresa puede crear sus propias métricas derivadas con una fórmula sobre los
+  indicadores base (clics, clics únicos, visitas del landing, suscripciones, contactos, registros, FTD, RD, importes de depósitos y
+  gasto) en la [configuración del tracker](/es/tracker-settings). Aparecen automáticamente en el selector de métricas del
+  panel.
+</Info>
+
+## Secciones del tracker
+
+<Columns cols={2}>
+  <Card title="Campañas" icon="rectangle-ad" href="/es/campaigns">
+    La unidad de tráfico: su propio enlace de tracking, una fuente (Facebook, Telegram, enlace de invitación), un embudo y estadísticas. El asistente de creación, el bloque inicial, los estados.
+  </Card>
+  <Card title="Landings" icon="window-maximize" href="/es/landings">
+    Clones de Telegram y landings «HTML personalizado». Para el tráfico de FB el landing es obligatorio: lleva el píxel y separa el clic publicitario del paso a Telegram.
+  </Card>
+  <Card title="Postbacks y afiliados" icon="arrows-rotate" href="/es/postbacks">
+    Recepción de conversiones de las redes de afiliados (registro, FTD, RD) y envío de eventos a Facebook CAPI. Atribución por `click_id`.
+  </Card>
+  <Card title="Reportes" icon="table-list" href="/es/reports">
+    Registros de conversiones y clics con constructor de filtros y exportación a CSV. La respuesta a «la red envió un FTD y no lo veo».
+  </Card>
+  <Card title="Postbacks S2S" icon="arrow-up-right-from-square" href="/es/s2s-postbacks">
+    Envío de eventos de conversión a servicios externos: la dirección, los parámetros y el registro de entregas.
+  </Card>
+  <Card title="Configuración del tracker" icon="sliders" href="/es/tracker-settings">
+    Tipos de conversión y reglas de transición, métricas personalizadas, reglas automáticas, listas negras y blancas.
+  </Card>
+  <Card title="Dominios y proxies" icon="globe" href="/es/domains-proxies">
+    Sus dominios para los enlaces de tracking de campañas de FB y proxies para enviar eventos a la Facebook Conversion API.
+  </Card>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Dónde cae un suscriptor después de iniciar el bot: bloques, condiciones, disparadores, incluido «Solicitud aprobada» para los enlaces de invitación.
+  </Card>
+</Columns>

@@ -1,0 +1,84 @@
+---
+title: "Dashboard and metrics"
+description: "The Dashboard screen at company, workspace and bot level: metrics, trends and top lists."
+icon: "gauge"
+---
+
+The Dashboard is the first screen after you log in. It exists at three levels, and at each one it answers a
+different question: how the whole company is doing, how a particular team is doing and how a particular bot
+is doing.
+
+## Company dashboard
+
+An overview of the company's activity for the selected period. Metrics at the top, trends and top lists
+below.
+
+| Metric | What it counts |
+| --- | --- |
+| **Active subscribers** | How many subscribers are currently active across all bots of the company. |
+| **Subscribes** | How many people started your bots during the period. |
+| **Contacts** | How many subscribers sent their first message. |
+| **Registrations** | Registrations that arrived as postbacks from affiliate networks. |
+| **Redeposit** | Repeat deposits during the period. |
+| **Deposit volume** | Total deposits during the period. |
+
+The period is switched with the tabs "Today", "Yesterday", "Last 7 days", "Last 30 days", "All time" and
+"Custom". The "Trends" chart shows subscribes, contacts and registrations by day of the selected period.
+
+The "Top bots" and "Top campaigns" blocks show where the work is happening: bots show their subscriber
+count, and the "All" button on campaigns leads to the tracker's campaign list.
+
+<Info>
+  If you have no bots yet, the metrics are replaced by a "Get started" prompt with a "Go to workspaces"
+  button. How to connect your first bot is described in [Getting started](/en/getting-started).
+</Info>
+
+## Workspace dashboard
+
+The same set of metrics, but limited to the bots of that workspace. This helps when a company has several
+teams or clients: each looks at its own dashboard and is not distracted by someone else's numbers.
+
+The "My bots" block lists the workspace bots you have access to. If you have access to none, the block says
+so.
+
+## Bot dashboard
+
+The "Dashboard" section in the bot menu. It shows the metrics of a single bot and its recent broadcasts.
+
+| Metric | What it counts |
+| --- | --- |
+| **Active** | How many of the bot's subscribers are active. |
+| **Blocked** | How many subscribers blocked the bot. |
+| **New today** and **New this week** | Subscriber inflow. |
+| **Subscribes**, **Contacts**, **Registrations**, **FTD**, **RD** | The bot's funnel for the period. |
+| **Reg2FD** | The share of registrations that reached a first deposit. |
+| **CR** | The share of subscribes that reached a first deposit. |
+
+Below there is the "Daily trend" chart and two broadcast blocks: "Recent broadcasts" with their statuses
+("Draft", "Scheduled", "Sending", "Completed", "Cancelled", "Failed") and "Scheduled broadcasts".
+
+<Tip>
+  If there are no metrics for the period, the block says "No data for this period". That is not an error: it
+  means there were no events on those dates. Widen the period.
+</Tip>
+
+## How this differs from the tracker dashboard
+
+The Dashboard answers "how are things going", while the tracker dashboard answers "how is traffic buying
+working". The tracker has its own funnel that starts at the ad click, its own cost metrics and its own
+breakdowns by campaign, source and landing.
+
+<Card title="Tracker: overview" icon="chart-line" href="/en/tracker">
+  The tracker dashboard, the funnel from the click, metrics and campaign activity.
+</Card>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Getting started" icon="rocket" href="/en/getting-started">
+    Connecting your first bot and building your first funnel.
+  </Card>
+  <Card title="Reports" icon="table-list" href="/en/reports">
+    Click and conversion logs, when you need per-row events rather than totals.
+  </Card>
+</Columns>

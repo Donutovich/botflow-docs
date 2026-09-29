@@ -1,0 +1,58 @@
+---
+title: "Password and sessions"
+description: "Changing your password and reviewing the active sessions of your account."
+icon: "lock"
+---
+
+Your personal account settings, the "Security" group. Here you change your password, see which devices are
+signed in, and find the "2FA" item.
+
+## Change password
+
+The "Change password" screen asks for your current password and the new one twice.
+
+| Field | What you enter |
+| --- | --- |
+| **Current password** | The password you sign in with now. |
+| **New password** | At least 8 characters. Don't reuse a password from a known breach. |
+| **Repeat new password** | The same value, to rule out a typo. |
+
+The "Save password" button applies the change. After a password change your other sessions are ended: you
+will need to sign in again on other devices.
+
+The platform will not accept a new password that matches the current one or that has appeared in known data
+breaches. Choose another one in that case.
+
+<Tip>
+  A forgotten password is recovered from the sign-in page through the "Forgot password?" link: a reset link
+  is sent to your email.
+</Tip>
+
+## Active sessions
+
+The "Active sessions" screen shows the devices signed in to your account. The current device carries a "This
+device" badge, and for the others you can see when the session was created and when it was last active.
+
+- The **"Revoke"** button in a row closes a single session.
+- The **"Revoke all other sessions"** button leaves only the current device.
+
+<Warning>
+  If the list has a device you don't recognise, revoke its session and change your password right away:
+  revoking a session alone is not enough while the password stays the same.
+</Warning>
+
+## 2FA
+
+The third item of the group, marked as coming soon. It holds no settings yet: signing in is confirmed
+by your password, and the list of devices is in "Active sessions" above.
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Settings" icon="gear" href="/en/settings">
+    Roles and access of company members.
+  </Card>
+  <Card title="Logs" icon="list-check" href="/en/logs">
+    Who changed what in the company.
+  </Card>
+</Columns>

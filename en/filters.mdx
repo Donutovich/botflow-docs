@@ -1,0 +1,158 @@
+---
+title: "Filters"
+description: "Selecting subscribers by conditions: quick chat list filters, the condition builder, saved filters and reusing them in broadcasts and the funnel."
+icon: "filter"
+---
+
+A filter is a set of conditions a subscriber must meet to fall into a selection. With it you narrow the chat
+list down to the people you need: "those who registered but made no deposit", "deposits from 10 dollars",
+"subscribers from RU without tags" and so on.
+
+Filters are not a separate menu item. They live inside other sections and are assembled everywhere by the same
+condition builder.
+
+<Columns cols={2}>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    Chat list modes, quick funnel filters and saved filters above the list of dialogs.
+  </Card>
+  <Card title="Subscribers" icon="users" href="/en/subscribers">
+    The whole subscriber table with the same condition builder over its columns.
+  </Card>
+  <Card title="Flow builder" icon="arrows-split-up-and-left" href="/en/constructor">
+    The "Condition" block splits subscribers inside the funnel into branches, and each branch's condition is assembled by the same builder.
+  </Card>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    A broadcast audience is set by a saved filter or by one assembled in the wizard.
+  </Card>
+</Columns>
+
+An assembled condition can be **saved under a name**. Assemble it once, give it a name, and you reuse it in
+[broadcasts](/en/broadcasts) as an audience and in the "Condition" block of the
+[flow builder](/en/constructor) as a branch, without building it again.
+
+## Quick chat list filters
+
+In the [Messenger](/en/messenger), above the chat list, there are ready filters that need no setup. The
+sliders button to the right of the search opens a menu with five modes. Exactly one is always active.
+
+| Mode | What it shows |
+| --- | --- |
+| All chats | every dialog of the bot |
+| Unread | dialogs with unread incoming messages |
+| AI | dialogs the [AI operator](/en/ai-operator) is running right now |
+| Agent | dialogs switched to manual mode |
+| Blocked | subscribers who blocked the bot |
+
+### Quick funnel filters
+
+Above the list there is a strip of quick filters by the sales funnel. Their names are the same in every
+interface language.
+
+- `All`: every chat.
+- `Reg`: a registration event exists.
+- `FD`: a first deposit happened.
+- `RD`: a repeat deposit happened.
+- `Deposits`: total deposits above zero.
+- `<$5`, `$5–10`, `$10–100`, `>$100`: slices by deposit amount.
+
+The same strip shows the saved filters of this bot, and the "Filter" button at the end of the row opens the
+condition builder. The list mode combines with the rest of the selection, while a quick filter, a saved filter
+and your own condition replace one another.
+
+## Condition builder
+
+The "Filter" button (in "Messages") or "Add filter" (in "Subscribers") opens the "Subscriber filter" panel.
+Here you assemble a condition from separate rows.
+
+Each row has three parts:
+
+1. **Field**: what we filter by (country, total deposits, tags and so on).
+2. **Operator**: how we compare (equals, greater than, contains, within the last N days).
+3. **Value**: what we compare with. Some operators ("is empty", "is not empty") need no value.
+
+<Steps>
+  <Step title="Add the first condition" icon="plus">
+    Press "Add condition", pick a field from the list, then an operator, and set a value.
+  </Step>
+  <Step title="Add more conditions to the group" icon="layer-group">
+    Conditions inside one group are joined by the "AND" / "OR" switch. "AND" requires all of them at once, "OR" is satisfied by any single one.
+  </Step>
+  <Step title="Add a second group" icon="code-branch">
+    A rule like "(A and B) or C" is assembled as two groups: A and B joined by "AND" in the first, C in the second. Groups are always joined by "OR" between themselves.
+  </Step>
+  <Step title="Apply" icon="check">
+    Press "Apply". The chat list or the subscriber table rebuilds itself around your condition.
+  </Step>
+  <Step title="Check the counter" icon="calculator">
+    Next to the applied filter you see how many subscribers match: "N subscribers" or "N / T", where T is all subscribers of the bot.
+  </Step>
+</Steps>
+
+<Note>One filter holds up to 50 conditions.</Note>
+
+### Which fields are available
+
+Fields are grouped in the dropdown list.
+
+| Group | Fields |
+| --- | --- |
+| Subscriber | Telegram ID, Username, First name, Last name, Country, Start parameter, Telegram language, Date of birth, Has avatar, Subscribed at, Blocked by bot, Blocked at, Blocked by admin, Blocked by admin at, [Tags](/en/tags) |
+| Deposits | Has registration, Registration date, Made FTD, First FTD date, Last FTD date, Repeat deposit, Deposit total, FTD amount, Repeat deposits amount, Deposits count, Conversions count, Made a withdrawal |
+| Saved filters | A saved filter as a condition |
+| Traffic | Click country, City, Region, Click language, Device, Source kind, Campaign, UTM source, FB campaign, FB adset, FB ad, FB campaign name, FB adset name, Proxy / VPN, Proxy type, sub1-sub5 |
+| Dialog | Last message, Last message direction, Unread count, Waiting for input |
+| Funnel | Funnel block |
+| Activity | Last activity |
+| Variables | Your [bot variables](/en/variables) with a per-subscriber value; they are listed under their own names |
+
+<Info>Funnel events (registration, FTD, RD) come from the [tracker](/en/tracker) and are ready to use in the Deposits group as separate conditions. You don't need to count them yourself.</Info>
+
+### Operators
+
+The set of operators depends on the field type.
+
+| Field type | Operators |
+| --- | --- |
+| Text ("First name", `sub1`, variables) | equals, not equal, contains, does not contain, starts with, ends with, any of, none of, is empty, is not empty |
+| Number ("Deposit total", "FTD amount", "Deposits count") | equals, not equal, greater than, greater or equal, less than, less or equal, between |
+| Date ("Subscribed at", "First FTD date") | greater or equal, less or equal, between, within the last, is empty, is not empty |
+| Yes / No ("Made FTD", "Blocked by bot") | equals |
+| Value list ("Country", "Device", "Saved filter") | any of, none of, equals, not equal, is empty, is not empty |
+| [Tags](/en/tags) | has any of, has all of, has none of, has only these, has no tags, has tags |
+
+<Tip>The "any of" operator is handy when there are several values: enter `RU, US, KZ`, pressing Enter after each, and subscribers from any of those countries fall into the selection.</Tip>
+
+## Saving a filter
+
+An assembled condition can be saved under a name and reused. In the filter panel press "Save as…", enter a name
+in the "Filter name" field (for example, `VIP with FTD`) and press "Save". For a filter that is already saved,
+"Update saved" appears next to it.
+
+What matters about saved filters:
+
+- A filter belongs to the **bot** and is visible to the whole team that has access to that bot.
+- Operators and roles above them can create, rename and delete filters.
+- Favourite filters are marked with a star and float to the start of the strip. Favourites are shared across the team.
+- Up to 50 filters can be stored per bot.
+
+<Warning>Deleting a filter cannot be undone. Conversations and subscribers stay where they are, only the saved set of conditions is deleted. Broadcasts that already started with this filter keep their audience: it is frozen at launch. Branches of a "Condition" block in the [flow builder](/en/constructor) built on a deleted filter, however, stop finding anyone, and subscribers go down the default branch. Check your funnels before deleting a filter.</Warning>
+
+## Reusing filters
+
+A saved filter is chosen as the audience in [broadcasts](/en/broadcasts): on the audience step pick a saved
+filter or assemble a new one right in the wizard with the same builder.
+
+Inside a funnel the same conditions work in the "Condition" block of the [flow builder](/en/constructor): it
+checks branches top to bottom and immediately leads the subscriber down the first matching one, for example
+those with a deposit to a personal offer and everybody else to the general menu.
+
+<Columns cols={2}>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    Mass or scheduled sending by a saved filter or one assembled on the spot.
+  </Card>
+  <Card title="Tags" icon="tag" href="/en/tags">
+    Manual and automatic subscriber tags, handy for building audiences.
+  </Card>
+</Columns>
+
+<Note>Before a broadcast starts the wizard shows how many subscribers fall into the chosen audience. It is the same live counter as in the condition builder.</Note>

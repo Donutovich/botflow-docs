@@ -1,0 +1,254 @@
+---
+title: "Postbacks"
+description: "Receiving conversions from affiliate networks: connecting an affiliate, matching by click_id, funnel events, sending to Facebook CAPI and automatic funnel transitions."
+icon: "arrows-rotate"
+---
+
+A postback is a message from an affiliate network saying that your subscriber performed a target action: signed
+up, made a first deposit, topped up again. The affiliate sends such an event server to server, and BotFlow matches
+it to a specific subscriber by `click_id` and records it in the conversion history.
+
+The platform records the click and the bot start itself, while only the affiliate knows about a registration or a
+deposit. After a postback the event is visible in the subscriber card, in reports and in the Reg2Dep, Click2FTD,
+FTD, RD and EPC metrics.
+
+## How it works
+
+<Steps>
+  <Step title="You give the subscriber a link with click_id" icon="link">
+    The `click_id` of a specific subscriber is substituted into the advertiser's registration link. It arrives together with the move into the bot (`t.me/<bot>?start=<click_id>`) and stays tied to that person.
+  </Step>
+  <Step title="The affiliate remembers the click_id" icon="floppy-disk">
+    At registration the subscriber passes the `click_id` to the affiliate through a parameter of its link. The affiliate stores it next to the client's new account.
+  </Step>
+  <Step title="The subscriber performs an action" icon="user-check">
+    The subscriber registers, makes a deposit or tops up again on the advertiser's side.
+  </Step>
+  <Step title="The affiliate sends a postback" icon="arrows-rotate">
+    The affiliate sends a request to your postback URL, passing that same `click_id`, the event type and the amount.
+  </Step>
+  <Step title="The platform matches and records it" icon="check-double">
+    BotFlow finds the click by `click_id`, ties the event to the subscriber and the campaign and writes the conversion into the history. From there it is visible in reports, in the subscriber card and in the metrics.
+  </Step>
+</Steps>
+
+<Warning>
+  `click_id` links a future deposit to a specific subscriber and campaign. It is determined at the moment the link
+  is sent to the subscriber. It must not be substituted or swapped by hand: somebody else's `click_id` ties the
+  money to the wrong subscriber, and a postback with a `click_id` from another company is rejected (the outcome
+  `cross_tenant_rejected`). For the same reason a postback arriving significantly later than the click will not
+  attach to the subscriber.
+</Warning>
+
+## Integrations
+
+Receiving postbacks is set up in the tracker, on the **Postbacks** tab. Here you connect an affiliate network, see
+its status and check that event reception works.
+
+### Connecting a network
+
+The **Add** button opens the "New integration" page. You choose a template, optionally set a name and check the
+`click_id` parameter. After creation the platform shows the ready postback URLs straight away, and you copy them
+into the affiliate's dashboard.
+
+The template list has six options: Pocket Option, Quotex, Alfaleads, 1xBet, AdsEmpire and a generic one for any
+other network.
+
+<Columns cols={2}>
+  <Card title="A ready network template" icon="plug">
+    For Pocket Option and the generic template the platform hands you ready postback URLs with the `click_id` parameter substituted. All that is left is to copy them into the affiliate's dashboard.
+  </Card>
+  <Card title="The other templates" icon="sliders">
+    For Quotex, Alfaleads, 1xBet and AdsEmpire the status mapping is pre-filled: you check it and take the postback URLs for your events.
+  </Card>
+</Columns>
+
+<Tip>
+  The name is optional, but handy if you connect several affiliates of the same type: the name is how you tell them
+  apart in the list and in the conversion log.
+</Tip>
+
+### Status and the "Test" button
+
+Every connected affiliate has a status (**Active** or **Disabled**) and a **Test** button. "Test" sends a test
+postback with a fake `click_id` and shows the processing outcome: that is how you check the whole path from
+accepting the request to writing into the conversion history, without waiting for a real deposit. Next to the
+button the platform shows the test `click_id` you can find that run by in the reports.
+
+<Info>
+  The affiliate list is filtered by status (All, Active, Disabled) and by name. An empty list simply means no
+  affiliates are connected yet.
+</Info>
+
+## The integration page
+
+Clicking an integration in the list opens its page. At the top there is the status and the "Enable" and "Disable"
+buttons, and below there are tabs with all the settings.
+
+<Steps>
+  <Step title="Overview" icon="gear">
+    The postback key (part of the public URL) and the `click_id` parameter the affiliate puts the click into. The key can be rotated. Old postback URLs keep being accepted for another 7 days after rotation: that is enough time to replace them in the affiliate's dashboard, after which they stop working.
+  </Step>
+  <Step title="Postback URL" icon="link">
+    The incoming postback URLs, one per event. The affiliate calls them to report a conversion. Copy the one you need and paste it into the postback settings in the affiliate's dashboard.
+  </Step>
+  <Step title="Mapping" icon="right-left">
+    The status mapping: on the left the status name the affiliate sends, on the right our event (registration, deposit, repeat deposit, withdrawal and others). If the affiliate sends its own status name, set the correspondence here.
+  </Step>
+  <Step title="Links" icon="user-plus">
+    The outgoing links for leads that you hand to subscribers. The platform substitutes the `click_id` into the final URL itself.
+  </Step>
+  <Step title="Log" icon="list">
+    The log of this integration's incoming postbacks: time, `click_id`, status and processing outcome. It shows whether events arrive and whether they match subscribers.
+  </Step>
+</Steps>
+
+For ready affiliates (Pocket Option, say) the postback URLs and the `click_id` parameter are already configured,
+and all that is left is to copy the URLs into the dashboard. When an integration is disabled, the existing links
+for leads stop working, but the event history in the subscriber cards is kept.
+
+## The generic template
+
+If there is no ready integration, choose the generic template in the list. In the list of connections such an
+integration is marked with the "Custom" type. The logic is the same, you just configure the joining by hand.
+
+<Steps>
+  <Step title="Set the click_id parameter" icon="pen">
+    Work out which parameter your affiliate writes the `click_id` into. Without that the platform cannot tell which subscriber an event belongs to.
+  </Step>
+  <Step title="Take the ready postback URLs" icon="link">
+    The platform gives you one URL per event. Usually you need three: registration, first deposit and repeat deposit.
+  </Step>
+  <Step title="Paste the URLs into the affiliate's dashboard" icon="arrows-rotate">
+    In the affiliate's postback settings put our `click_id`, the event type and the deposit amount into the matching URL parameters.
+  </Step>
+</Steps>
+
+A postback URL passes three values: the subscriber's `click_id`, the event type and the deposit amount.
+
+```
+https://<your-postback-url>?click_id={click_id}&status=<event>&amount={amount}
+```
+
+Here `{click_id}` and `{amount}` are the affiliate's macros, which it replaces with real values at the moment of
+sending, while `<event>` is the status the platform maps to its own conversion type.
+
+<Note>
+  The `{click_id}` and `{amount}` values in curly braces are the affiliate network's variables, not BotFlow's.
+  Check your affiliate's own documentation for what those macros are called: they differ between networks.
+</Note>
+
+## Which events arrive
+
+Every postback carries an event type. The affiliate sends its own status name, and the platform maps it to its own
+conversion type.
+
+| Event | What it is |
+|---|---|
+| **Registration** | The subscriber signed up with the advertiser. |
+| **FTD** (deposit) | A first deposit with an amount. |
+| **RD** (repeat deposit) | A repeat top-up with an amount. |
+| **Withdrawal** | The subscriber withdrew funds. |
+| **Recurring partner event** | A repeating event from the affiliate network. |
+| **Email confirmation** | The subscriber confirmed their email. |
+
+Deposit events (FTD and RD) carry an amount, which is exactly what the deposit amounts and EPC are calculated from. Internal
+funnel events (a subscribe to the bot, a subscriber's first message, a landing view) are recorded by the platform
+itself and need no postback.
+
+<Info>
+  Don't confuse a landing click with a bot start. A landing click is a hit on the promo page, and it may never
+  reach the bot. Starting the bot with `/start` creates a subscriber and opens the funnel. A postback, meanwhile,
+  attaches to a subscriber through the `click_id` of the click they came from. For more on the click's path see
+  [Tracker: overview](/en/tracker).
+</Info>
+
+## Automatic funnel transitions on a postback
+
+Besides being written into the history, a postback can move a subscriber along the funnel straight away. When an
+event arrives, it is immediately available to arrows in the flow builder: if a block has an arrow set on that
+event, the subscriber moves to the right step automatically. No operator is needed for that, and the AI continues
+the conversation already knowing that the subscriber signed up or made a deposit.
+
+In the [Flow builder](/en/constructor), on an arrow between blocks, the affiliate's system events are available:
+
+| Trigger event | When it fires |
+|---|---|
+| **Registration** | A registration postback arrived. |
+| **Deposit** | A first deposit (FTD) postback arrived. |
+| **Repeat deposit** | A repeat deposit (RD) postback arrived. |
+| **Withdrawal** | A withdrawal postback arrived. |
+| **Recurring partner event** | A repeating event from the network arrived. |
+
+A typical scenario: after a registration the subscriber moves to the "help them make a first deposit" step, after an
+FTD to the "bring them to a repeat deposit" step, and the AI runs the conversation taking into account what has
+already happened.
+
+<Warning>
+  An automatic transition works only for a subscriber who has a `click_id` and a funnel running in private messages
+  with the bot. If the subscriber never came through a tracking link, there is nothing to match the postback
+  against.
+</Warning>
+
+## Sending events to Facebook (CAPI)
+
+For FB campaigns postbacks can be sent further, back to Facebook, through the Conversion API. That way the ad
+algorithm learns about real deposits and optimises buying towards paying clients.
+
+The list of events to send is set on the "Tracking" step when creating a campaign: both events from the bot
+(subscribe, contact) and accepted affiliate postbacks (registration, FTD, RD). Exactly what goes to Facebook and
+how to set it up is described in [Campaigns](/en/campaigns). Setting up the domain and proxy for sending is in
+[Domains and proxies](/en/domains-proxies).
+
+Event delivery is visible on the campaign page, the "Facebook CAPI delivery" block, and in the "Conversions"
+report on the "Outgoing" tab: the statuses "Sending", "Delivered", "Failed".
+
+## Checking and debugging
+
+When the affiliate says "we sent an FTD" and you don't see it, there are two tools.
+
+<Columns cols={2}>
+  <Card title="The «Test» button" icon="paper-plane">
+    Sends a test postback and shows the processing outcome. A quick way to confirm that event reception works at all.
+  </Card>
+  <Card title="The «Conversions» report" icon="receipt">
+    In the tracker, on the "Reports" tab, the log shows both incoming postbacks and outgoing events to Facebook. The search is by an exact `click_id`.
+  </Card>
+</Columns>
+
+For every incoming postback the log shows the processing outcome:
+
+| Outcome | What it means |
+|---|---|
+| `success` | The event was matched to a subscriber and recorded. |
+| `no_click_match` | The `click_id` was not found: check that the affiliate passes the right parameter. |
+| `duplicate` | Such an event already arrived and is not recorded again. |
+| `invalid_status` | The event type was not mapped: check the status setup at the affiliate. |
+| `invalid_token` | The postback arrived with the wrong affiliate key. |
+| `rejected_transition` | An invalid order of events for this click. |
+| `rate_limited` | The affiliate sent events too often and some were not accepted. |
+| `cross_tenant_rejected` | The `click_id` belongs to another company. |
+| `error` | The event could not be processed. Details are visible in the log row. |
+
+<Tip>
+  Most often "the postback never arrived" actually means "it arrived, but with no click match". Check the
+  "Conversions" log by `click_id` first: if the row is there with the outcome `no_click_match`, the problem is the
+  `click_id` parameter on the affiliate's side rather than reception.
+</Tip>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="S2S Postbacks" icon="arrow-up-right-from-square" href="/en/s2s-postbacks">
+    Sending conversion events further to external services: the source tracker or your CRM.
+  </Card>
+  <Card title="Tracker: overview" icon="chart-line" href="/en/tracker">
+    Campaigns, tracking links, the click's path, metrics and reports.
+  </Card>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Trigger arrows on postback events and building the funnel.
+  </Card>
+  <Card title="Reports" icon="table-list" href="/en/reports">
+    Conversion and click logs with filters and CSV export.
+  </Card>
+</Columns>

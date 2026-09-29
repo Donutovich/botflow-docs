@@ -1,0 +1,110 @@
+---
+title: "Getting started"
+description: "Sign up, create a workspace, connect your first bot and build your first flow in a few minutes."
+icon: "rocket"
+---
+
+In a few minutes you will walk through the basic setup and launch your first bot. You will need a bot token
+from [@BotFather](https://t.me/BotFather).
+
+<Info>
+  An account has three levels: **company** (the top level) → **workspace** (a space for a group of bots and
+  a team) → **bots**. The company is created automatically when you sign up and you become its owner. The
+  workspace and the bots you add yourself, so a bot is connected inside a workspace rather than straight
+  into the account.
+</Info>
+
+## Step by step
+
+<Steps>
+  <Step title="Sign up" icon="user-plus">
+    Create an account at [botflow.cc](https://botflow.cc) and confirm your email through the link in the
+    message. Your company is created together with the account and you become its owner.
+  </Step>
+  <Step title="Create a workspace" icon="folder-plus">
+    Open the "Workspaces" section and create a new workspace. It is a space for a group of bots and a team
+    (for example, "Marketing"). Bots, broadcasts, campaigns and access grants live inside a workspace, so
+    different projects of the same company never overlap.
+  </Step>
+  <Step title="Get a token from @BotFather" icon="robot">
+    Message [@BotFather](https://t.me/BotFather), send the `/newbot` command and set a name and a username.
+    You will get a token that looks like `123456:ABC...`. Copy it in full.
+  </Step>
+  <Step title="Connect the bot to the workspace" icon="plug">
+    Open the workspace, go to "Bots", press "Connect bot", paste the token and press "Connect". The bot
+    appears in the workspace list and is created switched off.
+  </Step>
+  <Step title="Build your first flow" icon="diagram-project">
+    Open the bot's flow builder and add a "Start condition" block with the `/start` command and a welcome
+    message. Drag an arrow to the next "Dialog state" block to continue the conversation. More in
+    [Flow builder](/en/constructor).
+  </Step>
+  <Step title="Switch the bot on" icon="toggle-on">
+    A new bot is created switched off while you are setting up the flow. Open the bot settings and move the
+    activity toggle to "On": the bot will start replying to subscribers.
+  </Step>
+</Steps>
+
+<Note>
+  While the bot is switched off it does not react to messages. This is deliberate, so subscribers don't land
+  in an unfinished flow. Switch the bot on when the flow is ready.
+</Note>
+
+## How the account is organised
+
+The company is the top level: team, domains, tracker and billing. A workspace groups the bots of one project
+together with its broadcasts, campaigns and access grants. Bots live inside a workspace, and a member's
+access is granted at the workspace level and applies to all of its bots. The levels are shown in
+[Overview](/en/index); for roles and members see [Settings](/en/settings).
+
+## What your first flow is made of
+
+A flow is built in the [Flow builder](/en/constructor) from blocks joined by arrows. The main types:
+
+- **Start condition** is the entry point. It fires on a command or a match (for example, `/start`).
+- **Dialog state** is a step of the conversation. Moving on happens only through an arrow you have dragged
+  to the next block.
+- **Fallback** fires when no start condition matched, and it does not knock the subscriber off the current
+  step. You can also send someone into it deliberately: with an arrow or a branch of a "Condition" block.
+  Then it becomes an ordinary step for them.
+- **Condition** branches the funnel by the subscriber's data: tags, deposits, country, variables. Branches
+  are checked top to bottom and the first matching one wins.
+- **AI operator** runs a live conversation: it leads the subscriber to the block's goal and picks the
+  transition itself. Set it up on the [AI operator](/en/ai-operator) page.
+- **Draft** is a placeholder block. It does not fire until you switch it to an active type.
+
+<Tip>
+  You can substitute variables into block texts and captions: `{{first_name}}`, `{{username}}` and others.
+  Tokens are written in Latin exactly as they are. The full list is in [Variables](/en/variables).
+</Tip>
+
+## How to reply to subscribers by hand
+
+Besides automatic replies from the flow builder, you can chat with subscribers yourself. The conversation
+section is the **Messenger**, opened from the bot menu as "Messages". It shows every dialog, its history and
+media. You reply by hand or hand the dialog over to the AI operator. The "Move to block" button moves a
+subscriber to another block of the funnel manually: an ordinary block sends its content, an AI dialog block
+hands the conversation to the AI, and a "Condition" block picks where to send the subscriber next. More in
+[Messenger](/en/messenger).
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Blocks, conditions, arrows, variables and media.
+  </Card>
+  <Card title="AI operator" icon="sparkles" href="/en/ai-operator">
+    A live conversation that leads the subscriber to the goal.
+  </Card>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    Reply to subscribers by hand or through the AI.
+  </Card>
+  <Card title="Tracker and campaigns" icon="chart-line" href="/en/tracker">
+    Bring traffic into the bot and count conversions.
+  </Card>
+</Columns>
+
+<Note>
+  You can invite your team and set up access in [Settings](/en/settings), and top up the balance in
+  USDT-TRC20 in [Billing](/en/billing).
+</Note>

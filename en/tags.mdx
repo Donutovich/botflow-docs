@@ -1,0 +1,148 @@
+---
+title: "Tags"
+description: "Colour labels for conversations: creating tags, applying them by hand and from the flow builder, filtering by them and building broadcast audiences."
+icon: "tag"
+---
+
+A tag is a colour label on a conversation with a subscriber. You use tags to mark what you already know about
+a subscriber, for example "Viewed the catalogue", "FTD" or "No deposit", and then filter conversations and
+build broadcasts from them. Every bot has its own set of tags.
+
+<Info>
+  A tag only marks a conversation and does nothing by itself: it sends no message to the subscriber and does
+  not move them along the funnel. Its job is to make a conversation easy to find and to group.
+</Info>
+
+## Where tags live
+
+In the bot menu open the "Audience" group and choose "Tags". The page shows every tag of the bot: a colour
+chip with its name and, next to it, how many subscribers currently carry it.
+
+## Creating a tag
+
+<Steps>
+  <Step title="Open the Tags section" icon="tag">
+    Bot menu, "Audience" group, "Tags" item. Press "Create tag".
+  </Step>
+  <Step title="Set a name" icon="pen">
+    Type a short, clear name of up to 40 characters. For example: `FB`, `FTD`, `No deposit`.
+  </Step>
+  <Step title="Pick a colour" icon="palette">
+    The colour comes from a palette of 11 shades. It affects nothing but the look of the chip, and it is there
+    so tags are easy to tell apart in the chat list and in the conversation panel. A preview of the chip is
+    shown below.
+  </Step>
+  <Step title="Save" icon="check">
+    Press "Create". The tag appears in the list straight away and becomes available in the flow builder,
+    filters and broadcasts.
+  </Step>
+</Steps>
+
+## Editing or deleting a tag
+
+Every tag in the list has a pencil button (rename and change colour) and a bin button (delete). A change of
+name or colour is picked up everywhere the tag is already applied.
+
+<Warning>
+  Deleting cannot be undone. The tag is removed from every conversation where it was applied, and filters
+  built on it stop finding it. If the tag is still applied to someone, the confirmation dialog shows how many
+  conversations it will be removed from.
+</Warning>
+
+<Warning>
+  If the tag is used in a "Add tag" or "Remove tag" action of some block, deletion is refused: the platform
+  shows a message that the tag is used in funnel blocks and names those blocks. Remove the tag from the
+  actions first, then delete it.
+</Warning>
+
+## Applying and removing a tag by hand
+
+An operator applies and removes tags right inside the conversation.
+
+<Steps>
+  <Step title="Open the conversation" icon="comments">
+    The "Messages" section, choose the dialog and open the "Info" panel.
+  </Step>
+  <Step title="Add a tag" icon="plus">
+    In the "Tags" block press the "Tag" button and choose one from the list. If there are no tags yet, the
+    system suggests creating them in the "Tags" section.
+  </Step>
+  <Step title="Remove what isn't needed" icon="xmark">
+    Applied tags are shown as chips. The cross on a chip removes the tag from this conversation.
+  </Step>
+</Steps>
+
+<Note>
+  Tag changes are visible immediately: if another operator applied a tag, or the funnel did, it appears in the
+  panel by itself.
+</Note>
+
+## Tags in the flow builder
+
+A funnel can apply and remove tags on its own. In a block, on the "Actions" tab, add one of these actions:
+
+- **Add tag.** Marks the conversation with the chosen tag.
+- **Remove tag.** Removes the chosen tag from the conversation.
+
+The action runs after the block has sent its message. That is a handy way to mark the step a subscriber
+reached, so you can collect those people into a broadcast later. More about block actions in
+[Flow builder](/en/constructor).
+
+<Tip>
+  A typical pairing: the block describing the product applies the "Viewed the catalogue" tag, and the block
+  after payment applies `FTD` and removes "No deposit". Separate broadcast audiences are then built on those
+  tags.
+</Tip>
+
+## Tags in filters
+
+Tags are one of the subscriber filter conditions. The condition builder is available in "Messages",
+"Subscribers", when choosing a broadcast audience and in the "Condition" block of the flow builder. Pick the
+"Tags" field, one or several values, and how to match them:
+
+| Condition | What it selects |
+|---|---|
+| has any of | at least one of the chosen tags is applied |
+| has all of | all the chosen tags are applied |
+| has only these | exactly the chosen set is applied and nothing beyond it |
+| has none of | none of the chosen tags are applied |
+| has tags | the conversation carries at least some tag |
+| has no tags | no tag is applied |
+
+Tag conditions combine with any other filter condition (name, click_id, tracker events and so on).
+
+## Tags in broadcasts
+
+When creating a broadcast you can leave the audience as everyone or narrow it with a filter. Once a single bot
+is chosen, the filter mode becomes available: assemble a condition on tags (and any other fields) and send the
+message only to those subscribers. A good set of conditions can be saved and reused. How broadcasts work is
+described in [Broadcasts](/en/broadcasts).
+
+## The `{{ tag }}` variable
+
+Don't confuse the colour tags on this page with the `{{ tag }}` variable: they are different things.
+`{{ tag }}` substitutes not the subscriber's tags but the value of the start parameter the person launched the
+bot with. A link like `t.me/your_bot?start=123` makes `{{ tag }}` equal `123`. The value is fixed once, when
+they enter the bot. More about variables in [Variables](/en/variables).
+
+<Warning>
+  A variable name must not be translated or changed. `{{ tag }}` works; a translated variant returns an empty
+  string.
+</Warning>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    The "Add tag" and "Remove tag" actions in funnel blocks.
+  </Card>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    The chat list, filters and applying tags by hand in the conversation panel.
+  </Card>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    Mass messages to audiences built on tags.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/en/tracker">
+    Conversion events that a funnel can conveniently apply tags on.
+  </Card>
+</Columns>

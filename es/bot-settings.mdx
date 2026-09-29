@@ -1,0 +1,153 @@
+---
+title: "Configuración del bot"
+description: "Nombre, descripción y avatar del bot, token, actividad, aumento de pago de los límites, traslado entre workspaces y eliminación."
+icon: "sliders"
+---
+
+La sección «Configuración» a nivel de bot reúne todo lo relativo al bot en sí: cómo se ve para los suscriptores, su token, su actividad, los límites de envío y acciones como el traslado o la eliminación. Se abre desde el menú del bot, el grupo «Configuración» → «Configuración».
+
+<Info>
+  Cualquier miembro con acceso al bot puede ver la configuración. El gerente del bot y un administrador de la empresa
+  pueden cambiar el nombre, la descripción, el avatar y la actividad. El traslado entre workspaces y la eliminación
+  están disponibles solo para el propietario o un administrador de la empresa.
+</Info>
+
+## Perfil del bot
+
+La ficha «Perfil» contiene tres campos que describen el bot. Todo lo que cambie aquí se envía a Telegram y lo ven
+**todos los suscriptores**, no solo dentro de la plataforma.
+
+<Columns cols={3}>
+  <Card title="Nombre" icon="signature">
+    Hasta 64 caracteres. Se muestra como el nombre del bot en la lista de chats y en la cabecera del diálogo.
+  </Card>
+  <Card title="Descripción corta" icon="align-left">
+    Hasta 120 caracteres. Se muestra en la vista previa del bot cuando se lo menciona con @.
+  </Card>
+  <Card title="Descripción" icon="align-justify">
+    Hasta 512 caracteres. Se muestra en un chat vacío con el bot mientras el suscriptor no haya pulsado «Iniciar». El encabezado sobre ella lo dibuja Telegram en el idioma del suscriptor.
+  </Card>
+</Columns>
+
+Cada campo se edita por separado: pulse el lápiz junto al valor, escriba el texto y guarde. Debajo del campo hay un
+contador de caracteres. La descripción corta y la descripción pueden quedar vacías, el nombre es obligatorio.
+
+<Tip>
+  Mientras haya una descripción definida, la página muestra un bloque «Vista previa en Telegram»: cómo se ve un chat
+  vacío con el bot para un suscriptor, con el texto de la descripción y el botón «Iniciar». Así ve el resultado antes de
+  que lo vean las personas.
+</Tip>
+
+## Avatar
+
+Los botones «Cambiar foto» y «Eliminar foto» están junto al avatar del bot. Se admiten PNG, JPEG y WebP.
+
+<Warning>
+  Una foto subida aquí cambia cómo se ve el bot **dentro de la plataforma**. El avatar que los suscriptores ven en
+  Telegram se define solo en @BotFather (el comando `/setuserpic`): es una restricción de la Bot API de Telegram. Para
+  que las imágenes coincidan, ponga la misma foto aquí y en @BotFather.
+</Warning>
+
+## Actividad
+
+El interruptor de actividad en la cabecera de la ficha del bot lo enciende y lo apaga en la plataforma. Mientras el bot
+está apagado no responde a los suscriptores ni participa en difusiones; los suscriptores, los escenarios y el historial
+se conservan. El estado actual está escrito junto al interruptor: «Encendido» o «Apagado».
+
+## Token del bot
+
+La ficha «Token del bot» muestra el token actual oculto y permite reemplazarlo con el botón «Cambiar token». El token
+se obtiene de @BotFather.
+
+El reemplazo es necesario si usted revocó el token en @BotFather o si cayó en manos ajenas: pegue un token nuevo del
+**mismo** bot. Al revocar, el identificador del bot no cambia, así que los suscriptores, los escenarios y el historial
+se quedan en su lugar y el bot vuelve a funcionar con el token nuevo.
+
+<Note>
+  El token se puede cambiar incluso cuando el bot está marcado como no disponible: es la forma principal de recuperar un
+  bot después de revocar el token antiguo.
+</Note>
+
+## Si el bot dejó de estar disponible
+
+Cuando Telegram deja de aceptar las peticiones del bot, arriba de la página aparece una advertencia «Bot no disponible»
+con una fecha aproximada y un motivo. Todas las acciones con el bot quedan bloqueadas mientras dure.
+
+| Motivo | Qué ocurrió |
+| --- | --- |
+| Token revocado en @BotFather | El token antiguo ya no sirve, hace falta uno nuevo. |
+| El bot está bloqueado por Telegram | Telegram restringió el bot de su lado. |
+| Fallo de entrega de actualizaciones | Telegram no pudo pasar al bot los mensajes de los suscriptores. |
+| Motivo desconocido | No se pudo determinar el motivo. |
+
+La advertencia tiene botones: «Comprobar de nuevo» (volver a verificar la disponibilidad con Telegram), «Cambiar
+token» (pegar un token nuevo del mismo bot) y «Eliminar» (para un administrador de la empresa). Después de cambiar el
+token el bot se recupera automáticamente.
+
+## Aumento de pago de los límites
+
+Por defecto Telegram limita un bot a 30 mensajes por segundo en todas las llamadas a la vez: difusiones, respuestas de
+operador y respuestas automáticas del embudo. El aumento de pago de los límites eleva ese techo a 1000 mensajes por
+segundo. Cada mensaje por encima de los 30 gratuitos por segundo descuenta 0,1 Telegram Star del saldo del bot.
+
+En la ficha se ve la carga actual del bot (el promedio de mensajes por segundo de los últimos 7 días) y el saldo de
+Stars, así que puede valorar si tiene sentido activarlo. Con una carga alta sostenida o difusiones grandes ayuda; si la
+carga está por debajo del límite gratuito, todavía no hace falta.
+
+<Steps>
+  <Step title="Active la opción en @BotFather" icon="robot">
+    @BotFather → Bot Settings → Allow Paid Broadcasts.
+  </Step>
+  <Step title="Ponga Stars en el saldo del bot" icon="star">
+    Un mínimo de 10 000 Telegram Stars a través de @BotFather → Manage Bot → Balance.
+  </Step>
+  <Step title="Active el interruptor de la ficha" icon="toggle-on">
+    Al activarlo, el saldo de Stars se comprueba de inmediato. Si los Stars se agotan durante un envío, este se interrumpe con un error claro y el evento queda en el registro.
+  </Step>
+</Steps>
+
+## Claves de API
+
+La ficha «Claves de API» de esta misma pantalla emite las claves para lanzar un embudo desde su código. Cada clave
+admite tres acciones:
+
+| Acción | Qué hace |
+| --- | --- |
+| **Renovar clave** | Emite un valor nuevo; el anterior deja de funcionar de inmediato. |
+| **Deshabilitar** | La clave se queda en la lista, pero las peticiones con ella no se aceptan. |
+| **Eliminar** | Quita la clave definitivamente. |
+
+Se pueden crear hasta diez claves por bot: así puede emitir una clave separada para cada integración y deshabilitar una
+sin tocar las demás.
+
+<Card title="API del editor de flujos" icon="code" href="/es/api-konstruktora">
+  Cómo lanzar un embudo y enviar un callback con esta clave.
+</Card>
+
+## Traslado entre workspaces
+
+Si la empresa tiene más de un workspace, un bot se puede trasladar a otro. La ficha «Workspace» muestra el workspace
+actual y un botón «Trasladar». El bot se muda al workspace elegido dentro de la misma empresa, y los suscriptores, los
+escenarios y el historial se conservan. El traslado está disponible para el propietario o un administrador de la
+empresa.
+
+## Eliminar un bot
+
+El botón «Eliminar bot» de la ficha inferior oculta el bot de todas las listas. Los suscriptores y los escenarios se
+conservan 365 días: es suficiente para recuperar el bot si cambia de opinión, agregándolo con el mismo token.
+
+<Warning>
+  Si en el momento de la eliminación el bot ya no está disponible en Telegram, la eliminación es definitiva y el bot no
+  se puede recuperar. La eliminación está disponible para el propietario o un administrador de la empresa.
+</Warning>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Configuración de IA" icon="robot" href="/es/ai-operator">
+    Persona, base de conocimiento, modelo y presupuesto del operador con IA de este bot.
+  </Card>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Difusiones masivas a los suscriptores del bot, donde los límites elevados vienen bien.
+  </Card>
+</Columns>

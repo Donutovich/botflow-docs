@@ -1,0 +1,148 @@
+---
+title: "Facturación"
+description: "Recarga del saldo en USDT-TRC20, gasto en tokens y en el funcionamiento de los bots, límites diarios e historial de cargos."
+icon: "wallet"
+---
+
+El saldo de una empresa se recarga en USDT por la red TRON (TRC-20). Del saldo se cobran los gastos de tokens (respuestas del
+operador con IA y traducción de mensajes) y el funcionamiento de los bots en la plataforma. La sección vive en
+«Configuración» → «Pagos» → «Facturación». El saldo se guarda en dólares y se recarga en criptomoneda al tipo de cambio
+vigente.
+
+<Note>
+  El propietario de la empresa o un administrador pueden recargar el saldo, cambiar los límites diarios y solicitar una
+  devolución. Para los operadores y los miembros sin derechos de administrador la sección está oculta.
+</Note>
+
+## Recargar el saldo
+
+<Steps>
+  <Step title="Abra «Facturación» y pulse «Recargar»" icon="wallet">
+    «Configuración» → «Pagos» → «Facturación». El botón «Recargar» abre el cuadro de recarga.
+  </Step>
+  <Step title="Indique el monto" icon="coins">
+    El campo «Monto (USD)». La recarga mínima es de 50 $. Pulse «Crear factura» y se abre una página de pago con la factura.
+  </Step>
+  <Step title="Confirme la red" icon="triangle-exclamation">
+    Antes de mostrar la dirección, la página le pide confirmar que envía USDT justamente por la red TRON (TRC-20). Pulse el botón de confirmación para ver la dirección.
+  </Step>
+  <Step title="Envíe USDT a la dirección" icon="qrcode">
+    La página muestra un código QR, la dirección de pago, el monto en USDT y la red. Transfiera exactamente el monto indicado a esa dirección desde su monedero o desde un exchange.
+  </Step>
+  <Step title="Espere el abono" icon="circle-check">
+    El estado de la página se actualiza automáticamente. Cuando se alcanza el número necesario de confirmaciones en la red, el saldo se recarga y la página se puede cerrar.
+  </Step>
+</Steps>
+
+<Warning>
+  Envíe solo USDT por la red TRON (TRC-20). Una transferencia por otra red (ERC-20, BEP-20, Solana) a esta dirección significa
+  la pérdida definitiva de los fondos. Copie la dirección y el monto con el botón de la página en lugar de escribirlos a mano.
+</Warning>
+
+### Estados de una factura
+
+La página de pago muestra el estado actual y una cuenta atrás hasta que la factura expira.
+
+| Estado | Qué significa |
+| --- | --- |
+| Esperando el pago | La factura está creada, la transferencia todavía no llegó. |
+| Transacción detectada | El pago se ve en la red y se están acumulando las confirmaciones. |
+| Confirmando | El contador de confirmaciones de la red crece. |
+| Confirmado | Los fondos se abonaron al saldo. |
+| Llegó menos que el monto | Llegó menos de lo esperado. El saldo se recarga con el monto realmente recibido; cree una factura nueva por el resto. |
+| Expirada | Se agotó el tiempo de la factura. |
+
+<Info>
+  Si usted envió la transferencia y la factura alcanzó a expirar, los fondos se abonan igualmente; si eso no ocurrió, escriba a
+  soporte. Una empresa puede tener hasta 5 facturas sin pagar a la vez, así que no cree una nueva mientras una anterior siga
+  esperando el pago.
+</Info>
+
+## Códigos promocionales
+
+Junto al botón «Recargar» hay un campo «Código promocional». Introduzca el código, pulse «Aplicar», y el monto del código se
+abona al saldo. Después de aplicarlo aparece un mensaje de confirmación, y en el historial de transacciones una fila «Crédito
+promocional».
+
+## En qué se gasta el saldo
+
+Del saldo se cobran dos categorías de gasto:
+
+- **Tokens.** Se tarifican las respuestas del operador con IA a los suscriptores y la traducción de mensajes: cada respuesta de
+  la IA y cada traducción reducen el saldo. Más sobre la IA misma en [Operador con IA](/es/ai-operator).
+- **Funcionamiento de los bots en la plataforma.** Según la fórmula de la ficha de saldo:
+  `0,50 $ / bot / día + 0,05 $ / 1k mensajes`. La tarifa por bot se cobra por cada bot activo al día, y los mensajes se cuentan
+  en ambos sentidos: entrantes de los suscriptores y salientes de los bots.
+
+La ficha «Saldo actual» muestra el monto en dólares y la fórmula de cobro.
+
+### Gasto en tokens
+
+La ficha de gasto de los últimos 30 días muestra los cargos por tokens: lo cobrado en 30 días, el número de respuestas de IA,
+la cantidad de tokens y un desglose por bot (las columnas «Cobrado» y «Respuestas»). La fila «Acumulado (sin cobrar)» muestra
+el gasto del período actual, que entrará en el próximo cobro.
+
+## Límite diario de gasto en IA
+
+El límite diario de gasto acota cuánto se puede gastar en respuestas de IA por día. Se define en dos niveles.
+
+<Columns cols={2}>
+  <Card title="Para toda la empresa" icon="building">
+    «Configuración» → «Empresa», el campo «Presupuesto diario de AI (toda la empresa)». Acota los cargos totales por respuestas de IA de todos los bots al día.
+  </Card>
+  <Card title="Para un bot concreto" icon="robot">
+    La página «Configuración de IA» del bot que necesite, el campo «Presupuesto diario de AI (este bot)». Acota los cargos por las respuestas de ese bot únicamente.
+  </Card>
+</Columns>
+
+Debajo de cada campo se ve lo gastado hoy y lo que queda hasta el límite. Cuando se alcanza el límite diario, el operador con
+IA deja de responder hasta la medianoche UTC y continúa al día siguiente. Un campo vacío significa sin límite. Si están
+definidos los dos límites, la IA se detiene en el que se alcance primero: el bot llegando a su presupuesto o la empresa al
+común.
+
+<Info>
+  El límite cubre solo las respuestas del operador con IA. Los demás bloques del embudo (mensajes, botones, retrasos) siguen
+  funcionando incluso mientras la IA está en pausa. Los presupuestos los cambia el propietario o un administrador de la
+  empresa, y el presupuesto común está en [Configuración](/es/settings).
+</Info>
+
+## Historial de transacciones
+
+La ficha «Historial de transacciones» muestra las últimas 50 operaciones del saldo. Las columnas son «Hora», «Tipo»,
+«Descripción», «Monto USD» y «Saldo después». Las recargas y los abonos llevan un más, los cargos van en negativo, así que la
+columna «Saldo después» es cómoda para comprobar cómo cambió el saldo.
+
+| Tipo | Qué significa |
+| --- | --- |
+| Recarga | Un abono después de pagar una factura. |
+| Crédito promocional | Un abono por un código promocional. |
+| Cargo | Pago de tokens (respuestas de IA y traducción) y del funcionamiento de los bots. |
+| Devolución | Fondos devueltos al saldo. |
+| Ajuste | Un cambio de saldo tras su solicitud a soporte. |
+| Bono por prepago anual | Un abono por pagar un año por adelantado. |
+| Pago de afiliado, Bono de afiliado | Abonos del programa de referidos. |
+
+## Devolución del saldo
+
+Para recuperar un saldo no usado, escriba a soporte e indique el monto y la dirección USDT-TRC20 para la transferencia. La
+solicitud se revisa antes de enviar los fondos.
+
+## Programa de referidos
+
+Invite clientes por su enlace y reciba una comisión de su gasto en la plataforma. El área de referidos se abre desde el menú
+del perfil: su enlace, las estadísticas de las personas que invitó y el retiro de la comisión acumulada en USDT. Más en
+[Programa de referidos](/es/referral).
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Operador con IA" icon="robot" href="/es/ai-operator">
+    Cómo funciona la IA y por qué respuestas se cobra el saldo.
+  </Card>
+  <Card title="Programa de referidos" icon="handshake" href="/es/referral">
+    Su enlace, la comisión del gasto de sus referidos y el retiro en USDT.
+  </Card>
+  <Card title="Equipo y configuración" icon="users" href="/es/settings">
+    La configuración general de la empresa y el presupuesto diario de IA para toda la empresa.
+  </Card>
+</Columns>
