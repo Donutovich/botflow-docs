@@ -1,0 +1,162 @@
+---
+title: "Bot settings"
+description: "The bot's name, description and avatar, its token, activity, paid broadcast limits, moving between workspaces and deletion."
+icon: "sliders"
+---
+
+The "Settings" section at bot level collects everything about the bot itself: how it looks to subscribers, its token, activity, sending limits and actions such as moving or deleting it. It opens from the bot menu, the "Setup" group → "Settings".
+
+<Info>
+  Any member with access to the bot can view the settings. The bot manager and a company administrator can
+  change the name, description, avatar and activity. Moving between workspaces and deletion are available only
+  to the company owner or an administrator.
+</Info>
+
+## Bot profile
+
+The "Profile" card holds three fields that describe the bot. Everything you change here is sent to Telegram and
+visible to **all subscribers**, not only inside the platform.
+
+<Columns cols={3}>
+  <Card title="Name" icon="signature">
+    Up to 64 characters. Shown as the bot's name in the chat list and in the dialog header.
+  </Card>
+  <Card title="Short description" icon="align-left">
+    Up to 120 characters. Shown in the bot preview when it is referenced by an @mention.
+  </Card>
+  <Card title="Description" icon="align-justify">
+    Up to 512 characters. Shown in an empty chat with the bot while the subscriber has not pressed "Start" yet.
+    Telegram draws the heading above it in the subscriber's own language.
+  </Card>
+</Columns>
+
+Each field is edited separately: press the pencil next to the value, type the text and save. A character
+counter is shown under the field. The short description and the description may be left empty, the name is
+required.
+
+<Tip>
+  While a description is set, the page shows a "Telegram preview" block: how an empty chat with the bot looks
+  to a subscriber, with the description text and the "Start" button. That way you see the result before people
+  do.
+</Tip>
+
+## Avatar
+
+The "Change photo" and "Remove photo" buttons sit next to the bot's avatar. PNG, JPEG and WebP are supported.
+
+<Warning>
+  A photo uploaded here changes how the bot looks **inside the platform**. The avatar subscribers see in
+  Telegram is set only in @BotFather (the `/setuserpic` command): that is a Telegram Bot API restriction. To
+  make the pictures match, set the same photo both here and in @BotFather.
+</Warning>
+
+## Activity
+
+The activity toggle in the bot card header switches the bot on and off on the platform. While the bot is off it
+does not reply to subscribers and does not take part in broadcasts; subscribers, scenarios and history are all
+kept. The current state is written next to the toggle: "On" or "Off".
+
+## Bot token
+
+The "Bot token" card shows the current token masked and lets you replace it with the "Change token" button. The
+token comes from @BotFather.
+
+Replacing it is needed if you revoked the token in @BotFather or it fell into the wrong hands: paste a new token
+for **the same** bot. Revoking does not change the bot's identifier, so subscribers, scenarios and history stay
+in place and the bot works again on the new token.
+
+<Note>
+  The token can be changed even while the bot is marked as unavailable: that is the main way to bring a bot back
+  after the old token was revoked.
+</Note>
+
+## If the bot became unavailable
+
+When Telegram stops accepting the bot's requests, a "Bot unavailable" warning appears at the top of the page
+with an approximate date and a reason. All actions on the bot are blocked for that time.
+
+| Reason | What happened |
+| --- | --- |
+| Token revoked in @BotFather | The old token no longer works, a new one is needed. |
+| The bot is blocked by Telegram | Telegram restricted the bot on its side. |
+| Update delivery failure | Telegram could not pass subscribers' messages to the bot. |
+| Unknown reason | The reason could not be determined. |
+
+The warning has buttons: "Check again" (re-check availability with Telegram), "Change token" (paste a new token
+for the same bot) and "Delete" (for a company administrator). After a token change the bot recovers
+automatically.
+
+## Paid broadcast limits
+
+By default Telegram limits a bot to 30 messages per second across all calls at once: broadcasts, operator
+replies and automatic funnel replies. Paid broadcasts raise that ceiling to 1000 messages per second. Every
+message above the free 30 per second charges 0.1 Telegram Star from the bot's balance.
+
+The card shows the bot's current load (the average number of messages per second over 7 days) and the Stars
+balance, so you can judge whether switching it on makes sense. With a steadily high load or large broadcasts it
+helps; if the load is below the free limit, there is no need yet.
+
+<Steps>
+  <Step title="Enable the option in @BotFather" icon="robot">
+    @BotFather → Bot Settings → Allow Paid Broadcasts.
+  </Step>
+  <Step title="Put Stars on the bot's balance" icon="star">
+    At least 10,000 Telegram Stars through @BotFather → Manage Bot → Balance.
+  </Step>
+  <Step title="Switch the toggle on the card" icon="toggle-on">
+    When you switch it on, the Stars balance is checked immediately. If Stars run out during a send, it stops with a clear error and the event lands in the log.
+  </Step>
+</Steps>
+
+## API keys
+
+The "API keys" card on the same screen issues the keys for starting a funnel from your code. Three actions are
+available per key:
+
+| Action | What it does |
+| --- | --- |
+| **Rotate key** | Issues a new value; the previous one stops working immediately. |
+| **Disable** | The key stays in the list, but requests with it are not accepted. |
+| **Delete** | Removes the key for good. |
+
+Up to ten keys can be created per bot: that lets you issue a separate key for each integration and disable one
+without touching the others.
+
+A key is tied to the employee who issued it and lives by their access. If that employee is
+deactivated, or their access to subscriber data is taken away, the key stops working and the card
+shows a note. Issue a new key under an active employee in that case.
+
+A key is tied to the employee who issued it and lives by their access. If that employee is
+deactivated, or their access to subscriber data is taken away, the key stops working and the card
+shows a note. Issue a new key under an active employee in that case.
+
+<Card title="Flow builder API" icon="code" href="/en/api-konstruktora">
+  How to start a funnel and send a callback with this key.
+</Card>
+
+## Moving between workspaces
+
+If the company has more than one workspace, a bot can be moved to another. The "Workspace" card shows the
+current workspace and a "Move" button. The bot moves to the chosen workspace inside the same company, and
+subscribers, scenarios and history are kept. Moving is available to the company owner or an administrator.
+
+## Deleting a bot
+
+The "Delete bot" button in the bottom card hides the bot from every list. Subscribers and scenarios are kept for
+365 days: that is enough to restore the bot if you change your mind, by adding it again with the same token.
+
+<Warning>
+  If the bot is already unavailable in Telegram at the moment of deletion, the deletion is final and the bot
+  cannot be restored. Deletion is available to the company owner or an administrator.
+</Warning>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="AI Settings" icon="robot" href="/en/ai-operator">
+    Persona, knowledge base, model and budget of this bot's AI operator.
+  </Card>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    Mass broadcasts to the bot's subscribers, where raised limits come in handy.
+  </Card>
+</Columns>

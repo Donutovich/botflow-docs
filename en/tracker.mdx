@@ -1,0 +1,169 @@
+---
+title: "Tracker: overview"
+description: "What the tracker is, how the section is organised, the dashboard and funnel metrics from click to deposit."
+icon: "chart-line"
+---
+
+The tracker links advertising traffic with subscribers and conversions: where a click came from, who started the
+bot and what happened next, all the way to a deposit. Reports, metrics and traffic-buying optimisation are built
+on that data.
+
+## What the tracker is for
+
+<Columns cols={2}>
+  <Card title="Counts the whole funnel" icon="filter">
+    The platform records every click, bot start, subscribe, registration and deposit and links them to a specific
+    subscriber by `click_id`.
+  </Card>
+  <Card title="Keeps the traffic source" icon="tags">
+    For every subscriber you see which ad campaign, ad set and ad brought the click, down to the sub parameters.
+  </Card>
+  <Card title="Returns events to the ad account" icon="facebook">
+    Registrations and deposits go back to Facebook through the Conversion API, and reach affiliates and CRMs as
+    postbacks. Ad algorithms see real actions rather than clicks alone.
+  </Card>
+  <Card title="Optimises traffic buying for events" icon="bullseye">
+    A campaign can be optimised not only for a click but for any funnel action: a subscribe, a dialog, a
+    registration, a first deposit, a repeat deposit.
+  </Card>
+</Columns>
+
+## How the section is organised
+
+In the company's left menu the tracker is a single "Tracker" item. Inside it, at the top, there is a horizontal
+menu of eight tabs. It is not the left menu: the tabs switch the section's content while staying in place.
+
+| Tab | What for | More |
+|---|---|---|
+| **Dashboard** | Metrics, the funnel and campaign activity for a period. | below on this page |
+| **Campaigns** | The campaign list, tracking links, statistics, editing. | [Campaigns](/en/campaigns) |
+| **Landings** | Telegram clones and "Custom HTML" landings for FB traffic. | [Landings](/en/landings) |
+| **Postbacks** | Connecting affiliate networks to receive postbacks. | [Postbacks](/en/postbacks) |
+| **S2S Postbacks** | Sending conversion events to external services. | [S2S Postbacks](/en/s2s-postbacks) |
+| **Reports** | Conversion and click logs with filters and CSV export. | [Reports](/en/reports) |
+| **Domains** | Your domains for the tracking links of FB campaigns. | [Domains and proxies](/en/domains-proxies) |
+| **Proxies** | Proxies for sending events to Facebook CAPI. | [Domains and proxies](/en/domains-proxies) |
+
+<Info>
+  The tracker sections are available to members with a tracker role ("Buyer", "Team lead buyer") and to company
+  administrators. A member without a tracker role does not see the section at all. A buyer sees their own
+  campaigns, a team lead buyer sees their buyers' campaigns and their own, and a company administrator sees
+  everything. How to grant access is described in [Team and settings](/en/settings).
+</Info>
+
+## The click's path
+
+The tracker collects the whole chain from an ad click to a conversion.
+
+<Steps>
+  <Step title="Ad click" icon="arrow-pointer">
+    A person follows a tracking link. A click is recorded: geo, device, browser, sub parameters, bot and proxy signals. The click is assigned a `click_id`.
+  </Step>
+  <Step title="Landing" icon="window-maximize">
+    For an FB campaign your landing opens. The view is marked as an LP view. The button leads into the bot with a link like `t.me/<bot>?start=<click_id>`.
+  </Step>
+  <Step title="Bot start" icon="robot">
+    The person presses the button and sends `/start`. A subscriber appears and enters the funnel, tied to the campaign and the `click_id`.
+  </Step>
+  <Step title="Funnel and conversions" icon="filter">
+    The subscriber walks the funnel: subscribe, first message, registration, deposits. Conversions from the affiliate network are tied to the subscriber by `click_id`.
+  </Step>
+</Steps>
+
+<Note>
+  A landing click and a bot start are different events. A landing click is a hit on the promo page, and it may
+  never reach the bot. Starting the bot with `/start` creates a subscriber and opens the funnel. In reports they
+  are separated: clicks on the tracking link in one tab, bot starts in another.
+</Note>
+
+## Dashboard
+
+The dashboard gathers the picture across all campaigns for the selected period. The period is switched with the
+tabs "Today", "Yesterday", "Last 7 days", "Last 30 days", "All time" and "Period" ("Last 7 days" by default).
+Next to them there is a filter by a specific campaign. A custom range holds no more than 365 days.
+
+Each period is a calendar range of dates rather than the last N hours: "Today" shows today's date from midnight,
+"Yesterday" the whole of yesterday, "Last 7 days" exactly seven dates including today. In a custom period both
+chosen dates are included in the range.
+
+<Note>
+  Dates are counted in UTC. If you work in a zone east of UTC, events at night by your local time fall into the
+  previous UTC date.
+</Note>
+
+The dashboard has four parts.
+
+<Columns cols={2}>
+  <Card title="Metrics" icon="gauge">
+    Tiles with the key numbers: subscribes, contacts, registrations, FTD, RD, CR, R2D. The set of tiles is configured with the metric picker. Clicking a tile opens the matching report filtered by campaign.
+  </Card>
+  <Card title="Trends" icon="chart-line">
+    A chart of the chosen metrics over time. A metric tile can be put on the chart with a colour indicator or hidden from it.
+  </Card>
+  <Card title="Activity" icon="bolt">
+    A live feed with two tabs: "Clicks" (landing clicks) and "Bot starts" (direct `/start`). A row leads to the "Clicks" log filtered by that `click_id`.
+  </Card>
+  <Card title="Recent conversions" icon="receipt">
+    Fresh FTD, RD and registrations as soon as you open the tracker, without switching tabs. The FTD, RD and Reg chips filter the types you need.
+  </Card>
+</Columns>
+
+<Tip>
+  The "Recent conversions" card shows fresh conversions right at opening: in the morning you see FTD, RD and
+  registrations without opening any report. A conversion row leads to the campaign page, and the subscriber chip
+  opens the conversation with them.
+</Tip>
+
+## Funnel metrics
+
+The metrics show the traffic funnel from click to deposit. Metric names are the same in every interface language
+and are written exactly as they are.
+
+The funnel stages go in this order: clicks, unique clicks, bot subscribes, contacts (a first message from the
+subscriber), registrations, FTD, RD.
+
+| Metric | Meaning |
+|---|---|
+| **Click2LP** | The share of clicks that reached a landing view. |
+| **LP2Bot** | The share of landing views that moved into the bot. |
+| **Click2Bot** | End-to-end conversion from click to bot start. |
+| **Click2Sub** | Clicks into bot subscribes. |
+| **Sub2Con** | Subscribes into contacts (subscribers who replied). |
+| **Click2FTD** | Clicks into first deposits. In the campaign list and on the dashboard tiles it is labelled CR. |
+| **Reg2Dep** | Registrations into deposits. On the dashboard tiles it is labelled R2D. |
+| **EPC** | Deposits amount per click (earnings per click). |
+
+<Info>
+  Besides the ready metrics, a company can create its own derived metrics from a formula over the base numbers
+  (clicks, unique clicks, landing views, subscribes, contacts, registrations, FTD, RD, deposit amounts and spend) in
+  [Tracker settings](/en/tracker-settings). They appear in the dashboard's metric picker automatically.
+</Info>
+
+## Tracker sections
+
+<Columns cols={2}>
+  <Card title="Campaigns" icon="rectangle-ad" href="/en/campaigns">
+    The unit of traffic: its own tracking link, a source (Facebook, Telegram, invite link), a funnel and statistics. The creation wizard, the starting block, statuses.
+  </Card>
+  <Card title="Landings" icon="window-maximize" href="/en/landings">
+    Telegram clones and "Custom HTML" landings. For FB traffic a landing is required: it carries the pixel and separates the ad click from the move into Telegram.
+  </Card>
+  <Card title="Postbacks and affiliates" icon="arrows-rotate" href="/en/postbacks">
+    Receiving conversions from affiliate networks (registration, FTD, RD) and sending events to Facebook CAPI. Attribution by `click_id`.
+  </Card>
+  <Card title="Reports" icon="table-list" href="/en/reports">
+    Conversion and click logs with a filter builder and CSV export. The answer to "the affiliate sent an FTD and I don't see it".
+  </Card>
+  <Card title="S2S Postbacks" icon="arrow-up-right-from-square" href="/en/s2s-postbacks">
+    Sending conversion events to external services: the URL, the parameters and the delivery log.
+  </Card>
+  <Card title="Tracker settings" icon="sliders" href="/en/tracker-settings">
+    Conversion types and transition rules, custom metrics, automations, blacklists and whitelists.
+  </Card>
+  <Card title="Domains and proxies" icon="globe" href="/en/domains-proxies">
+    Your domains for the tracking links of FB campaigns and proxies for sending events to the Facebook Conversion API.
+  </Card>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Where a subscriber lands after starting the bot: blocks, conditions, triggers, including "Request approved" for invite links.
+  </Card>
+</Columns>

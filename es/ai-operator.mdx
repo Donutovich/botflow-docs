@@ -1,0 +1,221 @@
+---
+title: "Operador con IA"
+description: "Persona, base de conocimiento, primer mensaje y recordatorios de IA, modelo y presupuesto del operador virtual."
+icon: "robot"
+---
+
+El operador con IA lleva una conversación en vivo con un suscriptor en lugar de una persona. Se conecta a través del
+bloque «Operador con IA» en el [editor de flujos](/es/constructor) y conversa igual que un operador normal. La
+configuración común (persona, modelo, idioma, base de conocimiento, presupuesto) vive en la sección «Configuración de
+IA» del bot. El objetivo de cada diálogo concreto se define en el propio bloque de IA del embudo.
+
+## Cómo conectarlo
+
+<Steps>
+  <Step title="Active el operador con IA" icon="toggle-on">
+    En la sección del bot abra «Configuración de IA» y active el interruptor superior. Mientras está apagado, los bloques «Operador con IA» del editor de flujos no responden.
+  </Step>
+  <Step title="Describa la persona y elija un modelo" icon="user">
+    En el campo «Persona» defina quién lleva la conversación y cómo. Más abajo elija el modelo de lenguaje que generará las respuestas.
+  </Step>
+  <Step title="Agregue un bloque de IA en el editor de flujos" icon="diagram-project">
+    En el lienzo del [editor de flujos](/es/constructor) agregue un bloque «Operador con IA» (uno de los tipos de bloque). En la pestaña «Objetivo» describa hacia qué lleva la IA la conversación en este bloque.
+  </Step>
+  <Step title="Configure las transiciones" icon="arrow-right">
+    Dibuje flechas del bloque de IA a los pasos siguientes. La condición de cada flecha se escribe con palabras, y la IA decide cuándo se cumple.
+  </Step>
+</Steps>
+
+<Note>
+  La configuración de IA está disponible para gerentes y administradores de la empresa. El rol «Operador» no la ve. El
+  presupuesto diario y la traducción de mensajes los activa solo un administrador de la empresa.
+</Note>
+
+## Persona
+
+La persona define quién lleva la conversación: nombre, rol, manera de hablar, historia (dónde trabaja el operador, qué
+ofrece). Influye en el tono y el comportamiento más que la elección del modelo.
+
+- Escriba en positivo, es decir, qué debe hacer el operador y no solo qué evitar.
+- Mantenga la descripción corta y al punto: los párrafos largos difuminan el comportamiento del operador.
+- Ejemplo: «Consultor amable de un servicio. Ayuda a resolver dudas, responde al punto, sin lenguaje burocrático».
+
+Las prohibiciones duras (temas, promesas, acciones que el operador no hace) van al campo «Restricciones» dentro de la
+«Configuración avanzada». La manera de escribir (tono, largo de las frases, emoción) se configura allí mismo, en «Estilo
+de conversación».
+
+## Modelo
+
+El modelo genera las respuestas. La lista se abre como una búsqueda por nombre: escriba parte del nombre y elija un
+modelo del catálogo.
+
+- La elección del modelo influye en la calidad de las respuestas y en cuán fiablemente se mantienen las transiciones por
+  flechas, la memoria del diálogo y las pausas en la respuesta.
+- Para embudos internacionales tome un modelo multilingüe potente.
+
+<Tip>
+  Si el modelo que necesita no está en la lista, puede escribir su nombre a mano. El operador con IA sigue funcionando.
+</Tip>
+
+## Idioma
+
+La sección «Idioma» define en qué idioma responde el operador. La forma de elegirlo se define en el campo «Cómo elegir
+el idioma de la respuesta», cuyo valor por defecto es detectarlo del mensaje.
+
+- **Detectar del mensaje.** La IA responde en el idioma del último mensaje del suscriptor. El modo por defecto.
+- **Siempre un idioma.** La IA responde siempre en el idioma elegido.
+- **Reflejar el idioma del diálogo.** La IA mantiene el idioma en que empezó el diálogo.
+
+El «Idioma por defecto» se define por separado: el idioma del primer mensaje, mientras el suscriptor todavía no escribió
+nada (por ejemplo, cuando entra al embudo con un comando y no con texto). En cuanto el suscriptor escribe, la IA se
+adapta a su idioma en los modos de detección y reflejo.
+
+Por defecto este campo está en automático, según el suscriptor. El idioma del primer mensaje se elige entonces por
+prioridad: primero el idioma definido en la configuración, después el idioma del dispositivo del suscriptor, después el
+idioma de reserva general.
+
+<Info>
+  Para fijar el idioma del primer mensaje de forma rígida, elija un idioma concreto en «Idioma por defecto» en lugar de la
+  opción automática.
+</Info>
+
+En el modo «Siempre un idioma» aparece el interruptor «Conoce solo este idioma». Con él el operador no entiende los
+mensajes en otros idiomas y reacciona como reaccionaría una persona real que no los conoce.
+
+## Objetivo del bloque y transiciones
+
+La persona, el modelo y el idioma son comunes a todo el bot. Cada bloque de IA tiene su propio objetivo, definido en el
+editor de flujos. El «Operador con IA» está en el editor junto a los demás tipos de bloque: «Condición de inicio»,
+«Estado del diálogo» y «Fallback».
+
+- **Objetivo del bloque.** En la pestaña «Objetivo» describa hacia qué lleva la IA la conversación aquí. Por ejemplo:
+  llevar al pago, responder preguntas sobre el plan, resolver objeciones y llevar a una solicitud.
+- **Transiciones.** Las flechas del bloque de IA definen a dónde seguir. En una flecha, en el campo de la condición que
+  decide la IA, se escribe la condición con palabras, por ejemplo «el cliente confirmó que está listo para hacer un
+  depósito». La IA la evalúa a partir de lo que dice el interlocutor. Una condición vacía funciona como transición de
+  reserva.
+
+## Mensajes por iniciativa de la IA
+
+La IA puede escribir no solo como respuesta, sino por su cuenta. Son dos casos distintos, ambos configurados en el bloque
+de IA: el primer mensaje al entrar al bloque y los recordatorios a un suscriptor que se quedó callado.
+
+### El primer mensaje al entrar
+
+La pestaña «Objetivo» tiene el interruptor «Escribir primero al entrar».
+
+- **Activado.** La IA abre el diálogo por sí misma cuando un suscriptor entra al bloque.
+- **Desactivado.** La IA espera el primer mensaje del suscriptor y solo entonces responde.
+
+El idioma de ese primer mensaje viene del «Idioma por defecto» (vea la sección anterior).
+
+### Recordatorios de IA
+
+Si un suscriptor se queda callado, la IA puede devolverlo al diálogo. En la pestaña «Seguimientos» del bloque de IA,
+active «Recordatorios activados»: en un bloque con IA la IA siempre elige el momento y la formulación. El texto no sale de plantillas: la IA lo compone a partir del contexto de la conversación y
+de lo que ya sabe del suscriptor. Tres campos definen la frecuencia:
+
+- **Máximo de recordatorios.** Cuántas veces la IA recordará su presencia (de 1 a 10).
+- **No más de una vez cada (min).** No más de un recordatorio por esa cantidad de minutos.
+- **No menos de una vez cada (min).** Al menos un recordatorio por esa cantidad de minutos.
+
+Cuando la IA responde al suscriptor, la pausa empieza de nuevo. Los recordatorios se detienen cuando el
+suscriptor avanza por el embudo o se agota el límite. A quienes bloquearon el bot no se les envían recordatorios.
+
+<Note>
+  Los bloques normales (sin IA) también tienen recordatorios, pero allí son mensajes preparados por temporizador: una
+  cadena lista de mensajes con retrasos desde el momento de entrar al bloque. Más en
+  [Editor de flujos](/es/constructor).
+</Note>
+
+## Base de conocimiento
+
+La base de conocimiento es lo que hace que la IA responda según sus materiales y no invente. Agregue sus condiciones,
+respuestas a preguntas frecuentes, reglas de retiro, descripción de bonos.
+
+<Steps>
+  <Step title="Agregue un material" icon="plus">
+    Pulse «Agregar», indique un nombre (opcional) y pegue el texto del material. Se admite cualquier idioma.
+  </Step>
+  <Step title="Espere la indexación" icon="hourglass">
+    El material recibe el estado «Indexación» y después «Listo». La IA empieza a responder según él cuando está «Listo».
+  </Step>
+  <Step title="La IA responde según sus materiales" icon="comments">
+    Los materiales se convierten en una búsqueda por significado. Ante la pregunta de un suscriptor la IA encuentra el fragmento adecuado y responde según él, no según conocimientos generales.
+  </Step>
+</Steps>
+
+Se pueden agregar hasta 200 materiales por bot. Un material se puede editar o eliminar en cualquier momento, y después de
+editarlo se vuelve a indexar.
+
+<Tip>
+  La base de conocimiento funciona con el operador con IA activado.
+</Tip>
+
+## La IA sigue siendo una persona
+
+El operador se comporta como un empleado real y nunca insinúa que es una IA.
+
+- El suscriptor no ve señales de automatización: ni «soy un bot», ni «soy una IA», ni frases de servicio. El operador
+  siempre responde que es una persona real.
+- Cuando hace falta una persona real (un caso complicado, o el suscriptor no avanza hacia el objetivo durante mucho
+  tiempo), el diálogo pasa en silencio a modo manual y llega a un operador en la [Mensajería](/es/messenger) (llamada
+  «Mensajes» en el menú del bot). El suscriptor no nota nada y no se anuncia ningún traspaso.
+- El ajuste «Pasar a manual después de N respuestas en el bloque» (en «Configuración avanzada», la sección «Generación»)
+  limita cuántas rondas lleva la IA por su cuenta antes de pasar a un operador. El valor 0 quita el límite.
+
+## Presupuesto
+
+El gasto en respuestas de IA está limitado por presupuestos diarios y por el saldo de la empresa.
+
+- **Presupuesto diario de AI (este bot).** El máximo cobrado por las respuestas de IA de ese bot al día. Al alcanzar el
+  límite la IA calla hasta la medianoche (UTC) y continúa al día siguiente. Un campo vacío significa sin límite. La ficha
+  muestra cuánto se gastó hoy del límite.
+- **Presupuesto diario de AI (toda la empresa).** Un límite común para todos los bots de la empresa, definido en la
+  [configuración de la empresa](/es/settings). El límite del bot y el de la empresa se aplican a la vez: actúa el que se
+  alcance primero.
+- **Saldo.** El gasto total también está limitado por el saldo de la empresa, detalles en [Facturación](/es/billing).
+
+<Warning>
+  Solo un administrador de la empresa cambia el presupuesto diario y la traducción de mensajes. Un gerente ve el resto de
+  la configuración de IA pero no el presupuesto.
+</Warning>
+
+## Adicionales
+
+Las fichas de abajo y la «Configuración avanzada» reúnen los parámetros más finos.
+
+<Columns cols={2}>
+  <Card title="Memoria sobre el interlocutor" icon="brain">
+    La IA recuerda hechos estables sobre la persona (qué quiere, qué le incomoda, sus restricciones) y los tiene en cuenta en conversaciones posteriores. Desactivado por defecto; activarlo aumenta el gasto de tokens.
+  </Card>
+  <Card title="Reconocimiento de medios" icon="image">
+    Una foto se trata como adjunto: la IA describe la imagen y el texto que contiene. Los mensajes de voz, el audio, el video y los videomensajes todavía no se reconocen, y están marcados como próximamente.
+  </Card>
+  <Card title="Traducción de mensajes" icon="language">
+    El operador traduce los mensajes del diálogo a su idioma y muestra una vista previa del saliente en el idioma del suscriptor. Lo activa un administrador de la empresa; el operador con IA debe estar activado.
+  </Card>
+  <Card title="Generación" icon="sliders">
+    Ajuste fino de la respuesta: estilo de respuesta («Por defecto», «Más animado», «Más estricto» o uno propio para ajuste manual), emoji y longitud. Normalmente basta con elegir un estilo.
+  </Card>
+  <Card title="Realismo de la escritura" icon="keyboard">
+    Retrasos y división de la respuesta en varios mensajes para que la conversación parezca humana: pausa antes de responder, pausas entre mensajes y número de mensajes en una respuesta.
+  </Card>
+</Columns>
+
+## Secciones relacionadas
+
+<Columns cols={2}>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Donde vive el bloque de IA: su objetivo, las flechas de transición, los recordatorios.
+  </Card>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    Dónde acaba un diálogo pasado a un operador real.
+  </Card>
+  <Card title="Facturación" icon="wallet" href="/es/billing">
+    Saldo y cobros por las respuestas de IA.
+  </Card>
+  <Card title="Configuración" icon="gear" href="/es/settings">
+    El presupuesto diario de IA para toda la empresa.
+  </Card>
+</Columns>

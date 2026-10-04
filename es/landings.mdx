@@ -1,0 +1,193 @@
+---
+title: "Landings"
+description: "La página entre un clic y el bot: clones de Telegram y archivos HTML personalizados con píxel para el tráfico de FB."
+icon: "window-maximize"
+---
+
+Un landing es una promo-página entre el clic publicitario y el paso al bot. Para el tráfico de Facebook es obligatorio: el
+landing es el que lleva el píxel y separa el clic publicitario del paso a Telegram. Para el tráfico directo de Telegram no
+hace falta landing, el enlace lleva al bot directamente.
+
+## Dónde están los landings
+
+En el menú izquierdo de la empresa abra la sección **Tracker** y vaya a la pestaña **Landings**. Aquí ve todos los landings
+de la empresa, su estado y sus métricas. El botón **Nuevo landing** empieza a crear uno.
+
+<Info>
+  Los landings, como todo el tracker, están disponibles para los miembros con un rol en el tracker («Comprador», «Líder de
+  compradores») y para los administradores de la empresa. Un miembro sin rol en el tracker no ve la pestaña. Sobre los roles
+  vea [Configuración y accesos](/es/settings).
+</Info>
+
+## Dos tipos de landing
+
+<Columns cols={2}>
+  <Card title="Clon de Telegram" icon="clone">
+    Una copia de la página pública `t.me/<bot>`. El encabezado, el avatar y la descripción se toman de la configuración del bot en @BotFather. No hay nada que subir.
+  </Card>
+  <Card title="HTML personalizado" icon="file-code">
+    Un archivo ZIP con su propio `index.html`. El maquetado que quiera. En el enlace del botón de paso se inserta un placeholder, donde la plataforma sustituye el enlace al bot. Hasta 50 MB.
+  </Card>
+</Columns>
+
+El tipo se elige al crear y determina el conjunto de ajustes. El nombre del landing (por ejemplo, «@mybot principal t.me» o
+«VIP funnel») lo ven solo usted y su equipo y nunca llega a los anuncios.
+
+## Clon de Telegram
+
+El clon repite el aspecto de la página pública `t.me/<bot>`, pero sin la cabecera de Telegram y sin redirección automática:
+las redes publicitarias prohíben esa redirección. El botón de paso lleva al bot con un enlace del tipo
+`t.me/<bot>?start=<click_id>`.
+
+Al crearlo usted elige un bot, y los campos de la página se toman de su información en @BotFather. Cualquier campo se puede
+sobrescribir en la configuración del landing. Un campo vacío toma el valor actual del bot.
+
+| Campo | Qué muestra | Si está vacío |
+|---|---|---|
+| **Encabezado** | El nombre sobre el botón | El nombre actual del bot en @BotFather |
+| **About** | La descripción bajo el encabezado | La descripción corta del bot (`/setabouttext`) |
+| **Extra** | Una línea bajo el encabezado | El `@username` del bot |
+| **Texto del botón** | La leyenda del botón de paso | `Start Bot` |
+| **Foto** | La imagen de la página | El avatar del bot |
+| **Nota al pie** | El texto bajo el botón | La nota estándar sobre iniciar en Telegram |
+
+La foto se sube como JPEG, PNG o WebP de hasta 5 MB. Si elimina la foto, vuelve a sustituirse el avatar del bot.
+
+<Note>
+  Las ediciones de un clon se aplican a toda la página a la vez: al encabezado, a la descripción y a la vista previa que se
+  muestra cuando el enlace se envía por mensajería.
+</Note>
+
+## HTML personalizado
+
+Si necesita su propio diseño, suba un archivo ZIP con su landing. Dentro del archivo es obligatorio un `index.html` (en la
+raíz o en una sola carpeta anidada). El tamaño máximo del archivo es 50 MB.
+
+Para que el botón de paso lleve al bot, en su enlace (href) debe haber el placeholder `{{offer}}`. Al mostrar la página, la
+plataforma lo reemplaza por un enlace personal `t.me/<bot>?start=<click_id>` con el código de clic de ese visitante.
+
+```html
+<a href="{{offer}}">Abrir en Telegram</a>
+```
+
+Además puede usar el placeholder `{{click_id}}` dentro del HTML si quiere pasar el código del clic a sus propios scripts o
+píxeles de la página.
+
+<Warning>
+  Si `{{offer}}` no se encuentra en el archivo, el landing se sube igualmente, pero al lado aparece una advertencia de que el
+  placeholder `{{offer}}` no se encontró y el botón no podrá llevar al bot. Compruebe que está justamente en el href del botón
+  y suba el archivo de nuevo.
+</Warning>
+
+<Tip>
+  Los placeholders `{{offer}}` y `{{click_id}}` se escriben exactamente así, entre llaves dobles. Las llaves simples
+  (`{offer}`) no se reconocen y no se reemplazan.
+</Tip>
+
+Subir un ZIP de nuevo reemplaza la versión anterior del landing. Los demás archivos del archivo (estilos, imágenes, scripts)
+se sirven junto con la página, y no hay que enlazar nada desde fuera.
+
+## El landing por defecto
+
+Para cada bot la plataforma crea automáticamente un clon de Telegram marcado como **Por defecto**. Siempre refleja la
+configuración actual del bot en @BotFather, así que no se puede editar ni eliminar; edite el perfil del bot en su lugar. Si
+necesita su propio encabezado o imagen, cree un clon de Telegram aparte y configúrelo.
+
+## Estados
+
+| Estado | Qué significa |
+|---|---|
+| **Borrador** | Creado pero no listo para mostrarse (por ejemplo, un landing personalizado sin ZIP subido). |
+| **Desplegando** | La página se está preparando. |
+| **Activo** | Listo para mostrarse, se puede asignar a campañas. |
+| **Error** | Algo salió mal en la preparación, el landing no se puede mostrar. |
+
+Un clon de Telegram se activa justo después de crearse. Un landing personalizado se activa cuando usted subió un ZIP
+correcto con `index.html`.
+
+## Métricas del landing
+
+De cada landing se cuentan clics, visitas y pasos al bot. Una visita del landing (**LP view**) se registra por separado del
+clic: el clic se registra al pedir la página, mientras la LP view se marca cuando la página se renderizó de verdad para el
+visitante. Eso permite ver qué proporción de clics llegó al landing y pulsó el botón hacia el bot.
+
+| Columna | Significado |
+|---|---|
+| **Clics** | Visitas al landing por el enlace de tracking. |
+| **LP views** | Renderizados reales de la página para un visitante. |
+| **Inicios del bot** | Pasos al bot desde este landing (se crea un suscriptor). |
+| **Click2LP** | La proporción de clics que llegaron a una visita del landing. |
+| **LP2Bot** | La proporción de visitas del landing que pasaron al bot. |
+| **Click2Bot** | Conversión de extremo a extremo del clic al inicio del bot. |
+
+Los nombres de las métricas son iguales en todos los idiomas de la interfaz. El período se elige arriba de la pestaña: un
+día, 7 días, 30 días, todo el tiempo o un rango personalizado. La lista se puede ordenar por cualquier columna numérica, y
+el conjunto de columnas se configura con el botón «Columnas».
+
+<Note>
+  Un clic en el landing y un inicio del bot son eventos distintos. Un clic en el landing es una llegada a la promo-página, y
+  puede no llegar nunca al bot. Iniciar el bot con `/start` crea un suscriptor y abre el embudo. En los reportes del tracker
+  están separados. Más en [Tracker: descripción general](/es/tracker).
+</Note>
+
+## Cómo conectar un landing al tráfico
+
+Un landing no acepta tráfico por sí solo. Hay que asignarlo a una campaña: entonces las visitas por el enlace de la campaña
+abren ese landing.
+
+<Steps>
+  <Step title="Cree el landing" icon="window-maximize">
+    Arme un clon de Telegram o suba un ZIP personalizado y llévelo al estado «Activo».
+  </Step>
+  <Step title="Elíjalo en la campaña" icon="link">
+    En el asistente de campaña, en el paso «Punto de entrada», indique el bot y el landing. Para la fuente Facebook el landing lleva el píxel. Cómo crear una campaña se describe en [Campañas](/es/campaigns).
+  </Step>
+  <Step title="Lance el tráfico" icon="arrow-pointer">
+    Reparta el enlace de tracking de la campaña. Cada visitante verá el landing, y el botón lo llevará al bot vinculado a un `click_id`.
+  </Step>
+</Steps>
+
+<Info>
+  El píxel de Facebook se define en la configuración de la campaña y no en el landing: la plataforma lo inserta en la página
+  al mostrarla. El evento PageView se dispara en una visita del landing, y los eventos de servidor van por la Conversion API.
+  Sobre el píxel y los postbacks vea [Postbacks y conversiones](/es/postbacks).
+</Info>
+
+## Gestión de la lista
+
+<Columns cols={2}>
+  <Card title="Búsqueda y filtro" icon="magnifying-glass">
+    Búsqueda por nombre y filtro por estado: «Todos», «Activos», «Borradores».
+  </Card>
+  <Card title="Vista previa" icon="eye">
+    El botón de vista previa abre el landing en una pestaña nueva. Es una visualización de servicio: el píxel no se dispara y la visita no entra en las métricas.
+  </Card>
+  <Card title="Edición" icon="pen">
+    Cambiar los campos de un clon o reemplazar el ZIP de un landing personalizado. El landing «Por defecto» no se puede editar.
+  </Card>
+  <Card title="Eliminación" icon="trash">
+    Un landing se puede eliminar de uno en uno o en masa seleccionando varias filas. El landing «Por defecto» no se puede eliminar.
+  </Card>
+</Columns>
+
+<Note>
+  Un comprador ve y edita sus propios landings, un líder de compradores ve los de sus compradores y los suyos, y un
+  administrador de la empresa los ve todos.
+</Note>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+    Clics, conversiones y el camino del clic al depósito.
+  </Card>
+  <Card title="Campañas" icon="link" href="/es/campaigns">
+    Cómo crear una campaña y conectarle un landing.
+  </Card>
+  <Card title="Dominios y proxies" icon="globe" href="/es/domains-proxies">
+    Su propio dominio para los enlaces de FB y un proxy para la Conversion API.
+  </Card>
+  <Card title="Postbacks y conversiones" icon="receipt" href="/es/postbacks">
+    Recepción de eventos de las redes de afiliados y envío a Facebook.
+  </Card>
+</Columns>

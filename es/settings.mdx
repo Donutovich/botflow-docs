@@ -1,0 +1,280 @@
+---
+title: "Configuración"
+description: "Empresa y workspaces, roles del equipo, invitaciones, accesos, grupos y la configuración general de la empresa."
+icon: "gear"
+---
+
+En esta sección usted gestiona la estructura de la empresa: invita a su equipo, otorga accesos a los bots, reúne operadores en
+grupos y define la configuración general. Los dominios y los proxies están en
+[Dominios y proxies](/es/domains-proxies).
+
+## Empresa y workspaces
+
+Todo en BotFlow vive dentro de una **empresa**. Es el nivel superior: el equipo, los workspaces, los bots, los dominios, el
+tracker y la facturación pertenecen a la empresa. Una persona puede tener varias empresas y cambia entre ellas en la cabecera
+(«Mis empresas»).
+
+Un **workspace** agrupa los bots de un equipo o cliente dentro de una empresa. Cada workspace tiene sus propios bots y su propio
+equipo con accesos. Es la forma principal de separar proyectos.
+
+<Columns cols={2}>
+  <Card title="Empresa" icon="building">
+    El nivel superior. El equipo, los roles, los dominios, el tracker y la facturación se configuran a nivel de empresa. El propietario ve todos los bots y todas las campañas; un administrador ve todos los bots, y las campañas con el permiso «Tracker» activado.
+  </Card>
+  <Card title="Workspace" icon="layer-group">
+    Un grupo de bots para un equipo o cliente. Sus propios bots, sus propios accesos y sus propios grupos. A un miembro el acceso se le otorga por workspace.
+  </Card>
+</Columns>
+
+```
+Empresa «Su equipo»
+├─ Equipo (miembros y roles de la empresa)
+├─ Workspace «Marketing»
+│  ├─ Bot A
+│  └─ Bot B
+├─ Workspace «Cliente №2»
+│  └─ Bot C
+├─ Tracker (campañas, dominios, conversiones)
+└─ Facturación
+```
+
+<Info>
+  El propietario y los administradores de la empresa tienen acceso a todos los workspaces y bots automáticamente. Las campañas
+  del tracker el propietario las ve siempre, y un administrador con el permiso «Tracker» activado. A un miembro el acceso a los
+  bots se le otorga aparte, con un rol en un workspace.
+</Info>
+
+## Cómo funcionan los roles
+
+Los permisos en BotFlow van en dos niveles. El rol **en la empresa** define qué ve un miembro a nivel de toda la empresa: el
+equipo, los dominios, el tracker, la facturación. El rol **en los bots** define qué hace en workspaces y conversaciones
+concretos. La misma persona puede ser un miembro común de la empresa y a la vez gerente en varios bots.
+
+### Rol en la empresa
+
+<Columns cols={3}>
+  <Card title="Propietario" icon="crown">
+    Uno por empresa. Solo el propietario renombra la empresa, traspasa la propiedad, gestiona la facturación y elimina la empresa. Ve todos los bots y todas las campañas del tracker automáticamente.
+  </Card>
+  <Card title="Administrador" icon="user-shield">
+    Gestiona la empresa: invita miembros, conecta dominios, otorga acceso al tracker, edita la configuración general. Ve todos los bots, y el tracker y la facturación con los permisos correspondientes activados (vea abajo). El rol «Administrador» solo lo puede otorgar el propietario.
+  </Card>
+  <Card title="Miembro" icon="users">
+    El rol base. Por sí solo no ve la configuración de la empresa, los dominios, el tracker ni la facturación. El acceso a los bots se otorga aparte, con un rol en un workspace.
+  </Card>
+</Columns>
+
+<Note>
+  Un miembro sin derechos de administrador no ve las secciones de nivel de empresa. Los landings, el tracker y los dominios están
+  disponibles para el rol «Administrador» y superiores con el permiso «Tracker» activado, y la facturación con el permiso
+  «Facturación» activado.
+</Note>
+
+### Rol en los bots
+
+Cuando un administrador otorga a un miembro acceso a un workspace, elige uno de estos roles. Se aplica a todos los bots de ese
+workspace.
+
+| Rol | Qué puede hacer |
+| --- | --- |
+| **Gerente** | Acceso completo al bot: escenarios, difusiones, suscriptores, conversaciones. |
+| **Controlador** | Todo lo que puede un operador, más acceso al tracker. No lanza difusiones ni edita escenarios. |
+| **Operador** | Lee y responde en las conversaciones, no edita escenarios. |
+| **Operador anónimo** | Lo mismo que un operador, pero ve a los suscriptores anonimizados como «User #N». El nombre y el username quedan ocultos. |
+
+<Info>
+  La anonimización es para equipos donde los operadores no deben ver los datos personales de los suscriptores. El propietario y
+  los administradores de la empresa siempre ven los datos reales; el enmascarado no se les aplica.
+</Info>
+
+### Solicitudes de desanonimización
+
+Un operador anónimo puede solicitar los datos de un suscriptor concreto con un botón en la conversación. La solicitud va a la
+sección «Solicitudes de desanonimización» de un gerente: allí se ve quién pide acceso y sobre qué suscriptor, y la solicitud se
+puede aprobar o denegar. Después de aprobarla el operador ve el nombre y el username reales de ese suscriptor, mientras los demás
+siguen anonimizados para él.
+
+### Permisos de administrador
+
+El acceso de un administrador se puede ajustar con precisión. El panel de acceso de un miembro tiene un bloque «Permisos de
+administrador» con dos interruptores:
+
+| Interruptor | Qué abre |
+| --- | --- |
+| **Tracker** | Campañas, reportes, importes de depósitos y dominios. Con el interruptor apagado el administrador no ve el tracker. |
+| **Facturación** | El saldo, las recargas y el historial de cargos de la empresa. Con el interruptor apagado la sección «Facturación» no está disponible para él. |
+
+Los dos están activados por defecto, así que un administrador recién invitado lo ve todo.
+
+Al lado se define el «Ámbito de acceso»: todos los workspaces o los seleccionados. Un administrador de workspaces seleccionados
+gestiona solo esos, y la facturación de la empresa no está disponible para él.
+
+## Invitar miembros
+
+Las invitaciones funcionan por correo. Un administrador o el propietario pueden invitar a una persona nueva, pero el rol
+«Administrador» en una invitación está disponible solo para el propietario: un administrador invita miembros. El botón «Invitar»
+abre el panel de acceso único: todo el acceso de un miembro se define en una pantalla y de una sola vez.
+
+<Steps>
+  <Step title="Abra «Miembros»" icon="users">
+    Configuración de la empresa, el grupo «Equipo», la sección «Miembros». El botón «Invitar» de la derecha está disponible para los administradores.
+  </Step>
+  <Step title="Indique el correo" icon="envelope">
+    Introduzca un correo. Para invitar a varias personas a la vez, cambie a la pestaña «Varios» y pegue todas las direcciones juntas.
+  </Step>
+  <Step title="Defina el rol en la empresa" icon="user-shield">
+    «Miembro» o «Administrador». El rol «Administrador» está disponible solo para el propietario de la empresa. Un administrador ve todos los bots, así que los accesos a los workspaces de abajo no hace falta configurárselos.
+  </Step>
+  <Step title="Configure el acceso al tracker y a los bots" icon="key">
+    Para un miembro, elija aquí mismo el rol en el tracker (sin acceso, comprador o líder de compradores) y marque los workspaces con un rol en ellos (gerente, controlador, operador u operador anónimo). Todo va en una sola invitación.
+  </Step>
+  <Step title="Envíe el enlace" icon="link">
+    El botón «Crear enlace» emite un enlace de invitación. Cópielo y envíelo a la persona por el canal que prefiera: correo, Telegram, cualquier mensajería. Por el enlace se registrará y entrará en su empresa.
+  </Step>
+</Steps>
+
+<Note>
+  Una invitación es válida 7 días. Mientras la persona no la acepte, queda en el bloque «Esperando aceptación». Allí se puede
+  copiar el enlace de nuevo, reenviarlo (se crea un enlace nuevo con el plazo reiniciado) o revocarlo.
+</Note>
+
+### Gestión de miembros
+
+En la tabla «Miembros» cada persona muestra su rol, sus accesos, la fecha de incorporación y su última actividad. La opción
+«Gestionar acceso» de la fila (o «Otorgar acceso» en la columna de accesos) abre el mismo panel, ahora titulado «Acceso del
+miembro». En una sola pantalla un administrador cambia el rol en la empresa, el rol en el tracker y el acceso a los workspaces, y
+los cambios se aplican con «Guardar».
+
+Solo el propietario puede cambiar el rol de otro administrador, otorgarle el permiso «Facturación» o quitarlo de la empresa.
+
+Aparte, el menú de la fila de un miembro permite quitarlo de la empresa: todos sus accesos a los bots y al tracker se revocan de
+inmediato y pierde el acceso a la empresa. Al propietario no se lo puede quitar; para cambiar de propietario existe el traspaso de
+la propiedad.
+
+## Accesos a los workspaces y grupos
+
+El acceso de un miembro a los bots se otorga a nivel de workspace. Un solo otorgamiento da un rol en todos los bots del
+workspace, incluidos los que se agreguen después. El acceso se configura desde la fila del miembro («Acceso a los workspaces») o
+directamente en la invitación.
+
+### Grupos de acceso
+
+La página «Accesos» dentro de un workspace tiene una pestaña «Grupos». Un grupo de acceso une bots y miembros con un solo rol. Es
+cómodo para equipos de operadores por turnos: agrega a una persona al grupo y recibe un único rol en todos sus bots; la quita del
+grupo y el acceso se revoca. El rol de cada miembro sigue bajo el control del administrador.
+
+## Acceso al tracker
+
+El tracker tiene sus propios roles, separados de los del equipo: definen qué miembros ven las campañas. Un rol en el tracker se
+otorga en el mismo panel de acceso del miembro, junto con el rol en la empresa y los workspaces.
+
+<Columns cols={2}>
+  <Card title="Comprador" icon="user">
+    Ve solo sus propias campañas. Cada comprador está vinculado a un líder: en el panel se elige de la lista «Líderes» o entre el propietario y los administradores de la empresa.
+  </Card>
+  <Card title="Líder de compradores" icon="user-shield">
+    Ve sus propias campañas y las de todos los compradores a su cargo.
+  </Card>
+</Columns>
+
+El interruptor «Ocultar importes de depósitos» oculta a un miembro las columnas de importes de depósitos y EPC en los reportes del tracker. El propietario y
+los administradores con el permiso «Tracker» ven todas las campañas sin un otorgamiento aparte, y su rol en el tracker no hace
+falta configurarlo.
+
+<Tip>
+  El rol en el tracker no está relacionado con el rol en los bots. Un operador puede ser comprador en el tracker, y un gerente
+  puede no tener acceso a las campañas. Configure los dos niveles de forma independiente. Más sobre clics y conversiones en
+  [Tracker: descripción general](/es/tracker).
+</Tip>
+
+## Configuración de la empresa
+
+La sección «Configuración» está disponible para los administradores y para el propietario. La lista de categorías está a la
+izquierda, agrupada por temas.
+
+<Columns cols={3}>
+  <Card title="Empresa" icon="building">
+    Configuración general: nombre, logo, presupuesto diario de AI y traspaso de la propiedad.
+  </Card>
+  <Card title="Equipo" icon="users" href="/es/logs">
+    Miembros e invitaciones. El registro de actividad con el historial de cambios de la empresa.
+  </Card>
+  <Card title="Integraciones" icon="plug">
+    El token de API de Cloudflare para los dominios. Las redes de afiliados se conectan en «Tracker», la pestaña «Postbacks».
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/es/tracker-settings">
+    Tipos de conversión, métricas personalizadas, reglas automáticas, listas negras y blancas para el tráfico.
+  </Card>
+  <Card title="Facturación" icon="wallet">
+    Saldo, recargas e historial de cargos. Disponible para los administradores y para el propietario.
+  </Card>
+</Columns>
+
+Acciones concretas de la pestaña «Empresa»:
+
+<Columns cols={3}>
+  <Card title="Nombre y logo" icon="signature">
+    Un administrador cambia el logo. Solo el propietario puede renombrar la empresa.
+  </Card>
+  <Card title="Presupuesto diario de AI" icon="robot">
+    Un techo para los cargos por respuestas de IA en todos los bots de la empresa al día. Al alcanzarlo la IA calla hasta la medianoche UTC y continúa al día siguiente. Un límite aparte para un bot concreto se define en su página de IA.
+  </Card>
+  <Card title="Traspaso de la propiedad" icon="right-left">
+    El propietario pasa el rol a otro miembro y se queda en la empresa como administrador. Pierde el derecho a eliminar la empresa y a traspasar la propiedad, mientras el acceso a la facturación se mantiene: si ya no lo necesita, desactive el permiso «Facturación» en el panel de acceso del miembro.
+  </Card>
+</Columns>
+
+<Note>
+  Eliminar una empresa se hace por soporte. Es a propósito, para que una pulsación accidental no borre de forma irreversible
+  todos los bots, suscriptores y difusiones.
+</Note>
+
+## Workspaces
+
+El orden de trabajo con un workspace: crearlo, agregar bots, otorgar accesos.
+
+<Steps>
+  <Step title="Cree un workspace" icon="folder-plus">
+    En la sección «Workspaces» pulse «Nuevo workspace» y defina un nombre (por ejemplo, «Marketing»). Los bots y los miembros se agregan después.
+  </Step>
+  <Step title="Agregue bots" icon="robot">
+    Conecte bots al workspace. Cómo hacerlo se describe en [Primeros pasos](/es/getting-started).
+  </Step>
+  <Step title="Configure el equipo" icon="user-plus">
+    En la página «Accesos» del workspace otorgue a los miembros roles individuales en los bots o reúnalos en grupos de acceso.
+  </Step>
+</Steps>
+
+En la configuración del workspace se puede cambiar el nombre y el avatar. Renombrar un workspace, cambiar su avatar y eliminarlo
+lo puede hacer un administrador o el propietario de la empresa. La eliminación funciona solo cuando todos los bots se han quitado
+del workspace o se han trasladado; los datos de los bots se conservan.
+
+## Dominios y proxies
+
+Sus propios dominios son necesarios para los enlaces de tracking y los landings: sin un dominio conectado los enlaces de tracking
+no funcionan. Los proxies hacen falta para que los eventos de Facebook salgan desde su dirección. Ambos viven en la sección
+«Tracker» y están disponibles para los administradores y el propietario.
+
+<Card title="Dominios y proxies" icon="globe" href="/es/domains-proxies">
+  Conexión de dominios en modo Manual (CNAME) y CF API, comprobación del estado, asignación de proxies a los bots.
+</Card>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Tracker y campañas" icon="chart-line" href="/es/tracker">
+    Clics, conversiones, postbacks y métricas de tráfico.
+  </Card>
+  <Card title="Facturación" icon="wallet" href="/es/billing">
+    Saldo, recargas e historial de cargos.
+  </Card>
+  <Card title="Mensajes" icon="comments" href="/es/messenger">
+    Cómo los operadores responden a los suscriptores.
+  </Card>
+  <Card title="Dominios y proxies" icon="globe" href="/es/domains-proxies">
+    Conexión de dominios y proxies para el tracking.
+  </Card>
+  <Card title="Contraseña y sesiones" icon="lock" href="/es/account-security">
+    Cambio de contraseña y lista de dispositivos que iniciaron sesión en su cuenta.
+  </Card>
+</Columns>

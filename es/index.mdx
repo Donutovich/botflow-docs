@@ -1,0 +1,145 @@
+---
+title: "Descripción general"
+description: "Cómo está organizada la plataforma BotFlow: empresa, workspace y bots, y dónde encontrar cada función."
+icon: "house"
+---
+
+BotFlow reúne el trabajo con sus suscriptores de Telegram en un solo lugar: constructor de embudos, conversaciones a través de bots, difusiones, operador con IA y tracker de conversiones. No hace falta conectar servicios aparte para el chat, las difusiones y la analítica.
+
+Aquí se muestra cómo está organizada la plataforma y dónde ir para cada función. Si acaba de empezar, abra [Primeros pasos](/es/getting-started).
+
+<Info>
+  Una cuenta tiene tres niveles: **empresa** (el nivel superior) → **workspace** (un espacio para un grupo de
+  bots y un equipo) → **bots** dentro del workspace. La empresa se crea automáticamente al registrarse,
+  mientras que el workspace y los bots los agrega usted.
+</Info>
+
+## Los tres niveles de la plataforma
+
+<Columns cols={3}>
+  <Card title="Empresa" icon="building">
+    El nivel superior de la cuenta: equipo y roles, dominios, el tracker de tráfico y la facturación. Todo lo común al proyecto.
+  </Card>
+  <Card title="Workspace" icon="folder">
+    Un espacio para un grupo de bots y un equipo. Cada uno tiene sus propios bots, difusiones, campañas y accesos, así que los distintos proyectos no se cruzan.
+  </Card>
+  <Card title="Bot" icon="robot">
+    Se conecta dentro de un workspace. Las secciones de un bot están agrupadas por el trabajo: conversaciones, audiencia, configuración.
+  </Card>
+</Columns>
+
+<Tip>
+  El nivel se cambia en la barra de navegación superior: Empresa › Workspace › Bot. A la izquierda siempre está
+  la lista de secciones del nivel actual.
+</Tip>
+
+## Nivel de empresa
+
+El nivel superior de la cuenta. Aquí está todo lo común al proyecto: la entrada de tráfico, el equipo, los dominios y el pago.
+
+<Columns cols={2}>
+  <Card title="Tracker" icon="chart-line" href="/es/tracker">
+    Clics, conversiones y postbacks en un solo lugar. Optimiza la compra de tráfico en FB y Telegram Ads hacia eventos: registros, depósitos y redepósitos.
+  </Card>
+  <Card title="Reportes" icon="chart-simple" href="/es/reports">
+    Estadísticas en vivo de embudos, campañas y suscriptores.
+  </Card>
+  <Card title="Equipo y configuración" icon="users" href="/es/settings">
+    Miembros, roles y accesos a los bots y al tracker.
+  </Card>
+  <Card title="Dominios y proxies" icon="globe" href="/es/domains-proxies">
+    Sus propios dominios para los enlaces y proxies para el tracker.
+  </Card>
+  <Card title="Facturación" icon="wallet" href="/es/billing">
+    Saldo, recargas en USDT-TRC20 y gastos en tokens y en el funcionamiento de los bots.
+  </Card>
+  <Card title="Postbacks" icon="arrows-rotate" href="/es/postbacks">
+    Recepción de eventos de las redes de afiliados: registro, depósito, redepósito.
+  </Card>
+  <Card title="Postbacks S2S" icon="arrow-up-right-from-square" href="/es/s2s-postbacks">
+    Envío de eventos de conversión a servicios externos.
+  </Card>
+</Columns>
+
+## Nivel de workspace
+
+Un espacio para un grupo de bots y un equipo. Contiene la lista de bots y todo lo que se lanza para el grupo entero: difusiones, campañas y landings.
+
+<Columns cols={2}>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Difusiones masivas con medios, botones y programación. Los mensajes automáticos por evento se configuran en el editor de flujos.
+  </Card>
+  <Card title="Campañas" icon="bullhorn" href="/es/campaigns">
+    Campañas de tráfico: fuente, dominio, landing y comprador.
+  </Card>
+  <Card title="Landings" icon="window-maximize" href="/es/landings">
+    Landings generados y subidos con un enlace al bot.
+  </Card>
+</Columns>
+
+<Tip>
+  Ctrl+K (Cmd+K en Mac) abre la paleta de comandos: buscando en ella encuentra bots, secciones y acciones sin
+  recorrer el menú. La misma paleta se abre con el botón «Comando…» en la cabecera.
+</Tip>
+
+## Nivel de bot
+
+Las secciones de un bot están agrupadas por el trabajo del operador: conversaciones, audiencia y configuración.
+
+### Conversaciones
+
+<Columns cols={2}>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    Una sola lista de chats con los suscriptores: los operadores responden a mano o pasan la conversación al operador con IA, ponen etiquetas y filtran los diálogos. En el menú del bot esta sección se llama «Mensajes».
+  </Card>
+</Columns>
+
+### Audiencia
+
+<Columns cols={2}>
+  <Card title="Suscriptores" icon="address-book" href="/es/subscribers">
+    La tabla completa de suscriptores con sus datos, etiquetas, etapa del embudo y datos del tracker. Filtros y acciones masivas.
+  </Card>
+  <Card title="Etiquetas" icon="tag" href="/es/tags">
+    Marcas para dividir a los suscriptores. Con ellas es cómodo filtrar y lanzar difusiones.
+  </Card>
+  <Card title="Filtros" icon="filter" href="/es/filters">
+    Los filtros no son una sección aparte del menú: viven dentro de «Mensajes», «Suscriptores», las difusiones y el bloque «Condición». Modos de la lista de chats, filtros rápidos del embudo y sus propios conjuntos de condiciones.
+  </Card>
+</Columns>
+
+### Configuración
+
+<Columns cols={2}>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Un constructor visual del embudo: bloques de mensajes y condiciones unidos por transiciones.
+  </Card>
+  <Card title="Configuración de IA" icon="wand-magic-sparkles" href="/es/ai-operator">
+    Persona, base de conocimiento, primer mensaje y recordatorios, modelo y presupuesto del operador con IA.
+  </Card>
+  <Card title="Variables" icon="brackets-curly" href="/es/variables">
+    Valores como `{{first_name}}` para sustituir en mensajes y condiciones.
+  </Card>
+  <Card title="Configuración del bot" icon="gear" href="/es/bot-settings">
+    Perfil y avatar del bot, actividad, token, límites, traslado entre workspaces y claves de API.
+  </Card>
+  <Card title="API del editor de flujos" icon="code" href="/es/api-konstruktora">
+    Lanzar un embudo y enviar un callback desde su código con la clave de API del bot.
+  </Card>
+</Columns>
+
+<Note>
+  ¿No sabe por dónde empezar? Recorra [Primeros pasos](/es/getting-started): conectar el primer bot y armar el
+  primer embudo toma unos minutos.
+</Note>
+
+## Documentación para la IA
+
+La documentación se puede entregar a un modelo de lenguaje. El botón en la parte superior de cada página la copia
+como Markdown o la abre en ChatGPT y Claude, y añadir `.md` a cualquier página devuelve su texto, por ejemplo
+`docs.botflow.cc/es/constructor.md`.
+
+<Tip>
+  Entregue esas páginas a su asistente de IA para que arme embudos y responda según el producto real. La versión de
+  la guía en un solo archivo, `docs.botflow.cc/llms-full.txt`, contiene el texto en ruso.
+</Tip>

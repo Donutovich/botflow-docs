@@ -1,0 +1,70 @@
+---
+title: "Logs"
+description: "The event log for bots and the company audit log: who changed what and when."
+icon: "list-check"
+---
+
+The two logs answer different questions. The "Event log" shows what happened to your bots, while the
+"Audit log" in the company settings shows who changed the company itself.
+
+## Event log
+
+The "Logs" section in the menu. A feed of bot events with filters by bot and by event type, plus a search in
+the description. The list is paged with "Previous" and "Next", and today's events are marked with the time. The
+search in the description covers the open page rather than the whole log, so pick a bot and an event
+type first. There is a CSV export button next to it.
+
+| Event | When it appears |
+| --- | --- |
+| **Flow created** | A new flow appeared in the builder. |
+| **Flow updated** | The flow's schema was changed. |
+| **Flow deleted** | A flow was removed from the builder. |
+| **Bot connected** | A bot was added to a workspace. |
+| **Bot switched off** | A bot was stopped with the toggle. |
+| **Subscriber blocked** | A subscriber was blocked from their card or from the conversation. |
+| **Subscriber deleted** | A subscriber was deleted. |
+| **Subscribers cleaned up** | A bulk subscriber deletion took place. |
+
+The log holds other events too, including access and key changes. The table above lists the ones you
+will see most often.
+
+If subscriber data is hidden for your role, some entries show a note instead of the description,
+saying that the entry contains subscriber data. The entry itself stays in place: you still see that
+the action happened, who did it and when. To see the subscriber's data, request access in the
+"Disclosure requests" section.
+
+<Tip>
+  When a funnel behaved differently from what you expected, start here: the event times show which flow edit
+  caused it.
+</Tip>
+
+## Company audit log
+
+Company settings, the "Team" group, item "Audit log". It collects changes to the company itself: creating and
+deleting workspaces, role changes, blocks, ownership transfer.
+
+| Column | What it shows |
+| --- | --- |
+| **Time** | When it happened. |
+| **Actor** | Who did it. Platform actions are marked as "System". |
+| **Action** | The type of change. |
+| **Description** | Details of the change. |
+| **Context** | What the change relates to. |
+
+The "All types" filter narrows the list down to a particular action type.
+
+<Info>
+  The audit log is visible to the company owner and administrators. The bot event log is available to members
+  with access to those bots.
+</Info>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Settings" icon="gear" href="/en/settings">
+    Roles, access and ownership transfer, whose changes land in the audit log.
+  </Card>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    How to start a broadcast, stop it and read the delivery report.
+  </Card>
+</Columns>

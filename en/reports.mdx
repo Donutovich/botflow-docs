@@ -1,0 +1,225 @@
+---
+title: "Reports"
+description: "Conversion and click logs: incoming postbacks, Facebook CAPI delivery, clicks with geo and devices, the filter builder and CSV export."
+icon: "table"
+---
+
+Reports are two logs inside the tracker: "Conversions" and "Clicks". They show traffic events row by row: which
+click arrived, who started the bot, which postback an affiliate sent and what the platform did with it. This is
+where you check disputed cases and export data rather than look at totals (for totals there is the
+[tracker dashboard](/en/tracker)).
+
+## Where to find it
+
+In the company's left menu open "Tracker", then the "Reports" tab. Inside the section there are two sub-tabs at
+the top:
+
+<Columns cols={2}>
+  <Card title="Conversions" icon="receipt">
+    The log of affiliate postbacks and outgoing events to Facebook CAPI. Opens by default.
+  </Card>
+  <Card title="Clicks" icon="arrow-pointer">
+    The log of every click on your tracking links with geo, device and sub parameters.
+  </Card>
+</Columns>
+
+<Info>
+  Reports are visible to members with a tracker role ("Buyer", "Team lead buyer") and to company administrators
+  with the "Tracker" capability. A member without a tracker role does not see the section. On granting access see
+  [Settings](/en/settings).
+</Info>
+
+## Tools shared by both logs
+
+Both logs are built the same way and share one set of tools at the top.
+
+| Tool | What it does |
+|---|---|
+| **Period** | "Today", "Yesterday", "Last 7 days", "Last 30 days", "All time", "Period". Each period is a calendar range of dates: "Today" shows today's date, "Last 7 days" exactly seven dates including today. By default the log opens on today. |
+| **Search** | A quick search by string (in conversions by `click_id`, in clicks by `click_id` or sub parameters). |
+| **Filter** | A condition builder from fields and operators (in detail below). |
+| **Columns** | The button shows and hides table columns. The choice is remembered for this company. |
+| **CSV export** | Exports the current selection into a CSV file. |
+| **Load more** | The log loads in pages of 50 rows, and the button loads the next one. |
+
+<Tip>
+  A row in either log can be expanded by clicking it: a card with every field of the event opens. In conversions
+  those are all the parameters of the postback as the affiliate sent them, the request body sent to Facebook and
+  the response; in clicks it is the full click card by groups (geo, device, sub parameters, FB, subscriber, flags).
+</Tip>
+
+## Conversions
+
+The log brings two streams of events into one feed:
+
+<Columns cols={2}>
+  <Card title="Incoming" icon="arrow-down-left">
+    Postbacks from affiliate networks: registration, FTD, RD. The platform matches them to a subscriber by `click_id`.
+  </Card>
+  <Card title="Outgoing" icon="arrow-up-right">
+    Events the platform sends back to Facebook through the Conversion API (CAPI) for FB campaigns.
+  </Card>
+</Columns>
+
+<Info>
+  S2S postback sends are not in this log: their log lives in [S2S Postbacks](/en/s2s-postbacks) on the "Log" tab.
+</Info>
+
+The direction is switched with the "All / Incoming / Outgoing" filter. In the table incoming rows are marked with
+an inward arrow and outgoing ones with an outward arrow.
+
+### Columns
+
+By default you see: time, direction, `click_id`, processing outcome, source, campaign. Through the "Columns"
+button you can add "Type" (the event status) and "Error" (the error text, if the event did not go through).
+
+### The outcome of an incoming postback
+
+The "Outcome" column shows what the platform did with a postback. It is the main answer to "the affiliate says it
+sent an FTD at 17:42 and I don't see it".
+
+| Outcome | What it means |
+|---|---|
+| `success` | The postback was accepted and attached to a subscriber. |
+| `no_click_match` | The `click_id` from the postback was not found: the click never reached the platform, or the id is wrong. |
+| `duplicate` | Such an event already arrived earlier, the repeat was rejected. |
+| `invalid_status` | The affiliate sent a status the platform does not accept. |
+| `invalid_token` | The postback arrived with the wrong affiliate key. |
+| `rejected_transition` | An invalid order of events for this click (for example, a repeat deposit before the first one). |
+| `rate_limited` | The affiliate sent events too often and some were not accepted. Check the sending rate on its side. |
+| `error` | The event could not be processed. The error text is visible in the "Error" column; if it repeats, write to support. |
+
+### Outgoing to Facebook CAPI
+
+For rows in the "Outgoing" direction the same column shows the delivery status to Facebook: "Sending" (in
+progress), "Delivered" (Facebook accepted it), "Failed" (could not be sent). The same delivery is visible on the
+campaign page in the "Facebook CAPI delivery" block. For which events go to CAPI and how to set that up see
+[Tracker: overview](/en/tracker) and [Postbacks](/en/postbacks).
+
+<Note>
+  The search in conversions is by an exact `click_id`. Enter the `click_id` of a disputed conversion and one query
+  shows its whole trail: whether the postback arrived, with which outcome, whether the event went to Facebook. If
+  the log is open on a narrow period and the row is missing, switch the period to "All time": the postback may have
+  arrived earlier.
+</Note>
+
+## Clicks
+
+The log of every click on the company's tracking links. Each click is assigned a `click_id`, which the bot start,
+the subscriber and the conversions are later tied to.
+
+### Columns
+
+There are many columns, and the set is configured with the "Columns" button. They cover almost the whole click
+card:
+
+<Columns cols={2}>
+  <Card title="Identity" icon="fingerprint">
+    Time, `click_id`, IP, Referer, User-Agent, campaign, bot, source.
+  </Card>
+  <Card title="Geo" icon="location-dot">
+    Country, city, region, language, ASN and AS Organization (the network provider).
+  </Card>
+  <Card title="Device" icon="mobile">
+    Device type, model, OS and version, browser and version.
+  </Card>
+  <Card title="FB breakdown" icon="facebook">
+    `fb_campaign`, `fb_adset`, `fb_ad`, placement. The values come from Facebook macros.
+  </Card>
+  <Card title="Sub parameters" icon="tags">
+    `sub1` … `sub5` from your tracking link.
+  </Card>
+  <Card title="Subscriber and flags" icon="user-check">
+    The subscriber (if the click reached the bot), "Unique", bot and proxy signals, "LP view".
+  </Card>
+</Columns>
+
+The chip in the "Subscriber" column leads to the conversation with that person (see [Messages](/en/messenger)).
+The "Bot" and "Proxy" signals mark suspicious traffic, "Unique" marks the first click from that device, and "LP
+view" means the click actually reached a landing view.
+
+### Click type: landing, /start, organic
+
+A landing click and a bot start are different events, and in the log they are told apart by the "Type" column:
+
+| Type | What it is |
+|---|---|
+| **Landing** | A visit through the tracking link, usually via a landing with a pixel. |
+| **TG /start** | A direct bot start through a `t.me` link with the campaign code, without a landing. This is already an entry into the funnel. |
+| **Organic** | A bot start without a campaign: the person found the bot themselves and sent `/start`. It lands in the "Organic" campaign. |
+
+<Note>
+  A landing click is a hit on the promo page, and it may never reach the bot. Starting the bot with `/start` creates
+  a subscriber and opens the funnel. A live feed of events with separate "Clicks" and "Bot starts" tabs is in the
+  "Activity" block on the [tracker dashboard](/en/tracker); clicking a row leads to the "Clicks" log filtered by
+  that `click_id`.
+</Note>
+
+<Tip>
+  The search in clicks looks by `click_id` or by any of the sub parameters. When you type a query the period
+  switches to "All time" automatically, so the click you need is not cut off by the chosen dates. Clear the query
+  and the period returns to today.
+</Tip>
+
+## The filter builder
+
+The "Filter" button opens the condition builder. You assemble a rule from three parts: field, operator and value;
+conditions inside a group are joined by "AND" or "OR", and groups between themselves by "OR". That is how you find,
+for example, every click from a particular ad set over the last day that has no subscriber.
+
+Fields are grouped by meaning: "Identity", "Geo", "Device", "Flags", "FB", "Sub tags", "Subscriber", and in the
+conversion log also "Outcome". In the conversion log you filter by `click_id`, campaign, source, processing
+outcome, status and error text.
+
+There are sixteen operators, and the available set depends on the field type:
+
+| Group | Operators |
+|---|---|
+| **Text** | equals, not equal, contains, does not contain, starts with, ends with, matches regex, does not match regex |
+| **Lists** | has any of, has none of |
+| **Numbers** | greater than, less than, greater or equal, less or equal |
+| **Emptiness** | is empty, is filled |
+
+## CSV export
+
+The "CSV export" button exports the current selection honouring every filter, the period and the search. An export
+returns up to 200 rows at a time, so for large slices narrow the selection with a filter or a period first. The file
+opens in Excel or Google Sheets, or is uploaded into your own tracker.
+
+<Warning>
+  `click_id` is the money identifier for attribution: it ties a future deposit to a specific subscriber and
+  campaign. In reports you can only view it and search by it; substituting it by hand is not allowed, otherwise the
+  money attaches to the wrong person. More in [Postbacks](/en/postbacks).
+</Warning>
+
+## Visibility by role
+
+The logs show only the data you have access to.
+
+| Role | What is visible in reports |
+|---|---|
+| **Buyer** | Clicks and conversions of their own campaigns only. Postback parameters are shown in a shortened form. |
+| **Team lead buyer** | The campaigns of all their buyers and their own. |
+| **Company administrator** | Every click and conversion of the company, with all event fields in full. |
+
+<Info>
+  A tracker role is granted separately from a team role. How to set it up is described in
+  [Settings](/en/settings).
+</Info>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Tracker: overview" icon="chart-line" href="/en/tracker">
+    The dashboard, funnel metrics, campaigns and tracking links these clicks and conversions come from.
+  </Card>
+  <Card title="Postbacks" icon="arrows-rotate" href="/en/postbacks">
+    How an affiliate sends events to your postback URL and how to read them in the conversion log.
+  </Card>
+  <Card title="Campaigns" icon="bullseye" href="/en/campaigns">
+    Setting up sources, landings and the FB Pixel, plus the breakdowns on a campaign page.
+  </Card>
+  <Card title="Filters" icon="filter" href="/en/filters">
+    The condition builder, the same one used for subscribers and broadcast audiences.
+  </Card>
+</Columns>

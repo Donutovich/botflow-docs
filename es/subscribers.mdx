@@ -1,0 +1,266 @@
+---
+title: "Suscriptores"
+description: "La base de suscriptores de un bot: la lista, los filtros, la ficha con datos y variables, importación y exportación."
+icon: "users"
+---
+
+Un suscriptor es una persona que inició su bot, es decir, le envió `/start`. Desde ese momento está en la base de
+suscriptores y en su embudo. Cada suscriptor tiene un Telegram ID, un nombre y un @username (si los definió en
+Telegram), una fecha de suscripción y un estado. La sección «Suscriptores» es la tabla completa de su audiencia para
+un bot.
+
+<Note>
+  Iniciar el bot y hacer clic en un anuncio son eventos distintos. Un clic en un enlace de tracking o en un landing
+  puede no llegar nunca al bot. Un suscriptor aparece solo cuando la persona realmente pulsó «Iniciar» y envió
+  `/start`. Sobre el camino del clic al bot vea [Tracker y campañas](/es/tracker).
+</Note>
+
+## Dónde encontrarlo
+
+En el menú del bot abra el grupo «Audiencia», la opción «Suscriptores». Al lado, en el mismo grupo, está
+[Etiquetas](/es/tags). La tabla muestra solo los suscriptores del bot actual: cada bot tiene su propia base.
+
+## Lista de suscriptores
+
+Los suscriptores se muestran en una tabla con estas columnas.
+
+| Columna | Qué muestra |
+|---|---|
+| **Nombre** | El nombre del suscriptor. Si no hay nombre ni @username, la fila se marca como sin nombre. |
+| **Username** | El @username en Telegram, si está definido. |
+| **Telegram ID** | El identificador numérico del usuario en Telegram. |
+| **Suscrito** | La fecha en que la persona inició el bot. |
+| **Estado** | «Activo» o «Bloqueado» (el usuario bloqueó el bot). |
+
+Al hacer clic en una fila se abre la ficha del suscriptor. A la derecha de la fila hay dos botones: abrir el diálogo
+(lleva a la conversación en la Mensajería, llamada «Mensajes» en el menú del bot) y eliminar al suscriptor. Al final
+de la lista el botón «Mostrar más» carga la página siguiente.
+
+Si la base está vacía, verá una indicación de que los suscriptores aparecerán cuando alguien envíe `/start` al bot.
+
+<Tip>
+  Puede encontrar a una persona concreta por nombre, apellido, @username o Telegram ID con la búsqueda de la
+  Mensajería, al abrir un diálogo. En la propia sección «Suscriptores» la audiencia se acota con los filtros y los
+  filtros rápidos del embudo, vea abajo.
+</Tip>
+
+## Filtros
+
+Sobre la tabla hay dos herramientas de selección: los filtros rápidos del embudo y el constructor de condiciones (el
+botón «Agregar filtro»). Al lado siempre se ve un contador de audiencia, por ejemplo «12 233 / 80 000 suscriptores»:
+a la izquierda cuántos coincidieron con el filtro, a la derecha cuántos hay en total.
+
+### Filtros rápidos del embudo
+
+Las plaquitas sobre la lista seleccionan etapas del embudo con una pulsación: `All`, `Reg`, `FD`, `RD`, `Deposits` y
+cortes por monto de depósitos `<$5`, `$5–10`, `$10–100`, `>$100`. Sus nombres son iguales en todos los idiomas de la
+interfaz, y lo que significa cada uno se describe en [Filtros](/es/filters).
+
+### Constructor de condiciones
+
+El botón «Agregar filtro» abre el constructor de condiciones. Aquí selecciona suscriptores por etiquetas, etapas del
+embudo, datos del tracker y variables del bot, uniendo condiciones con Y y O. Un filtro armado se puede guardar con
+un nombre y después elegirlo con un clic. El constructor de condiciones y los filtros guardados se describen en
+detalle en [Filtros](/es/filters).
+
+<Info>
+  El mismo filtro funciona como audiencia de difusión: la condición armada aquí es la que elige al crear una
+  [difusión](/es/broadcasts). Una sola forma de describir una audiencia, tanto para seleccionar como para enviar.
+</Info>
+
+## Acciones masivas
+
+A la izquierda de cada fila hay una casilla. Puede marcar suscriptores concretos o a todos a la vez.
+
+<Steps>
+  <Step title="Seleccione suscriptores" icon="square-check">
+    Marque filas una por una, o use la casilla de la cabecera para seleccionar a todos los que coinciden con el filtro actual, incluidos los que están por debajo de la parte visible de la lista.
+  </Step>
+  <Step title="Precise la selección" icon="filter">
+    En el modo «todos los que coinciden» puede desmarcar filas concretas para excluirlas de la selección.
+  </Step>
+  <Step title="Aplique la acción" icon="trash">
+    Abajo aparece un panel con el contador «N seleccionados» y el botón «Eliminar». La eliminación masiva no se puede deshacer: con los suscriptores se eliminan todos sus mensajes, variables y etiquetas puestas. De los suscriptores marcados uno por uno se eliminan como máximo 500 a la vez. En el modo «seleccionar todos los que coinciden» no hay límite: se eliminan todos los que entran en el filtro actual. La eliminación masiva está disponible para el rol «Gerente» y superiores.
+  </Step>
+</Steps>
+
+## Ficha del suscriptor
+
+Al hacer clic en una fila se abre la ficha. Arriba están el avatar, el nombre completo y el @username. Debajo vienen
+los datos del suscriptor.
+
+### Variables de sistema
+
+Son los campos estándar que la plataforma rellena por sí misma. Los nombres de las variables están siempre en inglés
+y no se traducen: se sustituyen en el embudo y en las difusiones tal como están.
+
+| Variable | Qué significa |
+|---|---|
+| `user_id` | El identificador del suscriptor en BotFlow. |
+| `telegram_id` | El identificador del usuario en Telegram. |
+| `first_name` | Nombre. |
+| `last_name` | Apellido. |
+| `full_name` | Nombre y apellido juntos. |
+| `username` | El @username en Telegram, si está definido. |
+| `date_of_birth` | Fecha de nacimiento, si se conoce. |
+| `created_at` | Cuándo la persona inició el bot (fecha de suscripción). |
+| `tag` | El parámetro de inicio con el que la persona lanzó el bot (`t.me/bot?start=123` da `123`). |
+
+### Variables personalizadas
+
+Además de los campos de sistema, un bot puede tener sus propias variables para sustituir en mensajes y condiciones.
+Cómo crearlas y usarlas se describe en [Variables](/es/variables).
+
+### Estado y acciones
+
+Debajo de las variables hay una plaquita de estado: «Activo» o «Bloqueado» (con la fecha del bloqueo). Al final de la
+ficha hay dos botones: «Abrir diálogo» (va a la conversación en la Mensajería) y «Eliminar».
+
+<Warning>
+  Eliminar un suscriptor no se puede deshacer. Con él se eliminan todos sus mensajes, variables y etiquetas puestas.
+  La plataforma pide confirmación antes de eliminar.
+</Warning>
+
+## Fuente de tráfico y conversiones
+
+La ficha del suscriptor muestra sus datos y variables. De dónde llegó y qué conversiones tiene (registro, FTD, RD) lo
+sigue el Tracker y se vincula al suscriptor por `click_id`. Los filtros rápidos del embudo sobre la lista (Reg, FD,
+RD, Deposits) reflejan justamente ese estado, así que puede seleccionar, por ejemplo, a todos los que se registraron
+sin depósito directamente en la lista de suscriptores.
+
+<Warning>
+  `click_id` es el identificador de atribución del dinero. Vincula un depósito futuro a un suscriptor y una campaña
+  concretos y no debe sustituirse a mano. Más en [Tracker y campañas](/es/tracker).
+</Warning>
+
+## Importar suscriptores
+
+Si ya tiene una base de otro servicio, puede subirla. El botón «Importar» de la cabecera acepta archivos `.xlsx` y
+`.csv`.
+
+<Steps>
+  <Step title="Revise las opciones de importación" icon="sliders">
+    El menú «Más» (tres puntos en la cabecera) tiene dos interruptores: detectar FTD al importar y trasladar etiquetas. Ambos están apagados por defecto, para que las marcas ajenas no ensucien su base.
+  </Step>
+  <Step title="Elija un archivo" icon="upload">
+    Pulse «Importar» e indique un `.xlsx` o `.csv`. Subir un archivo grande lleva tiempo, y el botón muestra el progreso.
+  </Step>
+  <Step title="Revise el resultado" icon="clipboard-check">
+    Después de la subida la plataforma informa cuántos suscriptores se agregaron y cuántos se actualizaron, además del número de registros, marcas trasladadas y errores.
+  </Step>
+</Steps>
+
+<Note>
+  Solo las filas con Telegram ID crean suscriptores nuevos: es justamente lo que identifica a un suscriptor en
+  Telegram. Una fila sin él no desaparece en silencio: su número se muestra en el resultado.
+</Note>
+
+### Fecha de registro
+
+Si el archivo tiene una columna «Fecha de registro» (`registration_date`, `reg_date`), la plataforma
+toma la fecha de ahí. Se reconocen los formatos habituales: `2025-10-03`, `03.10.2025`,
+`2025-10-03T12:00:00+03:00`. Una fecha con barras se lee como día/mes/año, así que un archivo en el
+orden estadounidense mes/día/año conviene convertirlo a `2025-10-03`. Las celdas que no se pudieron
+leer se cuentan y su número aparece en el resultado de la importación. Sin esa columna, la fecha de registro es el día en que se cargó el archivo, siempre que la fila
+lleve el identificador de la cuenta de trading con el que la plataforma registra el alta. Puede añadir la fecha más tarde: cargue el mismo archivo con
+esa columna y sustituirá la fecha de carga. Una fecha posterior nunca sustituye a una ya conocida.
+
+### Importes de depósitos
+
+La importación también trae el dinero. Basta con añadir al archivo cualquiera de estas columnas:
+
+| Columna | Qué significa |
+|---|---|
+| **Importe de depósitos** | La suma de todos los depósitos del suscriptor. |
+| **Importe FTD** | El importe del primer depósito. |
+| **Importe RD** | El importe de los depósitos repetidos. |
+| **Moneda** | La moneda de los importes. |
+
+Si el archivo trae el total y el importe del FTD, la diferencia va a los depósitos repetidos. Si hay una
+sola columna, todo el importe pertenece al primer depósito.
+
+Una persona puede tener varias cuentas de trading en la red de afiliados, y la exportación da una fila
+por cuenta. Esas filas ya no se fusionan: los importes de ambas cuentas llegan al suscriptor y sus
+eventos siguen separados.
+
+El resultado de la importación separa los importes por desenlace, para que se vea qué ocurrió realmente:
+cuántos importes se registraron, cuántos no se aceptaron (moneda distinta o celda ilegible), cuántos no
+cuadran con el total del archivo, cuántos ya estaban registrados y cuántas filas no se pudieron vincular
+a una sola cuenta. Volver a subir el mismo archivo informa «ya estaban registrados»: es un resultado
+normal, no un error.
+
+No hace falta un interruptor aparte: una columna con importe ya es motivo suficiente. Los números se aceptan
+en cualquier forma habitual: `40`, `40.50`, `40,50`, `$40.50`, `1 234,56`. Un valor como `1,234` se lee como
+mil doscientos treinta y cuatro.
+
+El archivo de la red de afiliados se puede subir tal cual: si no tiene Telegram ID pero sí `trader_id`, los
+importes encuentran a su suscriptor por él. Ese archivo no crea suscriptores nuevos, y las filas cuyo
+`trader_id` no se pudo emparejar de forma inequívoca aparecen en el resultado con su propio número.
+
+<Note>
+  Volver a subir el mismo archivo es seguro: el importe se escribe solo donde todavía no lo hay. Los importes
+  que llegaron por los postbacks de la red de afiliados nunca se sobrescriben con un archivo, y los importes
+  en una moneda distinta del dólar no se aceptan: su número se ve en el resultado.
+</Note>
+
+## Exportación
+
+El botón «CSV» de la cabecera exporta los suscriptores a un archivo respetando el filtro actual: la exportación
+coincide con lo que usted ve en la lista. Para obtener la base entera, quite el filtro. Es cómodo para una copia de
+respaldo o para trasladar datos.
+
+El botón «CSV» abre la ventana «Columnas de suscriptores»: marque las columnas que necesita y pulse
+«Descargar CSV». La selección afecta a DOS superficies a la vez: las columnas de la tabla en pantalla y
+el contenido del archivo. Además de los campos básicos están disponibles:
+
+- **Enlace al diálogo**: un enlace directo a la conversación con el suscriptor, se abre con un clic desde la tabla.
+- **País**: el país del suscriptor.
+- **Fecha de registro**: cuándo se registró el suscriptor.
+- **Importe de depósitos**, **Importe del FTD**, **Importe de depósitos repetidos**,
+  **Número de depósitos**, **Hizo FTD**, **Fecha del primer FTD**, **Fecha del último FTD**,
+  **Depósito repetido**, **Número de conversiones**.
+- **Etiquetas**, **Parámetro start**, **Apellido**, **Click ID**.
+
+Las columnas salen en el orden en que las marcó, tanto en la tabla como en el archivo. La selección se
+recuerda por cada bot. Si quita todas las marcas, vuelve el conjunto por defecto.
+
+<Note>
+  Los importes llegan desde los postbacks de la red de afiliados y desde el archivo de importación.
+  Cuando el importe no se conoce, la columna muestra 0.00 y el depósito sigue visible en «Tuvo FTD» y
+  «Número de depósitos». El desglose en «Importe del FTD» e «Importe de depósitos repetidos» es tan
+  preciso como lo haya separado la fuente: si el archivo traía solo el total, todo se atribuye al
+  primer depósito.
+</Note>
+
+## Eliminar la base
+
+Además de la eliminación de uno en uno y la masiva por selección, el menú «Más» tiene una opción para eliminar la
+base entera. Borra a todos los suscriptores del bot junto con el historial de mensajes.
+
+<Warning>
+  Eliminar la base entera no se puede deshacer. Para confirmar hay que escribir una palabra a mano. Los datos
+  desaparecen para siempre, sin recuperación.
+</Warning>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Mensajes" icon="comments" href="/es/messenger">
+    La conversación con un suscriptor, las respuestas manuales y el trabajo de los operadores.
+  </Card>
+  <Card title="Etiquetas" icon="tag" href="/es/tags">
+    Marcas para dividir la audiencia y lanzar escenarios.
+  </Card>
+  <Card title="Filtros" icon="filter" href="/es/filters">
+    El constructor de condiciones y los filtros de audiencia guardados.
+  </Card>
+  <Card title="Variables" icon="brackets-curly" href="/es/variables">
+    Los campos de sistema de un suscriptor y sus propias variables del bot.
+  </Card>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Envío masivo a una audiencia seleccionada.
+  </Card>
+  <Card title="Tracker y campañas" icon="chart-line" href="/es/tracker">
+    Fuente de tráfico, clics y conversiones por `click_id`.
+  </Card>
+</Columns>

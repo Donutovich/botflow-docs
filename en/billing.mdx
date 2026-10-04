@@ -1,0 +1,148 @@
+---
+title: "Billing"
+description: "Topping up the balance in USDT-TRC20, spending on tokens and bot operation, daily limits and the charge history."
+icon: "wallet"
+---
+
+A company's balance is topped up in USDT over the TRON network (TRC-20). Spending on tokens (AI operator replies
+and message translation) and on running bots on the platform is charged from the balance. The section lives in
+"Settings" → "Payments" → "Billing". The balance is held in dollars and topped up in crypto at the current rate.
+
+<Note>
+  The company owner or an administrator can top up the balance, change daily limits and request a refund. For
+  operators and members without administrator rights the section is hidden.
+</Note>
+
+## Topping up the balance
+
+<Steps>
+  <Step title="Open «Billing» and press «Top up»" icon="wallet">
+    "Settings" → "Payments" → "Billing". The "Top up" button opens the top-up dialog.
+  </Step>
+  <Step title="Enter the amount" icon="coins">
+    The "Amount (USD)" field. The minimum top-up is $50. Press "Create invoice" and a payment page with the invoice opens.
+  </Step>
+  <Step title="Confirm the network" icon="triangle-exclamation">
+    Before showing the address the page asks you to confirm that you are sending USDT over the TRON (TRC-20) network. Press the confirmation button to reveal the address.
+  </Step>
+  <Step title="Send USDT to the address" icon="qrcode">
+    The page shows a QR code, the payment address, the amount in USDT and the network. Transfer exactly the stated amount to that address from your wallet or from an exchange.
+  </Step>
+  <Step title="Wait for the credit" icon="circle-check">
+    The status on the page updates automatically. Once the required number of network confirmations is reached the balance is topped up and the page can be closed.
+  </Step>
+</Steps>
+
+<Warning>
+  Send only USDT over the TRON (TRC-20) network. A transfer over another network (ERC-20, BEP-20, Solana) to this
+  address means the funds are lost for good. Copy the address and the amount with the button on the page rather than
+  typing them by hand.
+</Warning>
+
+### Invoice statuses
+
+The payment page shows the current status and a countdown to the invoice's expiry.
+
+| Status | What it means |
+| --- | --- |
+| Awaiting payment | The invoice is created, the transfer has not arrived yet. |
+| Transaction detected | The payment is visible in the network and confirmations are being collected. |
+| Confirming | The network confirmation counter is growing. |
+| Confirmed | The funds are credited to the balance. |
+| Received less than the amount | Less than expected arrived. The balance is topped up by the amount actually received; create a new invoice for the remainder. |
+| Expired | The invoice's time ran out. |
+
+<Info>
+  If you sent the transfer and the invoice expired in the meantime, the funds are still credited; if that did not
+  happen, write to support. A company can have up to 5 unpaid invoices at a time, so don't create a new one while
+  an old one is still awaiting payment.
+</Info>
+
+## Promo codes
+
+Next to the "Top up" button there is a "Promo code" field. Enter the code, press "Apply", and the code's amount is
+credited to the balance. After applying you get a confirmation message, and a "Promo credit" row appears in the
+transaction history.
+
+## What the balance is spent on
+
+Two categories of spending are charged from the balance:
+
+- **Tokens.** AI operator replies to subscribers and message translation are charged: every AI reply and every
+  translation reduces the balance. More about the AI itself in [AI operator](/en/ai-operator).
+- **Running bots on the platform.** By the formula on the balance card: `$0.50 / bot / day + $0.05 / 1k messages`.
+  The bot fee is charged per active bot per day, and messages are counted both ways: incoming from subscribers and
+  outgoing from bots.
+
+The "Current balance" card shows the amount in dollars and the charging formula.
+
+### Token spending
+
+The 30-day spending card shows the charges for tokens: what was charged over 30 days, the number of AI replies, the
+token count and a breakdown by bot (the "Charged" and "Replies" columns). The "Accrued (not yet charged)" row shows
+the current period's spending, which will be part of the next charge.
+
+## Daily AI spending limit
+
+The daily spending limit caps how much can be spent on AI replies per day. It is set at two levels.
+
+<Columns cols={2}>
+  <Card title="For the whole company" icon="building">
+    "Settings" → "Company", the "Daily AI budget (whole company)" field. It caps the total charges for AI replies across every bot per day.
+  </Card>
+  <Card title="For a single bot" icon="robot">
+    The "AI Settings" page of the bot you need, the "Daily AI budget (this bot)" field. It caps the charges for that bot's replies only.
+  </Card>
+</Columns>
+
+Under each field you see what has been spent today and how much is left until the limit. Once the daily limit is
+reached the AI operator stops answering until midnight UTC and continues the next day. An empty field means no
+limit. If both limits are set, the AI stops on whichever is reached first: the bot hitting its own budget or the
+company hitting the shared one.
+
+<Info>
+  The limit covers AI operator replies only. The other funnel blocks (messages, buttons, delays) keep working even
+  while the AI is paused. Budgets are changed by the company owner or an administrator, and the shared budget sits
+  in [Settings](/en/settings).
+</Info>
+
+## Transaction history
+
+The "Transaction history" card shows the last 50 balance operations. The columns are "Time", "Type", "Description",
+"Amount USD" and "Balance after". Top-ups and credits are marked with a plus, charges go in minus, so the "Balance
+after" column is convenient for checking how the balance changed.
+
+| Type | What it means |
+| --- | --- |
+| Top-up | A credit after an invoice was paid. |
+| Promo credit | A credit from a promo code. |
+| Charge | Payment for tokens (AI replies and translation) and for running bots. |
+| Refund | Funds returned to the balance. |
+| Adjustment | A balance change following your request to support. |
+| Annual prepayment bonus | A credit for paying a year upfront. |
+| Affiliate payout, Affiliate bonus | Credits from the referral programme. |
+
+## Refunding the balance
+
+To get an unused balance back, write to support and state the amount and the USDT-TRC20 address for the transfer.
+The request is reviewed before the funds are sent.
+
+## Referral programme
+
+Invite clients through your link and earn a commission from their spending on the platform. The referral area opens
+from the profile menu: your link, statistics on the people you invited and withdrawal of the accumulated commission
+in USDT. More in [Referral programme](/en/referral).
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="AI operator" icon="robot" href="/en/ai-operator">
+    How the AI works and which replies the balance is charged for.
+  </Card>
+  <Card title="Referral programme" icon="handshake" href="/en/referral">
+    Your link, the commission from your referrals' spending and withdrawal in USDT.
+  </Card>
+  <Card title="Team and settings" icon="users" href="/en/settings">
+    The company's general settings and the daily AI budget for the whole company.
+  </Card>
+</Columns>

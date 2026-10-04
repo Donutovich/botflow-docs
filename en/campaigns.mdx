@@ -1,0 +1,268 @@
+---
+title: "Campaigns and sources"
+description: "The unit of traffic in BotFlow: Facebook Ads, Telegram and invite link sources, the creation wizard, tracking links, statuses and organic traffic."
+icon: "bullhorn"
+---
+
+A campaign is the unit of traffic. It has its own tracking link, its own source, its own funnel and its own
+statistics. One campaign is tied to one bot: that is where every subscriber arriving through its link ends up.
+The campaign list and creating a new one live on the "Campaigns" tab of the "Tracker" section. For the section
+itself and its metrics see [Tracker: overview](/en/tracker).
+
+## Traffic sources
+
+When creating a campaign you choose a source. It determines the shape of the link, the set of wizard steps and
+which settings you need at all.
+
+<Columns cols={3}>
+  <Card title="Facebook Ads" icon="facebook">
+    A landing with the FB Pixel and Conversion API. Requires your own domain and a proxy. The link goes through your domain and carries URL parameters with Facebook macros.
+  </Card>
+  <Card title="Telegram" icon="telegram">
+    A direct `t.me` link without a landing. No pixel and no proxy, the shortest path to the bot.
+  </Card>
+  <Card title="Invite link" icon="user-plus">
+    A join request to a private channel: the bot approves it automatically and writes first. The platform generates the link itself.
+  </Card>
+</Columns>
+
+<Warning>
+  The source and the bot cannot be changed after the campaign is created. Attribution is already tied to them, so
+  create a new campaign for another source or another bot.
+</Warning>
+
+## Creating a campaign
+
+The "New campaign" button at the top of the list opens the wizard. The number of steps depends on the chosen
+source.
+
+| Source | Wizard steps |
+|---|---|
+| **Facebook Ads** | Basics, Entry point, Tracking, Confirmation (4 steps) |
+| **Telegram** | Basics, Entry point, Confirmation (3 steps, without "Tracking") |
+| **Invite link** | Basics, "Bot, channel and entry" (2 steps) |
+
+You can go back to steps you already passed by clicking the step number. The "Next" button becomes active only
+once the required fields of the current step are filled in.
+
+<Steps>
+  <Step title="Basics" icon="pen">
+    The campaign name and the traffic source. The name is visible only to you and your team and never goes into the public link, so write it to make the campaign easy to find in the list (for example, `FB Test 2026-05`). Below, three cards let you pick the source: Facebook Ads, Telegram or Invite link.
+  </Step>
+  <Step title="Entry point" icon="robot">
+    The bot, the funnel's starting block and the landing. For an invite link this step is called "Bot, channel and entry" and works differently: the bot, the channel to join and the starting block, with no landing needed. Details below.
+  </Step>
+  <Step title="Tracking" icon="link">
+    For Facebook Ads only. Domain, proxy, Facebook Pixel ID, CAPI Access Token, the link's URL parameters and the list of events to send to Facebook. The Telegram source has no such step.
+  </Step>
+  <Step title="Confirmation" icon="circle-check">
+    A summary of the settings. The "Create campaign" button creates the campaign and hands you the ready tracking link straight away. An invite link has no separate "Confirmation" step, and its button is called "Create and generate link".
+  </Step>
+</Steps>
+
+### The "Entry point" step
+
+Here you set out exactly where the subscriber lands after the click.
+
+<Columns cols={3}>
+  <Card title="Bot" icon="robot">
+    The bot you bring the campaign's subscribers to. The bot is chosen once: it cannot be changed after the campaign is created.
+  </Card>
+  <Card title="Starting block" icon="diagram-project">
+    Which funnel block the conversation starts from. "Auto" by default: the subscriber follows the ordinary entry conditions of the blocks.
+  </Card>
+  <Card title="Landing" icon="window-maximize">
+    A promo page between the click and the bot. For Telegram a landing is optional; for Facebook the pixel lives on it.
+  </Card>
+</Columns>
+
+For the starting block and how it affects the conversation see [Starting block](#starting-block) below. For the
+landings themselves, their types and uploading see [Landings](/en/landings).
+
+### The "Tracking" step (Facebook)
+
+The "Tracking" step appears only for the Facebook Ads source and is made of several sections.
+
+<Steps>
+  <Step title="Domain" icon="globe">
+    Your domain that the tracking link will go through. Only active domains are offered in the list. Without a domain the campaign is created as a draft and traffic cannot be sent to it. Domain management lives in [Domains and proxies](/en/domains-proxies).
+  </Step>
+  <Step title="Proxy for CAPI" icon="server">
+    Which proxy to send events to Facebook through. Facebook does not accept Conversion API events from server addresses, so a proxy is required to launch an FB campaign.
+  </Step>
+  <Step title="Facebook Pixel" icon="chart-simple">
+    Pixel ID and CAPI Access Token. A saved token is never shown again: the field keeps a hint that it is already set, and to change the token you enter a new one. Next to it there is a hint on where to get the token with step-by-step instructions, and a "Test connection" button: it sends one test event to Facebook and shows whether Facebook accepted it or returned an error.
+  </Step>
+  <Step title="Link URL parameters" icon="link">
+    Pairs of a parameter name and a macro that are substituted into the tracking link. Each pair can be switched on or off with a checkbox, and the macro can be edited. Facebook fills macros like `{{ad.id}}` with real values at the moment of the ad click.
+  </Step>
+  <Step title="CAPI events" icon="arrows-turn-right">
+    Which funnel events to send back to the Facebook Conversion API. Both events from the bot (subscribe, contact, landing view) and events from affiliate postbacks (registration, FTD, RD) are configured. Choosing not to send switches a particular event off. More about CAPI delivery below.
+  </Step>
+</Steps>
+
+<Note>
+  The landing view row in the CAPI events is shown only if the campaign has a landing chosen: without a landing
+  that event never fires, so the platform hides it.
+</Note>
+
+## The tracking link
+
+You paste the campaign's ready link into your traffic sources. Its shape depends on the source.
+
+For **Telegram** it is a direct link to the bot with the campaign code:
+
+```
+https://t.me/<bot_name>?start=<campaign_code>
+```
+
+For **Facebook** the link goes through your domain and carries URL parameters with macros. Facebook substitutes
+the macros with real values at the moment of the ad click:
+
+```
+https://<your_domain>/<link_code>?adset_name={{adset.name}}&ad_id={{ad.id}}&campaign_name={{campaign.name}}
+```
+
+By default these pairs of a parameter and a Facebook macro are enabled:
+
+| Parameter | Facebook macro |
+|---|---|
+| `adset_name` | `{{adset.name}}` |
+| `ad_id` | `{{ad.id}}` |
+| `adset_id` | `{{adset.id}}` |
+| `utm_source` | `{{utm_source}}` |
+| `placement` | `{{placement}}` |
+| `campaign_name` | `{{campaign.name}}` |
+| `site_source_name` | `{{site_source_name}}` |
+| `ad_campaign_id` | `{{campaign.id}}` |
+
+These values land in the "Clicks" log and in the breakdowns on the campaign page, so you see which ad set and
+which ad brought the click. The Telegram source has no such parameters: the link leads straight into the bot.
+
+<Warning>
+  An FB campaign can be launched only with your own domain: the platform does not serve FB traffic on the shared
+  platform domain. Without a domain the campaign stays a draft. Activating an FB campaign also requires a proxy,
+  because Facebook does not accept Conversion API events from server addresses.
+</Warning>
+
+## Starting block
+
+At the entry point you can set the funnel's starting block. Then everybody arriving through that link lands
+straight in that block when they start the bot, bypassing the entry conditions. "Auto" is the default, and the
+subscriber follows the ordinary block conditions.
+
+<Info>
+  Changing the starting block applies to new subscribers only. Current dialogs keep following their scenario, and
+  the chosen block does not move them.
+</Info>
+
+The blocks to choose from are taken from this campaign's bot. Working blocks come first, while placeholders in
+the "Draft" type are shown with a mark and cannot be chosen. For the blocks themselves, entry conditions and
+triggers see [Flow builder](/en/constructor).
+
+## Statuses and lifecycle
+
+A campaign goes through four statuses.
+
+| Status | What it means |
+|---|---|
+| **Draft** | Being configured, traffic must not be sent (for example, no domain chosen yet). |
+| **Active** | Accepting traffic, the link works. |
+| **Paused** | Temporarily stopped, can be brought back into work. |
+| **Archived** | Removed from the list, the landing no longer opens. Archived campaigns are visible under the "Archive" filter, and a campaign can be brought back into work from there. |
+
+The campaign list offers per-row actions (edit, copy link, pause, launch, archive, delete) and bulk actions on
+several selected campaigns at once.
+
+<Warning>
+  Only a campaign with no clicks can be deleted, and that cannot be undone. If there were clicks already, use the
+  archive to keep the history of traffic and conversions.
+</Warning>
+
+<Tip>
+  If you edit a draft campaign and fill in what was missing at that step (a domain, plus a proxy for Facebook),
+  it launches as soon as you save: the status changes to "Active" and there is no need to press "Launch" by hand.
+</Tip>
+
+## Invite link
+
+An invite link leads to a private channel. A person sends a join request, the bot approves it automatically and
+writes to the subscriber in private messages first, starting the funnel. No landing and no pixel are needed here,
+so this source has just two steps: "Basics" and "Bot, channel and entry".
+
+<Steps>
+  <Step title="Make the bot an admin of the channel" icon="shield-halved">
+    The bot must be an administrator of the channel with the "Add members" right. After that the channel appears in the list on the "Bot, channel and entry" step by itself. If the bot was an admin earlier and the channel is not in the list, remove the bot and make it an admin again.
+  </Step>
+  <Step title="Choose the bot and the channel" icon="link">
+    The "Invite link" source, then the bot, the channel to join and the starting block. Channels without the "Add members" right are unavailable in the list: without that right approving requests will not work. If a starting block is chosen, the subscriber lands in it right after the request is approved; otherwise the bot's block with the "Request approved" trigger fires.
+  </Step>
+  <Step title="Create and hand out the link" icon="share-nodes">
+    The "Create and generate link" button hands you the ready invite link on screen, and you can copy it. Paste it into your traffic sources. Everyone who follows it and sends a join request is approved automatically and enters the funnel on the "Request approved" trigger.
+  </Step>
+</Steps>
+
+<Warning>
+  Only one bot should approve requests in a channel: this is a Telegram restriction, and only the bot that
+  approved a request can write to that subscriber first. If several bots approve requests in the channel, the
+  requests approved by the others never reach the tracker and no message goes to the subscriber.
+</Warning>
+
+The "Regenerate" button issues a new link and revokes the old one: whoever had the previous link can no longer
+send a request with it. For the "Request approved" trigger and building the funnel after joining see
+[Flow builder](/en/constructor).
+
+## Sending events to Facebook (CAPI)
+
+For FB campaigns BotFlow can send funnel events back to Facebook through the Conversion API, so the algorithm
+optimises traffic buying. On the "Tracking" step you set the Pixel ID, the CAPI Access Token and choose what to
+send.
+
+| Event | Where it comes from | By default |
+|---|---|---|
+| **Landing view** | The landing's pixel | Sent |
+| **Subscribe** | The bot (a subscribe to the bot) | Sent |
+| **Contact (first message)** | The bot (the subscriber's first message) | Sent |
+| **Registration** | An affiliate postback | Sent |
+| **FTD (first deposit)** | An affiliate postback | Sent as Purchase with the amount |
+| **RD (repeat deposit)** | An affiliate postback | Not sent by default |
+
+FTD and RD go to Facebook as Purchase with the deposit amount: that is the main signal for optimisation. RD is off
+by default: Facebook's optimisation is built on the first deposit. Repeat deposits can be switched on by hand on
+the "Tracking" step.
+
+<Info>
+  Event delivery to Facebook is visible on the campaign page (the "Facebook CAPI delivery" block) and in the
+  "Conversions" report on the "Outgoing" tab: the statuses "Sending", "Delivered", "Failed". For incoming
+  postbacks from affiliates see [Postbacks and affiliates](/en/postbacks).
+</Info>
+
+## Organic traffic
+
+The "Organic" campaign is created for a bot automatically and collects bot starts without a campaign: when a
+person found the bot themselves and sent `/start` without a campaign code. It cannot be deleted or renamed, but
+you can assign it a landing, a funnel and a pixel like any other campaign.
+
+<Note>
+  A landing click and a bot start are different events. A landing click is a hit on the promo page, and it may
+  never reach the bot. Starting the bot with `/start` creates a subscriber and opens the funnel. In reports they
+  are separated. For more on the click's path and the metrics (Click2LP, Click2FTD, Reg2Dep, FTD, RD, EPC) see
+  [Tracker: overview](/en/tracker) and [Reports](/en/reports).
+</Note>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Landings" icon="window-maximize" href="/en/landings">
+    Telegram clones and "Custom HTML" landings between the click and the bot.
+  </Card>
+  <Card title="Domains and proxies" icon="globe" href="/en/domains-proxies">
+    Your own domains for FB links and proxies for sending events to Facebook.
+  </Card>
+  <Card title="Postbacks and affiliates" icon="arrow-right-arrow-left" href="/en/postbacks">
+    Receiving conversions from affiliate networks by `click_id`.
+  </Card>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Where a subscriber lands after starting the bot: blocks, conditions, triggers.
+  </Card>
+</Columns>

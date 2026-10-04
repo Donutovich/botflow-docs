@@ -1,0 +1,129 @@
+---
+title: "Configuración del tracker"
+description: "Tipos de conversión y reglas de transición, métricas personalizadas, reglas automáticas y listas negras/blancas."
+icon: "sliders"
+---
+
+Cuatro pantallas en la configuración de la empresa, el grupo «Tracker». Definen las reglas con las que el tracker acepta
+postbacks y calcula las métricas, así que conviene pasar por aquí antes de lanzar las primeras campañas.
+
+<Info>
+  La sección está disponible para el propietario de la empresa y para un administrador con el permiso «Tracker»
+  activado. Sobre los permisos vea [Configuración](/es/settings).
+</Info>
+
+## Tipos de conversión
+
+La lista de eventos por los que se aceptan postbacks y con los que se calcula el embudo. Cada tipo es una fila con una
+clave, un nombre, propiedades y una lista de transiciones permitidas.
+
+| Campo | Qué define |
+| --- | --- |
+| **Clave** | Latín en minúsculas, dígitos y guiones bajos. Se usa en el URL del postback, así que cambiarla después de configurar la red de afiliados es una mala idea. |
+| **Nombre** | Cómo se llama el evento en los reportes y en el panel. |
+| **Transiciones permitidas** | Qué eventos pueden ir después de este. |
+
+Las reglas de transición deciden qué postback se acepta. Por ejemplo, si después de un depósito solo se permite un
+registro, un registro repetido después de un depósito se rechaza como error de la red de afiliados, y en el registro de
+conversiones verá el resultado `rejected_transition`.
+
+<Warning>
+  Un evento que se repite (RD, un depósito repetido) debe permitir la transición hacia sí mismo. Sin eso el segundo
+  postback de ese tipo se rechaza.
+</Warning>
+
+Un tipo sin transiciones se marca como `terminal (sin transiciones)`: después de él no se acepta nada. Los tipos de
+sistema llevan una etiqueta, y su conjunto solo cambia agregando tipos propios al lado.
+
+## Métricas personalizadas
+
+Fórmulas para métricas derivadas en el panel y en los reportes. Seis métricas están disponibles por defecto; las propias
+se agregan con el botón «Agregar métrica».
+
+| Campo | Qué define |
+| --- | --- |
+| **Nombre** | El nombre de la métrica en la lista y en el panel. |
+| **Clave** | Solo letras latinas, dígitos y guion bajo. |
+| **Fórmula** | Una expresión sobre las métricas base. |
+| **Formato** | «Número», «Moneda ($)» o «Porcentaje (%)». |
+
+En una fórmula están disponibles: clics, clics únicos, visitas del landing, suscripciones, contactos, registros, FTD, RD,
+importes de depósitos y gasto. Una métrica marcada con la etiqueta «En el panel» aparece en el selector de métricas del panel del
+tracker.
+
+<Tip>
+  El formato solo afecta a la presentación. El porcentaje va bien para relaciones de conversión como «registros sobre
+  clics», la moneda para montos promedio.
+</Tip>
+
+## Reglas automáticas
+
+Acciones automáticas ante las condiciones que usted define: por ejemplo, poner una campaña en pausa cuando entra tráfico
+y no hay conversiones. Las condiciones se revisan cada 5 minutos.
+
+| Campo | Qué define |
+| --- | --- |
+| **Nombre** | Cómo se llama la regla en la lista. |
+| **Condición** | Qué se vigila. |
+| **Acción** | Qué ocurre cuando se dispara. |
+| **Cooldown (min)** | Cuántos minutos la regla queda en silencio después de dispararse, para no dispararse otra vez por la misma situación. |
+
+Condiciones:
+
+| Condición | Cuándo se dispara |
+| --- | --- |
+| **Postbacks sin clic coincidente** | La proporción de postbacks cuyo `click_id` no se encontró superó el umbral dentro de la ventana. Se definen «Ventana, minutos» y «Umbral, %». |
+| **Entra tráfico pero no hay eventos** | Hubo clics dentro de la ventana pero ningún evento del tipo elegido. Se definen «Tipo de evento» y «Ventana, minutos». |
+| **Límite de conversiones alcanzado** | El número de conversiones llegó al «Límite» que usted definió. |
+
+Acciones:
+
+| Acción | Qué hace |
+| --- | --- |
+| **Notificación en Telegram** | Envía un mensaje al «Chat ID (Telegram)» que usted indique. |
+| **Poner la campaña en pausa** | Detiene la campaña, así que el tráfico de su enlace deja de contarse. |
+| **Cambiar el dominio de la campaña** | Pasa la campaña al «Nuevo dominio» que elija. |
+
+El campo «Solo para una campaña» es opcional. Si se deja vacío, la regla vigila todas las campañas de la empresa. Si
+elige una campaña, la regla evalúa la condición solo para ella.
+
+<Warning>
+  Una regla sin campaña elegida evalúa la condición para toda la empresa. Para las reglas que ponen una campaña en pausa
+  casi siempre conviene elegir una campaña concreta: de lo contrario el tráfico de una campaña influye en la decisión
+  sobre otra.
+</Warning>
+
+La lista de reglas muestra las columnas «Nombre», «Condición», «Acción», «Cooldown», «Último disparo» y «Activa». Una
+regla se puede editar, desactivar con el interruptor o eliminar.
+
+## Listas negras y blancas
+
+Listas de valores (`fb_adset_id`, `sub1`, `country` y otros) para importar en Facebook Audience. La exportación es un CSV
+listo para subir a Audience Manager.
+
+| Campo | Qué define |
+| --- | --- |
+| **Tipo** | «Negra (exclude)» o «Blanca (include)». |
+| **Campo** | Por qué valor se selecciona: `fb_adset_id`, `sub1`, `country` y así. |
+| **Valor** | El valor que entra en la lista. |
+| **Comentario** | Una nota opcional para el equipo, por ejemplo «Bad creative». |
+
+Las entradas se agrupan por el par de tipo y campo, así que una sola pantalla contiene varias listas a la vez: digamos,
+una negra por conjuntos de anuncios y una blanca por países.
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Postbacks" icon="arrows-rotate" href="/es/postbacks">
+    Conexión de redes de afiliados y recepción de las conversiones para las que configuró los tipos.
+  </Card>
+  <Card title="Reportes" icon="table-list" href="/es/reports">
+    Registros de conversiones y clics, donde se ve el resultado de cada postback.
+  </Card>
+  <Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+    El panel, las métricas del embudo y el lugar de esta configuración en la sección.
+  </Card>
+  <Card title="Campañas" icon="rectangle-ad" href="/es/campaigns">
+    Las campañas que las reglas automáticas ponen en pausa y pasan a otro dominio.
+  </Card>
+</Columns>

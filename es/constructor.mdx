@@ -1,0 +1,569 @@
+---
+title: "Editor de flujos"
+description: "Cómo armar el escenario de un bot: bloques, condiciones, flechas, mensajes, medios y botones."
+icon: "diagram-project"
+---
+
+Un bot en BotFlow funciona con bloques. Cada bloque es un paso del escenario: envía un mensaje y espera a que el suscriptor
+escriba o pulse algo. Desde ahí el bot sigue las flechas hacia el bloque siguiente, reaccionando a las palabras del suscriptor, a
+las pulsaciones de botones y a los eventos del tracker. El esquema se arma con el ratón en el lienzo de la sección «Editor de
+flujos», y no hace falta escribir código.
+
+<Note>
+  Un bot nuevo llega con un embudo inicial listo: un bloque «Condición de inicio» con el comando `/start` ya está conectado por una
+  flecha con un retraso de 3 segundos a un bloque «Estado del diálogo». Rellene el «Estado del diálogo» con su bienvenida y siga
+  construyendo el esquema desde ahí.
+</Note>
+
+## Tipos de bloque
+
+Hay siete tipos de bloque en total. Cada uno se encarga de su propio tipo de paso.
+
+<Columns cols={2}>
+  <Card title="Condición de inicio" icon="play">
+    El punto de entrada al embudo. Se activa cuando un mensaje o evento entrante coincidió con su condición. Ese bloque debe tener al menos una condición, o nunca arrancará.
+  </Card>
+  <Card title="Estado del diálogo" icon="comment-dots">
+    Un paso normal de la conversación. Envía un mensaje y espera respuesta, y después lleva por las flechas. No se activa por sí mismo: solo se puede llegar a él por una flecha, por un timeout, con la acción «Mover al bloque» o desde una campaña.
+  </Card>
+  <Card title="Fallback" icon="life-ring">
+    El bloque de reserva: se revisa último. Responde a «ayuda», «menú» o «cancelar» en cualquier punto del embudo y no saca al suscriptor de su paso actual. Para llevarlo de verdad más allá, agregue la acción «Mover al bloque». También puede enviar a alguien a este bloque a propósito: con una flecha o con una rama del bloque «Condición». Entonces se convierte en un paso normal para él y sigue sus flechas.
+  </Card>
+  <Card title="Condición" icon="arrows-split-up-and-left">
+    Una bifurcación según los datos del suscriptor: etiquetas, depósitos, país, variables. Revisa las ramas de arriba abajo y lleva al suscriptor de inmediato por la primera que coincide. No envía ningún mensaje propio y no espera respuesta. Más abajo.
+  </Card>
+  <Card title="Test A/B" icon="percent">
+    Divide a los suscriptores entre varios caminos en los porcentajes que usted defina: 50/50, digamos, o 70/30. No envía ningún mensaje propio y no espera respuesta, igual que «Condición». Las proporciones definidas se respetan incluso con poco tráfico. Más abajo.
+  </Card>
+  <Card title="Operador con IA" icon="robot">
+    Entrega la conversación al operador virtual. El bloque no tiene texto propio: la respuesta la escribe el modelo. La persona, el modelo y el idioma se configuran en la página [Operador con IA](/es/ai-operator), mientras el propio bloque contiene el «Objetivo del bloque» y el interruptor «Escribir primero al entrar».
+  </Card>
+  <Card title="Draft" icon="file-pen">
+    Un bloque de reserva. No se activa hasta que lo cambie a un tipo activo. Cómodo para aparcar un bloque conservando su configuración.
+  </Card>
+</Columns>
+
+<Note>
+  El tipo de un bloque existente se cambia en el panel derecho, en la lista «Tipo de bloque». Las pestañas «Mensaje», «Acciones» y
+  «Seguimientos» se quedan en su lugar: vuelva al tipo anterior y están de nuevo en juego. Las «Palabras clave» el bot las revisa
+  solo en una «Condición de inicio» y en un Fallback. También se pueden rellenar en un bloque de reserva para cambiarlo después a
+  un tipo activo, y al pasar a un tipo que no las revisa verá una advertencia de que ya no se activarán.
+</Note>
+
+<Warning>
+  Cambiar a «Condición» o a «Test A/B» no conserva las flechas que salen del bloque. En un «Test A/B» se convierten en caminos a
+  los mismos bloques y reciben porcentajes, pero la condición de disparo y el retraso no se trasladan: los caminos de un «Test
+  A/B» no los tienen. Una flecha que lleva al mismo bloque, y las flechas por encima de los diez caminos, no se trasladan en
+  absoluto. En una «Condición» las flechas salen del lienzo y la transición de cada rama hay que indicarla de nuevo. Volver al tipo
+  anterior no devuelve las flechas: eso lo hace el botón «Deshacer» de la barra superior del editor o Ctrl+Z, y solo hasta que se
+  recargue la página.
+</Warning>
+
+<Info>
+  Ante cada mensaje de un suscriptor el bot revisa los bloques por orden: primero la flecha del bloque en el que el suscriptor está
+  ahora, después las condiciones de inicio, y en último lugar el Fallback. Si coincidieron varios bloques, se activa solo uno: el
+  que usted agregó después. Por eso las mismas palabras no conviene tenerlas en dos condiciones de inicio, o el bloque nuevo
+  sobrescribirá al anterior. Una flecha de «cualquier respuesta» se revisa después de las flechas con una condición concreta.
+</Info>
+
+## Condiciones: a qué reacciona un bloque
+
+Una condición es una línea con la que un bloque o una flecha deciden si un mensaje entrante coincide. Cómo comparar exactamente se
+elige en la lista «Tipo de coincidencia» junto al campo «Palabras clave». En una flecha el mismo campo se llama «Condición de
+disparo», y la lista de valores listos junto a él se llama «Botones de origen».
+
+| Tipo de coincidencia | Qué hace | Ejemplo |
+|---|---|---|
+| Ignorando errores e imprecisiones | Se activa incluso con errores de tipeo. Es el tipo por defecto en un bloque, mientras una flecha nueva abre en «Contiene palabras clave». | `hola; consulta; comprar` |
+| Contiene palabras clave | Busca una palabra o frase dentro del mensaje, sin distinguir mayúsculas. Entiende grupos `(A\|B)`. | `comprar; precio; (plan\|tarifa)` |
+| Coincidencia exacta | El mensaje debe coincidir por completo, sin distinguir mayúsculas. | `Inicio` |
+| Expresión regular | Búsqueda por expresión regular, distinguiendo mayúsculas. Aquí `;` no separa alternativas. | `^(hola\|buenas).*` |
+
+La gramática es la misma para la condición de un bloque y la de una flecha:
+
+- `;` separa alternativas y funciona como O: `comprar; pagar; pedir`.
+- `(A|B)` agrupa palabras en el modo de palabras clave: `(plan|tarifa) (cambiar|modificar)`.
+- `{{ }}` sustituye los datos del suscriptor directamente en la condición. Puede simplemente escribir una variable como condición:
+  sustituye su valor, y el bloque se activa si el mensaje entrante coincidió con él.
+- Una variable se puede comparar: `{{ status }} != paid` o `{{ price }} > 100`. Los operadores son `==`, `!=`, `>`, `>=`, `<`,
+  `<=`. Para `==` y `!=` la comparación es de cadena sin distinguir mayúsculas, para el resto es numérica.
+- Las alternativas de un campo se pueden mezclar con `;`: `comprar; {{ vip }} >= 5; pedir`.
+
+<Info>
+  No hay un Y (AND) aparte en la gramática. Varias alternativas con `;` también funcionan como O: el bloque se activa si coincidió
+  al menos una. Solo el bloque «Operador con IA» entiende el sentido de un mensaje; una flecha normal compara el texto de forma
+  literal. Separar suscriptores por sus datos con Y y O, por ejemplo «hubo FTD y el país es RU», lo hace el bloque «Condición»
+  (vea abajo).
+</Info>
+
+<Note>
+  `{{ tag }}` es el parámetro de inicio del enlace de lanzamiento del bot: si el suscriptor entró por
+  `t.me/su_bot?start=123`, `{{ tag }}` pasa a ser `123`. El valor se fija una sola vez, en el primer `/start`. Por eso un bloque de
+  inicio con la condición `/start; {{ tag }}` captura tanto un lanzamiento simple por comando como uno con parámetro del enlace.
+</Note>
+
+<Note>
+  Un campo de condición vacío significa «cualquier mensaje del suscriptor». En cambio, si la condición es solo una variable y el
+  suscriptor no tiene valor para ella, esa condición no coincide con nada.
+</Note>
+
+## Flechas y timeouts
+
+Una flecha (una conexión) lleva de un bloque a otro. Para unir dos bloques, pase el cursor sobre el punto inferior del primero y
+arrastre una línea hasta el punto superior del segundo. «Condición» y «Test A/B» no tienen punto inferior: sus puntos están en las
+propias ramas y caminos, vea abajo.
+
+Al hacer clic en una flecha se abre a la derecha el panel «Conexión». Tiene los campos «Condición de disparo» y «Botones de
+origen», el interruptor «Esperar cualquier respuesta del suscriptor» y «Timeout antes de la transición». Lo que usted rellene aquí
+es lo que decide cómo se dispara la flecha. La leyenda de la flecha en el lienzo muestra su condición y el timeout definido, y al
+pasar el cursor aparece el nombre del tipo: «Transición automática», «Por mensaje», «Al pulsar un botón» o «Por timeout». Los dos
+últimos elementos de la lista de abajo no son tipos aparte sino combinaciones de ajustes.
+
+- **Transición automática.** Una flecha vacía sin timeout. Se dispara justo después de que el bloque envió su mensaje y no espera
+  al suscriptor. Si de un bloque salen varias flechas así, se dispara solo una y no se puede elegir cuál: mantenga una por bloque y
+  haga la bifurcación con un bloque «Condición» o «Test A/B».
+- **Por mensaje.** Se dispara cuando el suscriptor escribe un texto que cumple la «Condición de disparo».
+- **Al pulsar un botón.** Captura un clic en un botón inline de tipo Callback de ese bloque. Este tipo de flecha no se elige
+  directamente: inserte el botón que necesite en la condición de la flecha desde la lista «Botones de origen», y la flecha pasa a
+  ser «Al pulsar un botón» por sí sola.
+- **Por timeout.** Una flecha vacía con timeout se dispara por temporizador desde el momento de entrar al bloque. El retraso se
+  define en el campo «Timeout antes de la transición» en segundos, minutos, horas o días. La respuesta del suscriptor no cancela el
+  temporizador: si la persona respondió y se quedó en el mismo bloque, la transición ocurre igualmente.
+- **Por condición con timeout.** Cuando una flecha tiene «Condición de disparo» y timeout, la cuenta la inicia la coincidencia de
+  la condición. Mientras el suscriptor no escriba algo que coincida, el temporizador está quieto y no hay transición. Después de una
+  coincidencia la transición ocurre tras el tiempo definido.
+- **Esperar cualquier respuesta del suscriptor.** La flecha pasa con cualquier respuesta, texto o clic, sin revisar una condición.
+  Por sí sola no se dispara y se revisa última, para no sobrescribir las flechas con una condición concreta. El timeout se combina
+  con este modo: la cuenta empieza DESPUÉS de la respuesta del suscriptor, y la transición ocurre el tiempo definido después de
+  ella. Si el suscriptor se queda callado, no hay transición en absoluto.
+
+Un timeout es un retraso DESPUÉS de que la flecha se dispara, y lo que inicia la cuenta depende de la propia flecha:
+
+| Qué está definido en la flecha | La cuenta empieza |
+| --- | --- |
+| solo un timeout | al entrar al bloque |
+| «Esperar cualquier respuesta» y un timeout | con la respuesta del suscriptor |
+| una condición de disparo y un timeout | con la coincidencia de la condición |
+
+<Note>
+  La indicación bajo el campo «Timeout antes de la transición» siempre muestra cuál de los tres casos le quedó.
+</Note>
+
+<Warning>
+  Una flecha vacía con timeout se dispara el tiempo definido después de entrar al bloque. Los mensajes del suscriptor no la
+  cancelan: si respondió y se quedó en el mismo bloque, la transición ocurre igualmente por temporizador. Solo deja de dispararse
+  cuando el suscriptor ya pasó a otro bloque.
+
+  Si la flecha espera una respuesta o revisa una condición, el temporizador está quieto hasta que se dispara. Mientras el
+  suscriptor calle o escriba algo que no coincide, no hay transición en absoluto. Las respuestas repetidas no reinician la cuenta:
+  corre desde el primer disparo. Por eso «esperar un día y recordar» se hace con una flecha vacía con timeout hacia un bloque
+  aparte. No hay un bloque de retraso aparte en el editor.
+</Warning>
+
+## El bloque «Condición»: bifurcación según los datos del suscriptor
+
+El bloque «Condición» dirige a un suscriptor según sus datos: etiquetas, depósitos, país, variables y filtros guardados.
+
+Dentro del bloque hay una lista de ramas. En cuanto un suscriptor llega al bloque, las ramas se revisan de arriba abajo y gana la
+primera que coincide: el suscriptor va directo a su bloque. El bloque «Condición» no envía ningún mensaje propio y no espera
+respuesta. En el esquema funciona como una bifurcación entre dos pasos del embudo.
+
+<Info>
+  El bloque revisa los datos en el momento en que el suscriptor entra: por una flecha, por un timeout, con la acción «Mover al
+  bloque», desde una campaña, o cuando un operador lo mueve al bloque a mano desde «Mensajes». Nunca se activa por sí mismo.
+</Info>
+
+<Note>
+  El bloque «Condición» no tiene pestañas «Mensaje», «Acciones» ni «Seguimientos»: solo dirige suscriptores. Para poner una
+  etiqueta, enviar una petición o escribir un mensaje, lleve la rama a un bloque donde eso esté configurado.
+</Note>
+
+### Cómo configurarlo
+
+<Steps>
+  <Step title="Agregue ramas" icon="list-ol">
+    Pulse «Agregar condición». El orden de las ramas de arriba abajo es la prioridad: gana la primera que coincide entre las que tienen transición definida. Una rama se puede renombrar, subir o bajar. Hay hasta 20 ramas por bloque.
+  </Step>
+  <Step title="Arme la condición de la rama" icon="filter">
+    La condición se arma con el mismo constructor que en suscriptores y difusiones: campo, operador, valor, grupos Y y O. La lista de campos y operadores se describe en [Filtros](/es/filters). Un filtro guardado también puede ser la condición de una rama. Dentro de una rama la condición se aplica de inmediato: aquí no hay botón «Aplicar» ni contador de suscriptores, y los cambios se guardan junto con el esquema.
+  </Step>
+  <Step title="Indique la transición" icon="arrow-right">
+    Elija el bloque destino en el campo «Transición» o arrastre una flecha desde el punto a la derecha de la rama en el lienzo. Cada rama y la rama por defecto tienen un punto. La lista contiene todos los bloques activos del bot, incluido el «Fallback»: una rama también puede llevar a él.
+  </Step>
+  <Step title="Defina la rama por defecto" icon="arrows-turn-right">
+    A ella van todos los que no coincidieron con ninguna rama. Es opcional: sin ella, los suscriptores que no coincidieron no van a ninguna parte y se quedan donde estaban antes de la bifurcación.
+  </Step>
+</Steps>
+
+<Note>
+  Hay hasta veinte ramas en un bloque «Condición». En el límite el botón de agregar se desactiva y al lado aparece una nota sobre
+  el límite de 20 condiciones.
+</Note>
+
+<Warning>
+  Una rama sin condición no captura a nadie. Una rama sin transición se omite por completo: un suscriptor que coincidía con ella se
+  revisa más abajo en la lista y puede ir a la rama siguiente o a la rama por defecto. Ambas se marcan con un icono en el propio
+  bloque, para que una bifurcación a medio configurar se vea en el lienzo.
+</Warning>
+
+<Warning>
+  Una rama debe llevar a un bloque activo. Si el bloque destino se eliminó o se quedó en el tipo «Draft», la transición no se
+  dispara: el suscriptor se queda en el paso anterior y la rama por defecto no lo recoge.
+</Warning>
+
+<Note>
+  Si elimina el bloque al que llevaba una rama, la rama se elimina junto con su condición. Los suscriptores se revisan contra las
+  ramas restantes y pueden ir a la siguiente que coincida o a la rama por defecto. Si elimina el bloque al que llevaba la rama por
+  defecto, esta queda sin transición y hay que configurarla de nuevo. Para recuperar un bloque eliminado, pulse «Deshacer» en la
+  notificación o Ctrl+Z: el bloque vuelve, las ramas se colocan en su lugar con sus condiciones anteriores, y las campañas que
+  llevaban a ese bloque vuelven a llevar a él. Deshacer funciona hasta que se recargue la página. Eliminar bloques seleccionados no
+  se puede deshacer, incluso con un solo bloque seleccionado: el cuadro de confirmación advierte de que la acción es irreversible.
+</Note>
+
+<Note>
+  Al copiar un esquema a otro bot, las condiciones sobre etiquetas, filtros, campañas y bloques del embudo no significan nada allí:
+  todo eso pertenece a su propio bot. Por eso la condición de esa rama se borra por completo, junto con las condiciones vecinas
+  como «Hizo FTD» o los montos de depósitos, y la rama se marca como sin condición. Las ramas sin esas condiciones se trasladan sin
+  cambios. Después de copiar, revise las bifurcaciones y vuelva a armar las condiciones borradas.
+</Note>
+
+<Note>
+  También se puede copiar **parte** de un esquema: seleccione los bloques que necesite y cópielos. Si los bloques seleccionados
+  llevan a bloques que no seleccionó, la copia no empieza y recibe un mensaje sobre ello. Agregue los bloques que faltan a la
+  selección o copie el esquema completo.
+</Note>
+
+### Ejemplo
+
+Un suscriptor llega al bloque «Condición» después de la bienvenida. La primera rama, «VIP»: «Hizo FTD» igual a «Sí» y «Número de
+depósitos» mayor que tres, con transición a un bloque con una oferta personal. La segunda rama: «País» igual a RU, con transición
+al embudo principal en ruso. La rama por defecto lleva al menú general. Un suscriptor de RU que hizo un FTD y más de tres
+depósitos va por la primera rama y nunca llega al menú general. Un suscriptor de RU sin FTD cae en la segunda rama, y el resto en
+la rama por defecto.
+
+## El bloque «Test A/B»: dividir el tráfico por porcentajes
+
+El bloque «Test A/B» divide a los suscriptores entre varios caminos en los porcentajes que usted defina. Sirve para enviar
+suscriptores a distintas bienvenidas, landings o escenarios de seguimiento y compararlos.
+
+El bloque no envía ningún mensaje propio y no espera respuesta: igual que «Condición», funciona como una bifurcación entre pasos
+del embudo. La diferencia es que «Condición» mira los datos del suscriptor mientras «Test A/B» simplemente reparte tráfico.
+
+<Info>
+  Las proporciones definidas se respetan incluso con pocos suscriptores: con 50/50 el primero va por un camino y el segundo por el
+  otro.
+</Info>
+
+<Note>
+  Un suscriptor que vuelve a caer en el bloque va por **el mismo camino** que la primera vez: una persona no verá las dos variantes,
+  y la comparación se mantiene honesta.
+</Note>
+
+### Cómo configurarlo
+
+<Steps>
+  <Step title="Agregue caminos" icon="list-ol">
+    Hacen falta al menos dos caminos: mientras haya menos, el bloque lo indica y no divide suscriptores. Pulse «Agregar variante» y elija el bloque al que lleva. Hay otra forma: arrastre una flecha desde el punto con el más en la parte inferior del bloque en el lienzo, y la variante se crea junto con la flecha. Hay hasta diez caminos por bloque; en el límite el botón se desactiva y al lado aparece una nota sobre el límite de 10 variantes.
+  </Step>
+  <Step title="Defina los porcentajes" icon="percent">
+    Cada camino tiene su propio campo de porcentaje. La fila «Total» bajo la lista muestra la suma, y el bloque se guarda solo cuando es exactamente 100. Mientras la suma sea otra verá «Cambios sin guardar» y el bloque llevará un icono en el lienzo: los números que escribió se quedan en la pantalla pero todavía no están en juego.
+  </Step>
+  <Step title="O divida en partes iguales" icon="equals">
+    La casilla «Dividir en partes iguales» quita los campos y reparte el tráfico en partes iguales por sí misma. La parte se recalcula según el número de caminos activos, así que no hay que corregirla a mano cada vez que hay más o menos caminos.
+  </Step>
+  <Step title="Revise las transiciones" icon="arrow-right">
+    Cada camino tiene un bloque destino en su campo «Transición». La lista contiene todos los bloques activos del bot. Dos caminos pueden llevar al mismo bloque: eso está permitido.
+  </Step>
+</Steps>
+
+### Cómo editar los caminos en el lienzo
+
+Cada camino está dibujado en el lienzo como una flecha, así que se puede trabajar con él allí mismo.
+
+- Al hacer clic en una flecha o en su porcentaje se abre a la derecha el panel «Conexión» con el porcentaje de esa flecha y un botón
+  «Eliminar flecha».
+- «Eliminar flecha» quita también el propio camino. Su porcentaje pasa al último camino con una parte distinta de cero, así que la
+  suma se mantiene en 100.
+- Si elimina un bloque destino, los caminos que llevaban a él también se van, y sus porcentajes se reparten del mismo modo.
+- Una flecha de «Test A/B» no tiene condición de disparo ni retraso: el camino se elige en cuanto el suscriptor llega al bloque.
+
+### Cuando un camino no recibe a nadie
+
+<Warning>
+  Un camino con cero por ciento no recibe suscriptores en absoluto. La lista indica debajo que con 0% un suscriptor no puede caer en
+  esa variante. Es una forma de desactivar un camino temporalmente sin eliminarlo.
+</Warning>
+
+Si el bloque destino se eliminó o se quedó como bloque de reserva, el camino deja de recibir suscriptores: al lado aparece una nota
+sobre por qué no funciona («Bloque eliminado», «Bloque en borrador»), y la flecha del lienzo pasa a ser discontinua. Su parte se
+**reparte entre los caminos activos** en proporción a sus porcentajes. Los porcentajes que usted escribió se quedan en su lugar:
+cambie el bloque de reserva a un tipo activo y el camino vuelve a funcionar con su porcentaje anterior.
+
+Un suscriptor que antes iba por ese camino irá esta vez por uno de los activos. Cuando el camino vuelva a funcionar, volverá a él.
+
+Si ningún camino puede funcionar, junto al nombre del bloque en el lienzo aparece un icono y el panel derecho indica que los
+suscriptores no podrán caer en ninguna variante. Eso significa que los suscriptores se detendrán en este bloque.
+
+### Ejemplo
+
+En un embudo quiere comparar dos bienvenidas. Después de la condición de inicio ponga un «Test A/B» con dos caminos al 50 por
+ciento: el primero lleva a un bloque con una bienvenida corta, el segundo a uno con una bienvenida larga. Después los dos
+convergen en un bloque de registro. Cuando decida qué bienvenida funciona mejor, ponga el camino más débil a 0 por ciento: los
+suscriptores irán solo por el segundo, y no hace falta desarmar el esquema para eso.
+
+## El mensaje de un bloque: texto, medios y botones
+
+El contenido de un bloque se configura en la pestaña «Mensaje».
+
+### Texto
+
+El mensaje de un bloque admite el formato básico de Telegram: negrita, cursiva, subrayado, tachado, monoespaciado, código,
+enlaces, spoiler y cita. El interruptor «Formato enriquecido» agrega encabezados, tablas, listas y sub/sup y eleva el límite a
+32 768 caracteres en un mensaje. Está disponible para mensajes de texto y se desactiva cuando el bloque tiene medios adjuntos: con
+medios queda el formato básico. El mismo modo existe en las [Difusiones](/es/broadcasts). El interruptor «Mostrar vistas previas
+de enlaces» decide si se expande la tarjeta de un enlace. Límites de Telegram: hasta 4096 caracteres de texto y hasta 1024 en una
+leyenda de medios.
+
+### Medios
+
+A un bloque se le pueden adjuntar cinco tipos de medios: Foto, Video, Videomensaje, Mensaje de voz, Audio.
+
+La plataforma acepta imágenes JPG, PNG, GIF y WEBP, video MP4, MOV y WEBM, audio MP3, M4A y OGG: son los formatos que Telegram
+muestra como medios y no como archivo. Un archivo de otro formato lo rechaza el editor al elegirlo, con una indicación de lo que se
+puede subir. Una foto de un iPhone en HEIC no se puede subir, guárdela en JPG.
+
+- Varias fotos y videos salen como un álbum. Los mensajes de voz, el audio y los videomensajes se envían como mensajes aparte.
+- Un videomensaje se envía sin leyenda, así que no se puede combinar con texto en un mismo bloque. En cuanto el bloque tiene texto,
+  la opción «Videomensaje» de la lista «Enviar como» queda no disponible con una indicación de que un videomensaje no puede llevar
+  leyenda, y un videomensaje ya elegido pasa a «Video». Si necesita texto y videomensaje: deje el videomensaje en un bloque sin
+  texto y envíe el texto desde el bloque anterior.
+- Un álbum se envía sin botones. Mientras un bloque tenga dos o más fotos o videos, los botones no están disponibles, y el
+  interruptor «Quitar el teclado de respuesta del suscriptor» queda marcado como no disponible con un álbum: no se puede activar,
+  aunque uno ya activado se puede desactivar. Los mensajes de voz, el audio y los videomensajes no se agrupan en un álbum, y con
+  ellos los botones funcionan.
+- Al subir un video cuadrado de hasta 60 segundos, el bot lo envía como videomensaje por defecto. El tipo se puede cambiar en
+  «Enviar como» en el propio archivo, y el bot lo envía con el tipo que usted elija.
+
+<Note>Un archivo se sube directamente al bloque. No se puede usar un enlace externo ni una ruta de archivo.</Note>
+
+### Botones inline
+
+Cada botón inline ocupa su propia fila. El tipo de botón se elige con un interruptor:
+
+- **URL.** Abre un enlace.
+- **Callback.** Lo captura un bloque del escenario al pulsarlo.
+- **Copiar.** Copia el texto al portapapeles del suscriptor, un código promocional por ejemplo.
+- **Insertar texto.** Pone un texto preparado en el campo de entrada del suscriptor, y a él solo le queda enviarlo.
+
+A un botón se le puede dar un estilo: «Normal», «Primary», «Success», «Danger» (en el menú del botón están marcados con puntos de
+color). En el texto y el valor de un botón funciona la sustitución `{{ }}`, por ejemplo `{{ click_id }}` en un enlace. Límites de
+Telegram: un callback hasta 64 bytes, un enlace hasta 2048 caracteres, el texto copiado hasta 256.
+
+<Note>
+  **Cómo lleva más allá un botón.** Un botón Callback lo captura un bloque del escenario por su valor, el texto que usted escribió
+  en su callback. Hay dos formas de capturar una pulsación:
+
+  - Con una flecha del mismo bloque: inserte el botón en la condición de la flecha desde la lista «Botones de origen», y el valor se
+    rellena con un clic.
+  - Con un bloque «Condición de inicio» aparte cuyas «Palabras clave» contengan el mismo valor de callback. Ese bloque captura la
+    pulsación desde cualquier punto del embudo, incluso si el suscriptor ya dejó el bloque con el botón.
+</Note>
+
+<Note>
+  No se puede definir su propio teclado de respuesta (los botones normales bajo el campo de entrada) en un bloque; un bloque
+  trabaja con botones inline. Solo existe el interruptor «Quitar el teclado de respuesta del suscriptor»: oculta un teclado de
+  respuesta que el suscriptor recibió antes.
+</Note>
+
+## Trasladar un esquema a otro bot
+
+La opción «Copiar al bot…» del menú «…» traslada bloques del bot actual a otro. Hay dos modos disponibles.
+
+| Modo | Qué hace |
+| --- | --- |
+| **Agregar al esquema existente** | Los bloques copiados aparecen junto a lo que ya hay en el bot destino. |
+| **Reemplazar el esquema** | Los bloques del bot destino se eliminan y se reemplazan por los copiados. |
+
+<Warning>
+  «Reemplazar el esquema» elimina todo lo que había en el bot destino. Antes de eliminar, la plataforma crea una instantánea del
+  esquema, así que se puede volver atrás desde «Historial de versiones» en el mismo menú.
+</Warning>
+
+También se puede copiar parte de un esquema: active el modo de selección de bloques, marque los que necesite y elija «Copiar al
+bot…». Las transiciones entre los bloques copiados se conservan, mientras las transiciones a bloques que se quedaron en el bot de
+origen no aparecen en la copia.
+
+## Historial de versiones
+
+La opción «Historial de versiones» del menú «…» abre la lista de instantáneas del esquema. Una instantánea se crea automáticamente
+antes de reemplazar un esquema y se guarda 30 días. Volver atrás desde una instantánea crea a su vez otra instantánea, así que
+también se puede regresar al estado anterior a esa vuelta atrás.
+
+<Tip>
+  Es la única forma de recuperar un embudo reemplazado por accidente o roto. Si algo salió mal, empiece por aquí en lugar de volver
+  a armar el esquema.
+</Tip>
+
+## Trabajar con varios bloques
+
+El modo de selección se activa con el botón del lienzo («Activar el modo de selección de bloques»). En él:
+
+- los bloques se marcan pulsándolos, y los seleccionados quedan resaltados;
+- **«Duplicar»** crea copias de los bloques seleccionados al lado;
+- **«Al portapapeles»** copia la selección para pegarla en el esquema de otro bot;
+- el panel de un bloque concreto tiene «Copiar ID del bloque»: ese identificador es el que se usa cuando un bloque se nombra en una
+  petición externa a la API.
+
+## El editor desde el teléfono
+
+Desde el teléfono el editor se abre en una forma simplificada: en lugar del lienzo hay una lista de bloques que se pueden abrir y
+editar. Arriba va un grupo «Fijados»: un bloque entra en él con el interruptor «Fijar para acceso rápido desde el móvil» de su
+panel. Así los bloques que edita a menudo (textos, condiciones de bifurcación) quedan a mano mientras el resto del esquema no
+molesta.
+
+## Acciones después del envío
+
+La pestaña «Acciones» configura qué ocurre después de que el bloque envió su mensaje. Hay cuatro acciones disponibles:
+
+- **Poner etiqueta.** Marca la conversación con una etiqueta. Las etiquetas se crean y se gestionan en [Etiquetas](/es/tags).
+- **Quitar etiqueta.** Quita una etiqueta de la conversación.
+- **Mover al bloque.** Cambia la posición actual del suscriptor y no envía el mensaje del bloque destino. El siguiente mensaje del
+  suscriptor se compara con las condiciones del bloque destino, y una flecha que se dispara un tiempo después de entrar a un bloque
+  empieza su cuenta desde el momento del traslado.
+- **Enviar petición API.** Envía una petición cuando el suscriptor llega al bloque. Un interruptor de destino elige uno de dos
+  modos, vea abajo.
+
+<Warning>
+  «Mover al bloque» lleva solo a un bloque activo: un bloque de reserva en el tipo «Draft» no se ofrece en la lista de destinos. Si
+  el bloque destino se eliminó o se pasó a «Draft» después de configurar la acción, el traslado no se dispara y el suscriptor se
+  queda donde está.
+</Warning>
+
+<Note>
+  Si elimina el bloque al que llevaba una acción, la acción se queda pero su destino se borra: elíjalo de nuevo.
+</Note>
+
+### Enviar petición API
+
+La acción se dispara en el momento en que el suscriptor llega al bloque. El destino se elige en la lista de destinos, y los campos
+aparecen después de elegirlo.
+
+- **URL externa.** Envía una petición a su dirección en un socio o en un servicio de terceros. El método se elige con los botones
+  GET y POST bajo el campo de dirección. Las variables de la lista se sustituyen en el enlace al enviar, por ejemplo
+  `{{ click_id }}`. Para postbacks de dinero a una red de afiliados use [Postbacks S2S](/es/s2s-postbacks): lleva un registro de
+  entregas y está pensado para montos.
+- **Otro bot.** Envía un callback a otro bot suyo. Solo se puede elegir un bot donde usted tenga el rol de gerente. En el bot
+  destino el callback se captura igual que la pulsación de un botón inline: con una flecha «Al pulsar un botón» o con una condición
+  de inicio con el mismo valor (vea «Botones inline» arriba). El valor debe coincidir exactamente con la condición del bot destino,
+  hasta 256 caracteres. El suscriptor no ve ese mensaje, y el callback no crea ninguna conversación nueva.
+
+  El interruptor **«Esperar al suscriptor en el bot de destino»** está activado por defecto. Con él el
+  callback no se pierde aunque la persona todavía no exista en el bot de destino: se dispara en cuanto
+  esa persona le escriba al bot, y espera hasta 14 días. Si apaga el interruptor, un callback sin
+  suscriptor no se dispara.
+
+  Si el callback no coincidió con ninguna condición, no pasa nada: el paso no cambia, no se envía
+  ningún mensaje y los recordatorios programados del suscriptor siguen vigentes.
+
+  Las variables del evento están vacías en el bot de destino: allí llega solo el valor del callback,
+  sin los datos del evento que lo provocó.
+
+<Note>Si se pierde el acceso al bot destino, la acción se marca como no disponible y hay que configurarla de nuevo.</Note>
+
+<Note>No existe la captura de una respuesta en una variable ni la ejecución de su propio código en las acciones.</Note>
+
+## Recordatorios para quienes se quedaron callados
+
+Si un suscriptor se quedó atascado en un bloque y no avanza, se lo puede recuperar con un recordatorio en la pestaña
+«Seguimientos». Active primero «Recordatorios activados» y aparecen los ajustes. El modo depende del bloque:
+
+- **Mensajes preparados por temporizador.** En los bloques normales. Usted escribe los pasos, y los retrasos se cuentan desde el
+  momento de entrar al bloque. El recordatorio no se envía si el suscriptor escribió el último después de entrar al bloque o
+  después del recordatorio anterior.
+- **La IA decide cuándo y qué escribir.** En el bloque «Operador con IA». El modelo elige el momento y el texto por sí mismo, según
+  el contexto de la conversación y lo que se sabe del suscriptor, dentro de los ajustes de «no más de» y «no menos de» y del límite
+  de recordatorios. Cuando la IA responde al suscriptor, la pausa empieza de nuevo.
+
+Los dos modos dejan de recordar cuando el suscriptor avanza por el embudo o bloquea el bot.
+
+Los recordatorios de la pestaña «Seguimientos» y un recordatorio hecho con una flecha vacía por timeout son mecanismos distintos.
+La flecha se dispara por el temporizador y un mensaje del suscriptor no la cancela. Los recordatorios de la pestaña
+«Seguimientos» sí tienen en cuenta un mensaje del suscriptor.
+
+## Variables
+
+Los datos del suscriptor se sustituyen en el texto, los botones y las condiciones con `{{ }}`. Los nombres de las variables se
+escriben en latín y exactamente como aparecen en la lista. La referencia completa está en [Variables](/es/variables).
+
+- **De sistema:** `first_name`, `last_name`, `full_name`, `username`, `user_id`, `telegram_id`, `date_of_birth`, `created_at`,
+  `tag` (el parámetro de inicio del enlace de lanzamiento, vea arriba).
+- **Dinámicas:** se rellenan después de un postback de una red de afiliados y guardan los datos del último evento. `click_id` (el
+  identificador para enlaces de afiliados), `event.payout` (el monto del evento), `event.currency` (la moneda),
+  `event.trader_id` (el identificador de la cuenta en el socio), `event.device_type` (el tipo de dispositivo),
+  `event.os_version` (la versión del sistema operativo), `event.link_type` (el tipo de enlace).
+- **Personalizadas:** variables que usted crea para el bot. Por defecto una variable así guarda su valor por suscriptor, y la
+  casilla «Global» hace que el valor sea el mismo para todo el bot.
+
+<Warning>
+  Los nombres de las variables se escriben en latín y exactamente como en la lista. `{{ first_name }}` funciona, mientras que un
+  nombre traducido no sustituye nada. Los tokens inventados como `{{ name }}`, `{{ chat_id }}` o `{{ phone }}` también devuelven
+  una cadena vacía. Las llaves `{{ }}` no se pueden cambiar.
+</Warning>
+
+## Eventos de sistema y conversiones
+
+Una condición de inicio y las flechas se activan no solo con texto sino también con eventos. Los eventos listos se insertan en la
+condición de un bloque desde la lista «Eventos de sistema», sin escribir nada (una flecha no tiene esa lista, y allí el evento se
+escribe a mano):
+
+- Bloqueó el bot y Desbloqueó el bot.
+- Solicitud de ingreso y Solicitud aprobada (para las campañas de invitación a canales).
+- Reacción.
+- Conversiones del tracker: Registro, Depósito, Depósito repetido, Retiro y otros postbacks. Sobre de dónde vienen esos eventos vea
+  [Tracker](/es/tracker).
+
+## Ejemplo: un embudo pequeño
+
+<Steps>
+  <Step title="Una condición de inicio con /start" icon="play">
+    Cree un bloque «Condición de inicio». En el campo «Palabras clave» escriba `/start`, y en la lista «Tipo de coincidencia» elija «Contiene palabras clave» (por defecto está «Ignorando errores e imprecisiones»). En el mensaje, saludos: `Hola, {{ first_name }}!` y agregue dos botones inline de tipo Callback: «Catálogo» y «Hacer una pregunta».
+  </Step>
+  <Step title="Separe al suscriptor por los botones" icon="arrows-split-up-and-left">
+    Arrastre dos flechas desde el bloque de inicio: inserte en la condición de cada una su propio botón desde la lista «Botones de origen». Lleve una flecha al bloque «Catálogo» y la otra al bloque «Pregunta».
+  </Step>
+  <Step title="El estado «Catálogo»" icon="comment-dots">
+    Cree un bloque «Estado del diálogo» y envíe en él una foto y una descripción. En la pestaña «Acciones» agregue «Poner etiqueta», por ejemplo «Vio el catálogo», para después reunir a esos suscriptores en una difusión.
+  </Step>
+  <Step title="Un Fallback para «ayuda»" icon="life-ring">
+    Agregue un bloque «Fallback» con la condición `ayuda; soporte` en el modo «Contiene palabras clave». Responde con una indicación en cualquier punto del embudo y no saca al suscriptor de su paso actual.
+  </Step>
+  <Step title="Un recordatorio por timeout" icon="clock">
+    Desde el bloque «Catálogo» arrastre una flecha «Por timeout» de 1 día a un bloque de recordatorio aparte. Si en un día el suscriptor no escribió nada, recibe un aviso suave. Una respuesta no cancela el temporizador: el recordatorio se omite solo si la persona ya pasó a otro bloque.
+  </Step>
+</Steps>
+
+<Tip>
+  El esquema se guarda por sí solo, y el estado se ve en la cabecera («Guardado»). La forma más fácil de comprobar un embudo es en
+  vivo: abra el bot en Telegram y envíele `/start`. Todas las conversaciones de un bot se reúnen en la Mensajería (llamada
+  «Mensajes» en el menú del bot).
+</Tip>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Operador con IA" icon="robot" href="/es/ai-operator">
+    La persona, el modelo y el idioma del operador virtual para el bloque «Operador con IA».
+  </Card>
+  <Card title="Configuración del bot" icon="gear" href="/es/bot-settings">
+    El nombre, la descripción y el texto «Acerca del bot» que ven los suscriptores en Telegram.
+  </Card>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    Cómo un operador toma una conversación a mano y la devuelve a la IA.
+  </Card>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Mensajes masivos por etiquetas y filtros de suscriptores, con formato enriquecido.
+  </Card>
+  <Card title="API del editor de flujos" icon="code" href="/es/api-konstruktora">
+    Lanzar un embudo con un callback y leer datos de un suscriptor por clave de API desde sus servicios.
+  </Card>
+</Columns>

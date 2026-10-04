@@ -1,0 +1,146 @@
+---
+title: "Etiquetas"
+description: "Marcas de color para las conversaciones: crear etiquetas, ponerlas a mano y desde el editor de flujos, filtrar por ellas y armar audiencias de difusión."
+icon: "tag"
+---
+
+Una etiqueta es una marca de color sobre la conversación con un suscriptor. Con las etiquetas usted señala lo que ya
+sabe del suscriptor, por ejemplo «Vio el catálogo», «FTD» o «Sin depósito», y después filtra conversaciones y arma
+difusiones con ellas. Cada bot tiene su propio conjunto de etiquetas.
+
+<Info>
+  Una etiqueta solo marca la conversación y no hace nada por sí misma: no envía mensajes al suscriptor ni lo mueve
+  por el embudo. Su función es que la conversación sea fácil de encontrar y de agrupar.
+</Info>
+
+## Dónde están las etiquetas
+
+En el menú del bot abra el grupo «Audiencia» y elija «Etiquetas». La página muestra todas las etiquetas del bot:
+una plaquita de color con su nombre y, al lado, cuántos suscriptores la llevan ahora.
+
+## Crear una etiqueta
+
+<Steps>
+  <Step title="Abra la sección Etiquetas" icon="tag">
+    Menú del bot, grupo «Audiencia», opción «Etiquetas». Pulse «Crear etiqueta».
+  </Step>
+  <Step title="Defina un nombre" icon="pen">
+    Escriba un nombre corto y claro, de hasta 40 caracteres. Por ejemplo: `FB`, `FTD`, `Sin depósito`.
+  </Step>
+  <Step title="Elija un color" icon="palette">
+    El color viene de una paleta de 11 tonos. No afecta a nada más que al aspecto de la plaquita, y está para que las etiquetas se distingan de un vistazo en la lista de chats y en el panel de la conversación. Debajo se muestra una vista previa de la plaquita.
+  </Step>
+  <Step title="Guarde" icon="check">
+    Pulse «Crear». La etiqueta aparece en la lista de inmediato y queda disponible en el editor de flujos, en los filtros y en las difusiones.
+  </Step>
+</Steps>
+
+## Editar o eliminar una etiqueta
+
+Cada etiqueta de la lista tiene un botón de lápiz (renombrar y cambiar el color) y un botón de papelera (eliminar).
+Un cambio de nombre o de color se aplica en todos los lugares donde la etiqueta ya está puesta.
+
+<Warning>
+  Eliminar no se puede deshacer. La etiqueta se quita de todas las conversaciones donde estaba puesta, y los filtros
+  construidos sobre ella dejan de encontrarla. Si la etiqueta todavía está puesta en alguien, el cuadro de
+  confirmación muestra de cuántas conversaciones se quitará.
+</Warning>
+
+<Warning>
+  Si la etiqueta se usa en la acción «Poner etiqueta» o «Quitar etiqueta» de algún bloque, la eliminación no se
+  realiza: la plataforma indica que la etiqueta se usa en bloques del embudo y nombra esos bloques. Quite primero la
+  etiqueta de las acciones y elimínela después.
+</Warning>
+
+## Poner y quitar una etiqueta a mano
+
+Un operador pone y quita etiquetas directamente en la conversación.
+
+<Steps>
+  <Step title="Abra la conversación" icon="comments">
+    La sección «Mensajes», elija el diálogo y abra el panel «Info».
+  </Step>
+  <Step title="Agregue una etiqueta" icon="plus">
+    En el bloque «Etiquetas» pulse el botón «Etiqueta» y elija una de la lista. Si todavía no hay etiquetas, el sistema sugiere crearlas en la sección «Etiquetas».
+  </Step>
+  <Step title="Quite lo que no haga falta" icon="xmark">
+    Las etiquetas puestas se muestran como plaquitas. La cruz de una plaquita quita la etiqueta de esa conversación.
+  </Step>
+</Steps>
+
+<Note>
+  Los cambios de etiquetas se ven de inmediato: si otro operador puso una etiqueta, o lo hizo el embudo, aparece en
+  el panel por sí sola.
+</Note>
+
+## Etiquetas en el editor de flujos
+
+Un embudo puede poner y quitar etiquetas por su cuenta. En un bloque, en la pestaña «Acciones», agregue una de estas
+acciones:
+
+- **Poner etiqueta.** Marca la conversación con la etiqueta elegida.
+- **Quitar etiqueta.** Quita la etiqueta elegida de la conversación.
+
+La acción se ejecuta después de que el bloque haya enviado su mensaje. Es una forma cómoda de marcar el paso al que
+llegó el suscriptor, para después reunir a esas personas en una difusión. Más sobre las acciones de un bloque en
+[Editor de flujos](/es/constructor).
+
+<Tip>
+  Una combinación típica: el bloque con la descripción del producto pone la etiqueta «Vio el catálogo», y el bloque
+  posterior al pago pone `FTD` y quita «Sin depósito». Después se arman audiencias de difusión separadas con esas
+  etiquetas.
+</Tip>
+
+## Etiquetas en los filtros
+
+Las etiquetas son una de las condiciones del filtro de suscriptores. El constructor de condiciones está disponible en
+«Mensajes», «Suscriptores», al elegir la audiencia de una difusión y en el bloque «Condición» del editor de flujos.
+Elija el campo «Etiquetas», uno o varios valores y cómo compararlos:
+
+| Condición | Qué selecciona |
+|---|---|
+| tiene alguna de | está puesta al menos una de las etiquetas elegidas |
+| tiene todas de | están puestas todas las etiquetas elegidas |
+| tiene solo estas | está puesto exactamente el conjunto elegido y nada más |
+| no tiene ninguna de | no está puesta ninguna de las etiquetas elegidas |
+| tiene etiquetas | la conversación lleva alguna etiqueta |
+| sin etiquetas | no hay ninguna etiqueta puesta |
+
+Las condiciones por etiquetas se combinan con cualquier otra condición del filtro (nombre, click_id, eventos del
+tracker y así).
+
+## Etiquetas en las difusiones
+
+Al crear una difusión puede dejar la audiencia en todos o acotarla con un filtro. Cuando hay un solo bot elegido, el
+modo de filtro queda disponible: arme una condición por etiquetas (y cualquier otro campo) y envíe el mensaje solo a
+esos suscriptores. Un buen conjunto de condiciones se puede guardar y reutilizar. Cómo funcionan las difusiones se
+describe en [Difusiones](/es/broadcasts).
+
+## La variable `{{ tag }}`
+
+No confunda las etiquetas de color de esta página con la variable `{{ tag }}`: son cosas distintas. `{{ tag }}` no
+sustituye las etiquetas del suscriptor sino el valor del parámetro de inicio con el que la persona lanzó el bot. Un
+enlace como `t.me/su_bot?start=123` hace que `{{ tag }}` sea igual a `123`. El valor se fija una sola vez, al entrar
+al bot. Más sobre variables en [Variables](/es/variables).
+
+<Warning>
+  El nombre de una variable no se traduce ni se cambia. `{{ tag }}` funciona; una variante traducida devuelve una
+  cadena vacía.
+</Warning>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Las acciones «Poner etiqueta» y «Quitar etiqueta» en los bloques del embudo.
+  </Card>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    La lista de chats, los filtros y poner etiquetas a mano en el panel de la conversación.
+  </Card>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Mensajes masivos a audiencias armadas con etiquetas.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/es/tracker">
+    Eventos de conversión sobre los que al embudo le resulta cómodo poner etiquetas.
+  </Card>
+</Columns>

@@ -1,0 +1,129 @@
+---
+title: "Tracker settings"
+description: "Conversion types and transition rules, custom metrics, automations and blacklists/whitelists."
+icon: "sliders"
+---
+
+Four screens in the company settings, the "Tracker" group. They define the rules by which the tracker
+accepts postbacks and calculates metrics, so look in here before launching your first campaigns.
+
+<Info>
+  The section is available to the company owner and to an administrator with the "Tracker" capability
+  enabled. For capabilities see [Settings](/en/settings).
+</Info>
+
+## Conversion types
+
+The list of events that postbacks are accepted for and that the funnel is calculated from. Each type is a
+row with a key, a name, properties and a list of allowed transitions.
+
+| Field | What it sets |
+| --- | --- |
+| **Key** | Lowercase latin letters, digits and underscores. It is used in the postback URL, so changing it after the affiliate is configured is a bad idea. |
+| **Name** | How the event is called in reports and on the dashboard. |
+| **Allowed transitions** | Which events can follow this one. |
+
+Transition rules decide which postback is accepted. For example, if only a registration is allowed after a
+deposit, a repeated registration after a deposit is rejected as an affiliate error, and the conversion log
+shows the outcome `rejected_transition`.
+
+<Warning>
+  An event that repeats (RD, a redeposit) must allow a transition to itself. Without that the second such
+  postback is rejected.
+</Warning>
+
+A type with no transitions is marked as `terminal (no transitions)`: nothing is accepted after it. System
+types carry a "System" badge, and their set changes only by adding your own types alongside.
+
+## Custom metrics
+
+Formulas for derived metrics on the dashboard and in reports. Six metrics are available by default; your own
+are added with the "Add metric" button.
+
+| Field | What it sets |
+| --- | --- |
+| **Name** | The metric's name in the list and on the dashboard. |
+| **Key** | Latin letters, digits and underscores only. |
+| **Formula** | An expression built from base metrics. |
+| **Format** | "Number", "Currency ($)" or "Percent (%)". |
+
+Available in a formula: clicks, unique clicks, landing views, subscribes, contacts, registrations, FTD, RD,
+deposit amounts and spend. A metric marked with the "On dashboard" badge appears in the metric picker on the tracker
+dashboard.
+
+<Tip>
+  The format only affects display. Percent suits conversion ratios like "registrations to clicks", currency
+  suits average amounts.
+</Tip>
+
+## Automations
+
+Automatic actions on the conditions you set: for example, pause a campaign when traffic is coming in with no
+conversions. Conditions are checked every 5 minutes.
+
+| Field | What it sets |
+| --- | --- |
+| **Name** | How the rule is called in the list. |
+| **Condition** | What is being watched. |
+| **Action** | What happens when it fires. |
+| **Cooldown (min)** | How many minutes the rule stays silent after firing, so it does not fire again on the same situation. |
+
+Conditions:
+
+| Condition | When it fires |
+| --- | --- |
+| **Postbacks with no matching click** | The share of postbacks whose `click_id` was not found exceeded the threshold within the window. Set "Window, minutes" and "Threshold, %". |
+| **Traffic is coming in but there are no events** | There were clicks within the window but no events of the chosen type. Set "Event type" and "Window, minutes". |
+| **Conversion cap reached** | The number of conversions reached the "Cap" you set. |
+
+Actions:
+
+| Action | What it does |
+| --- | --- |
+| **Telegram notification** | Sends a message to the "Chat ID (Telegram)" you specify. |
+| **Pause the campaign** | Stops the campaign, so traffic on its link is no longer counted. |
+| **Switch the campaign's domain** | Moves the campaign to the "New domain" you choose. |
+
+The "Only for one campaign" field is optional. Left empty, the rule watches every campaign of the company.
+Choose a campaign and the rule evaluates the condition for that campaign alone.
+
+<Warning>
+  A rule with no campaign chosen evaluates the condition across the whole company. For rules that pause a
+  campaign you almost always want to pick a specific campaign: otherwise one campaign's traffic affects the
+  decision about another.
+</Warning>
+
+The rule list shows the columns "Name", "Condition", "Action", "Cooldown", "Last fired" and "Active". A rule
+can be edited, switched off with the toggle or deleted.
+
+## Blacklists and whitelists
+
+Lists of values (`fb_adset_id`, `sub1`, `country` and others) to import into Facebook Audience. The export
+is a CSV ready to upload to Audience Manager.
+
+| Field | What it sets |
+| --- | --- |
+| **Kind** | "Blacklist (exclude)" or "Whitelist (include)". |
+| **Field** | Which value is selected by: `fb_adset_id`, `sub1`, `country` and so on. |
+| **Value** | The value itself that goes into the list. |
+| **Note** | An optional note for the team, for example "Bad creative". |
+
+Entries are grouped by the pair of kind and field, so one screen holds several lists at once: say, a
+blacklist by ad sets and a whitelist by countries.
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Postbacks" icon="arrows-rotate" href="/en/postbacks">
+    Connecting affiliate networks and receiving the conversions you configured types for.
+  </Card>
+  <Card title="Reports" icon="table-list" href="/en/reports">
+    Conversion and click logs, where you see the outcome of every postback.
+  </Card>
+  <Card title="Tracker: overview" icon="chart-line" href="/en/tracker">
+    The dashboard, funnel metrics and where these settings sit in the section.
+  </Card>
+  <Card title="Campaigns" icon="rectangle-ad" href="/en/campaigns">
+    The campaigns that automations pause and move to another domain.
+  </Card>
+</Columns>

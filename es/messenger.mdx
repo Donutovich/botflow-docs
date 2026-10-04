@@ -1,0 +1,235 @@
+---
+title: "Mensajería"
+description: "Chat con los suscriptores a través de sus bots: lista de chats, filtros y filtros rápidos del embudo, plantillas de respuesta, medios, traducción, estados de entrega y traspaso de la conversación al operador con IA."
+icon: "comments"
+---
+
+La Mensajería es un chat con sus suscriptores por encima de sus bots. En el menú del bot se abre como **«Mensajes»** (el grupo **«Conversaciones»**). Los operadores ven todos los diálogos en una sola ventana y responden a mano, mientras algunas conversaciones las lleva el [operador con IA](/es/ai-operator). La sección está siempre abierta para un bot seleccionado: la lista de chats a la izquierda, el diálogo en el centro, la ficha del suscriptor a la derecha.
+
+<Note>La fila de un chat aparece cuando el suscriptor escribe al bot por primera vez, y también cuando llega por una invitación y su solicitud de ingreso se aprueba. Con una invitación el bot puede escribir primero, pero por un tiempo limitado: unos 5 minutos, mientras el suscriptor no haya respondido. Después podrá escribirle cuando él responda. Los clics en anuncios y las visitas a un enlace no crean un chat por sí mismos. Los suscriptores importados también se muestran en la lista aunque nunca hayan escrito al bot: esos chats quedan al final.</Note>
+
+## Lista de chats
+
+La columna izquierda contiene todos los diálogos del bot. Cada fila muestra el avatar, el nombre del suscriptor, una vista previa del último mensaje y su hora. Las vistas previas de los mensajes salientes empiezan con «Usted:». Si el último mensaje fue un medio, un icono reemplaza el texto: 📷 Foto, 🎬 Video, 🎤 Mensaje de voz, 📹 Videomensaje, 🎵 Audio, 📎 Documento. Los diálogos no leídos llevan un contador, y los suscriptores que bloquearon el bot llevan la etiqueta «Bloqueados».
+
+### Búsqueda
+
+El campo «Búsqueda» en la parte superior de la columna busca por nombre, apellido, username y Telegram ID. Mientras el campo tenga una consulta, en la lista quedan solo las coincidencias. La consulta empieza desde dos caracteres.
+
+La arroba antes de un username es opcional: «@luis» y «luis» dan el mismo resultado.
+
+El orden es: primero las coincidencias exactas, después las que empiezan con la consulta, después las parecidas. Las parecidas cubren los errores de tipeo. Si introduce un Telegram ID completo, esa persona queda fijada como primera fila. Entre coincidencias igual de buenas quedan más arriba las personas con las que habló hace poco.
+
+Se muestran las primeras 50 coincidencias. Si la persona que busca no está entre ellas, precise la consulta: añada el apellido o introduzca el Telegram ID completo.
+
+### Modos de la lista de chats
+
+El botón con el icono de controles a la derecha de la búsqueda abre un menú con cinco modos. Siempre hay exactamente un modo activo.
+
+| Modo | Qué muestra |
+| --- | --- |
+| Todos los chats | todos los diálogos del bot |
+| No leídos | diálogos con mensajes entrantes sin leer |
+| IA | diálogos que lleva ahora el operador con IA |
+| Agente | diálogos pasados a modo manual (un operador tomó la conversación) |
+| Bloqueados | suscriptores que bloquearon el bot |
+
+### Filtros rápidos del embudo
+
+Sobre la lista hay una franja de filtros rápidos del embudo: `All`, `Reg`, `FD`, `RD`, `Deposits` y cortes por
+monto de depósitos. Qué significa cada uno se describe en [Filtros](/es/filters).
+
+### Filtros guardados
+
+En la misma franja se muestran los filtros guardados de ese bot. Los favoritos están marcados con una estrella y van primero. El botón «Filtro» al final de la fila abre el constructor de condiciones, el mismo que se usa para los [suscriptores](/es/subscribers): arme cualquier condición (por país, eventos del [tracker](/es/tracker), monto de depósitos y así) y aplíquela a la lista de chats. Más sobre ellos en [Filtros](/es/filters).
+
+Un filtro guardado se gestiona desde la propia franja: haga clic derecho sobre él, o manténgalo pulsado en el teléfono, y se abre un menú con «Renombrar», «A favoritos» y «Eliminar». El mismo gesto sobre la plaquita `All` abre «Cambiar filtros» con la lista de todos los guardados a la vez, cómoda para limpiarlos y marcar favoritos.
+
+El modo de la lista se suma al resto de la selección, mientras que un filtro rápido, uno guardado y uno propio se reemplazan entre sí: hay exactamente uno de los tres activo a la vez.
+
+## Abrir un diálogo
+
+Abra un chat de la lista para cargar el historial de mensajes. El diálogo se marca como leído de inmediato y el contador de no leídos se pone a cero. El botón con la flecha hacia abajo vuelve a los últimos mensajes.
+
+El botón ⓘ («Información del suscriptor») en la cabecera del diálogo abre el panel «Info» con la ficha del suscriptor.
+
+Si el suscriptor nunca escribió nada, el diálogo indica que la conversación está vacía y que usted puede escribir primero.
+
+### Panel del suscriptor
+
+El panel «Info» reúne todo lo que se sabe de la persona más las acciones que usted puede tomar. Sus secciones:
+
+- **Actividad.** Última actividad, quién lleva el diálogo, si el suscriptor bloqueó el bot y cuándo, si un administrador lo bloqueó, y si alguna vez respondió al bot.
+- **Escenario.** El bloque del [editor de flujos](/es/constructor) en el que está el suscriptor.
+- **Atribución.** Campaña, tipo de fuente, parámetro de inicio, `click_id`.
+- **Conversiones.** Primer depósito y su fecha, total de depósitos, redepósito.
+- **Contacto.** Nombre, username, Telegram ID, idioma de Telegram, fecha de suscripción.
+- **Etiquetas.** Las [etiquetas](/es/tags) del suscriptor: se pueden poner y quitar desde aquí mismo.
+- **Dispositivo.** Dispositivo, versión del sistema operativo, último evento y `trader_id`: todo lo que envió el tracker.
+- **Uso de IA.** Cuántos tokens y respuestas del operador con IA consumió este diálogo.
+
+La línea sobre quién lleva la conversación nombra a quien responde al suscriptor ahora: el nombre del operador y el momento en que tomó la conversación, el operador con IA si la lleva la IA, o el paso a modo manual si la IA se detuvo y el diálogo todavía no tiene operador.
+
+Cada fila de una sección está siempre presente: si no hay valor, aparece un guion. El panel se ve igual para cualquier suscriptor.
+
+Desde aquí también puede bloquear o desbloquear al suscriptor y eliminarlo. Eliminar borra todos sus mensajes, variables y su pertenencia a listas, y no se puede deshacer.
+
+<Note>Un operador con acceso anónimo ve los datos del suscriptor enmascarados. El botón «Solicitar la divulgación de datos» envía una solicitud a un gerente: una vez aprobada, los datos reales se abren por 15 minutos. El gerente atiende esas solicitudes en la sección «Solicitudes de desanonimización», más en [Configuración](/es/settings).</Note>
+
+## Responder a un suscriptor
+
+El campo de entrada está al final del diálogo. Enter envía el mensaje, Shift+Enter agrega un salto de línea. Un mensaje enviado aparece en la conversación de inmediato. Los operadores escriben texto simple: en el campo de respuesta no hay formato enriquecido (encabezados, tablas, listas), eso se configura en el [editor de flujos](/es/constructor) y en las [difusiones](/es/broadcasts).
+
+Si el suscriptor bloqueó el bot, el campo de entrada se deshabilita y muestra «Bloqueado». También se deshabilita con la nota de que el suscriptor todavía no respondió al bot: son las personas que llegaron por una solicitud de ingreso a un canal y nunca escribieron al bot, y Telegram permite escribirles solo después de su respuesta. En cuanto la persona escribe, el campo se abre por sí solo. El envío tampoco está disponible cuando el saldo de la empresa se agotó (la recarga está en [Facturación](/es/billing)).
+
+### Firma del operador
+
+Cada mensaje enviado a mano lleva junto a la hora el nombre de quien lo escribió. En equipos con varios operadores se ve de inmediato en la conversación quién respondió qué. Los mensajes del bot y las respuestas del operador con IA no llevan firma.
+
+## Menú del mensaje
+
+Haga clic derecho en un mensaje (mantenga pulsado en el teléfono) para abrir las acciones sobre él. El conjunto de opciones depende del mensaje:
+
+- **Responder.** Sobre el campo de entrada aparece una cita, que sale junto con la respuesta. El botón de responder que aparece al pasar el cursor hace lo mismo.
+- **Copiar texto.** Copia el texto del mensaje al portapapeles.
+- **Mostrar traducción.** Traduce ese mensaje a su idioma dentro de la conversación; al elegirlo de nuevo vuelve el original. Disponible cuando el operador con IA y la traducción están activados.
+- **Reenviar.** Aparece en un mensaje que no se envió y repite el envío del mismo texto y adjunto.
+- **Eliminar.** Quita su mensaje para usted y para el suscriptor.
+
+## Medios
+
+El botón del clip adjunta archivos. Se admiten los mismos tipos que en el [editor de flujos](/es/constructor) y las [difusiones](/es/broadcasts).
+
+| Tipo | Particularidades |
+| --- | --- |
+| Foto | se agrupa en un álbum |
+| Video | se agrupa en un álbum |
+| Videomensaje | sale como mensaje aparte, sin leyenda |
+| Mensaje de voz | sale como mensaje aparte |
+| Audio | sale como mensaje aparte |
+| Álbum | hasta 10 fotos y videos en una cuadrícula |
+
+<Warning>
+Telegram impone reglas de agrupación y la plataforma las respeta:
+
+- En un álbum caben hasta 10 fotos y videos.
+- Un mensaje de voz y un videomensaje siempre salen como un mensaje aparte y no se combinan con nada.
+- El audio no va en un álbum con fotos y videos, sale en su propio mensaje.
+- Un videomensaje no tiene leyenda. Si hay texto escrito junto a un videomensaje adjunto, el botón de envío se bloquea.
+</Warning>
+
+La longitud del texto y de la leyenda está limitada por Telegram: 4096 caracteres sin adjunto y 1024 caracteres junto con uno. El límite tiene contador y al superarlo el envío se bloquea.
+
+## Variables en los mensajes
+
+En un mensaje manual y en las plantillas puede usar [variables](/es/variables) entre llaves dobles. Los valores se sustituyen con los datos del suscriptor en el momento del envío. Los nombres de las variables están siempre en inglés y no se traducen.
+
+- `{{ first_name }}`, `{{ last_name }}`, `{{ full_name }}` el nombre del suscriptor
+- `{{ username }}` el username en Telegram
+- `{{ user_id }}`, `{{ telegram_id }}` identificadores
+- `{{ tag }}` el valor del enlace de inicio del bot (`t.me/bot?start=...`)
+- `{{ created_at }}` fecha de suscripción
+- `{{ date_of_birth }}` fecha de nacimiento
+- `{{ click_id }}` identificador del clic para la atribución
+- `{{ event.<campo> }}` campos del último postback, por ejemplo `{{ event.trader_id }}` el identificador de la cuenta en el socio
+
+<Info>Si el campo está vacío para ese suscriptor, la variable se sustituye por una cadena vacía y el mensaje se envía igualmente.</Info>
+
+## Plantillas de respuesta
+
+Las respuestas frecuentes conviene guardarlas como plantillas e insertarlas listas. Hay dos formas de insertar una plantilla.
+
+### Con «/» en el campo de entrada
+
+Empiece el mensaje con `/` y debajo del campo se abre el autocompletado con las plantillas que coinciden. Las flechas arriba y abajo eligen una plantilla, Enter o Tab la insertan, Esc oculta la lista. Primero van las coincidencias exactas del atajo y las plantillas que usa más seguido. Solo el texto reemplaza el `/atajo` inicial, y lo que haya escrito después se conserva.
+
+### Desde el panel de plantillas
+
+El botón con `#` junto al campo de entrada abre el panel. Desde allí una plantilla se inserta con un clic, y allí mismo los operadores crean, editan y eliminan plantillas y carpetas.
+
+Una plantilla consta de un atajo (por ejemplo `/dep`), un nombre opcional, texto y un adjunto (foto, video o álbum). Las plantillas con adjunto llevan un icono de clip.
+
+- **Variables.** Los tokens `{{ ... }}` dentro de una plantilla funcionan igual que en un mensaje normal y se sustituyen al enviar. En el autocompletado la plantilla activa muestra una vista previa con los valores ya sustituidos, si su texto tiene variables.
+- **Carpetas.** Las plantillas se ordenan en carpetas. Eliminar una carpeta no toca las plantillas, simplemente quedan sin carpeta.
+- **Orden.** Las plantillas usadas hace poco y con frecuencia suben al principio de la lista.
+- **Acceso.** Los operadores y los roles superiores pueden crear y editar plantillas.
+
+## Respuesta manual y operador con IA
+
+Cuando un suscriptor está en un bloque de diálogo con IA, el estado del operador con IA se ve en la cabecera de la conversación.
+
+- **El agente de IA responde automáticamente.** La IA lleva el diálogo.
+- **Usted lleva la conversación, la IA está en pausa.** En cuanto envía un mensaje a mano, la conversación pasa a usted y la IA deja de responder.
+- **Otro operador lleva la conversación, la IA está en pausa.** Un colega tomó la conversación. Puede liberarla con el mismo botón, y el estado nombra quién lleva el diálogo.
+- **La conversación pasó a modo manual, la IA se detuvo.** La IA llegó a su límite de respuestas y se detuvo sola, y el diálogo no tiene operador. Ese diálogo espera a una persona: sin la respuesta de un operador el suscriptor no recibe nada más. Los límites de respuestas se configuran en [Operador con IA](/es/ai-operator).
+
+Para devolver la conversación a la IA, pulse el icono de estado en la cabecera y elija devolverla a la IA. La IA responderá al siguiente mensaje del suscriptor. Por sí sola, sin un mensaje entrante, no escribirá.
+
+Al lado está el botón «Mover al bloque» (el icono con dos flechas). En la lista de bloques elija uno: un bloque normal envía su contenido, un bloque de diálogo con IA entrega la conversación a la IA y el modo manual se libera. Un bloque «Condición» no envía ningún mensaje propio, elige a dónde llevar al suscriptor según sus datos: si ninguna rama coincidió y no hay rama por defecto, no hay traslado, el suscriptor se queda en el bloque anterior, el diálogo se queda con usted y la plataforma responde que el bloque no lo envió a ninguna parte. Las ramas y la rama por defecto se configuran en el [editor de flujos](/es/constructor). Solo se listan los bloques activos: un bloque de reserva en el tipo «Draft» no se ofrece, y no puede mover a un suscriptor a él hasta cambiarlo a un tipo activo.
+
+## Traducción de mensajes
+
+Si el operador con IA está activado para el bot y la traducción está permitida en su configuración, en el diálogo aparecen las herramientas de traducción. La función es común a toda la empresa y se configura en la [configuración del operador con IA](/es/ai-operator).
+
+- **Toda la conversación.** El botón de traducción en la cabecera del diálogo traduce todos los mensajes a su idioma. Al elegirlo de nuevo vuelven los originales.
+- **Un mensaje concreto.** En el [menú del mensaje](#menú-del-mensaje) «Mostrar traducción» traduce solo ese.
+- **Un mensaje saliente antes de enviarlo.** Con su respuesta escrita, puede traducirla al idioma del suscriptor y solo entonces enviarla.
+- **Traducción automática de los salientes.** Un interruptor en el menú de traducción: cada mensaje suyo se traduce al idioma del suscriptor al enviarlo.
+
+Los mensajes traducidos quedan marcados y el original siempre se puede recuperar.
+
+## Eventos en la conversación
+
+Además de los mensajes, en el hilo aparecen los eventos de sistema del suscriptor como plaquitas compactas. Ayudan a entender el contexto sin salir del diálogo:
+
+- **Registro**, **Depósito**, **Redepósito**, **Retiro**, **Evento periódico del socio**, **Confirmación de correo** son eventos del [tracker](/es/tracker).
+- **Solicitud de ingreso**, **Solicitud aprobada**, **Volvió al bot**, **Se dio de baja**, **Reacción**, **Cambio de estado** son eventos propios de Telegram.
+
+Los eventos de sistema no cambian la vista previa del chat, no lo suben al principio de la lista y no afectan al contador de no leídos.
+
+## Estados de entrega
+
+Si Telegram no aceptó un mensaje saliente, en lugar de la burbuja habitual aparece una burbuja «No enviado» con el motivo exacto.
+
+| Motivo | Qué significa |
+| --- | --- |
+| El suscriptor bloqueó el bot | el bot ya no puede escribirle |
+| El suscriptor todavía no respondió al bot | llegó por una invitación, pero la ventana para el primer mensaje se cerró; podrá escribirle cuando él responda |
+| El archivo de medios no está disponible | el adjunto se eliminó, súbalo de nuevo y envíe |
+| El mensaje es demasiado largo para Telegram | acorte el texto |
+| Error de marcado | revise el formato |
+| El bot no está disponible en Telegram | un problema con el bot mismo |
+| Límite de Telegram | una restricción temporal de frecuencia, repita el envío |
+
+Una burbuja no enviada se queda en la conversación, pero no pasa a ser el último mensaje del diálogo ni altera el contador de no leídos. En el [menú del mensaje](#menú-del-mensaje), «Reenviar» envía de nuevo el mismo texto y adjunto, y «Eliminar» quita la burbuja.
+
+## Difusiones en un diálogo
+
+Los mensajes de las [difusiones](/es/broadcasts) masivas también se ven en la conversación, marcados como difusión. No se pueden eliminar ni editar desde el diálogo, porque es contenido de una difusión enviado automáticamente. Los mensajes manuales de un operador sí se pueden eliminar. Las difusiones no cuentan como el último mensaje del diálogo y no afectan al contador de no leídos.
+
+Los mensajes con formato enriquecido (encabezados, listas, tablas) se muestran en la conversación con ese formato, tal como los ve el suscriptor en Telegram.
+
+## Eliminar su propio mensaje
+
+Un operador puede retirar su mensaje saliente desde el [menú del mensaje](#menú-del-mensaje), la opción «Eliminar». El mensaje se quita tanto para usted como para el suscriptor.
+
+<Warning>Telegram permite eliminar un mensaje del lado del suscriptor dentro de las 48 horas posteriores al envío. Más tarde la burbuja desaparece para usted pero se queda con el suscriptor.</Warning>
+
+Su propio mensaje lo elimina su autor. El mensaje de un colega o de la IA lo puede eliminar un miembro con el rol de gerente o superior. Los mensajes de difusiones no se pueden retirar.
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Operador con IA" icon="robot" href="/es/ai-operator">
+    Cómo configurar las respuestas automáticas y cuándo una persona toma la conversación.
+  </Card>
+  <Card title="Difusiones" icon="bullhorn" href="/es/broadcasts">
+    Mensajes masivos a una audiencia seleccionada.
+  </Card>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Bloques y lógica del embudo que llevan al suscriptor hasta un operador.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/es/tracker">
+    Fuentes de tráfico y los eventos por los que se filtra la lista de chats.
+  </Card>
+</Columns>

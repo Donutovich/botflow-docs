@@ -1,0 +1,158 @@
+---
+title: "Variables"
+description: "Substituting subscriber data into text with {{ name }}: system variables, custom ones and tracker event variables."
+icon: "brackets-curly"
+---
+
+A variable is a label the bot replaces with a specific subscriber's data at the moment of sending. You write
+`{{ first_name }}` in the text and the subscriber sees their own name. The same block or broadcast reaches
+everyone personally, with nothing to substitute by hand.
+
+BotFlow's syntax is double curly braces: `{{ name }}`. Spaces inside the braces are optional,
+`{{ first_name }}` and `{{first_name}}` work the same.
+
+<Info>
+  Substitution works everywhere you write text to a subscriber: in the text and buttons of
+  [flow builder](/en/constructor) blocks, in block and arrow conditions, in an operator's messages in the
+  [Messenger](/en/messenger) and in the text of [broadcasts](/en/broadcasts).
+</Info>
+
+## What it looks like
+
+Say the start block contains:
+
+```
+Hi, {{ first_name }}! Good to see you again.
+```
+
+A subscriber named Anna gets "Hi, Anna! Good to see you again." If the subscriber has no first name, the
+braces simply disappear: "Hi, ! Good to see you again." The bot never sends the literal text
+`{{ first_name }}`; an unfilled variable becomes an empty string.
+
+## System variables
+
+These variables are built in and always available, you don't create them. They are collected from the
+subscriber's Telegram profile and from their subscription data.
+
+| Token | What it substitutes |
+|---|---|
+| `{{ first_name }}` | First name from the Telegram profile |
+| `{{ last_name }}` | Last name from the Telegram profile |
+| `{{ full_name }}` | First and last name together |
+| `{{ username }}` | The subscriber's @username in Telegram |
+| `{{ user_id }}` | The subscriber's identifier in BotFlow |
+| `{{ telegram_id }}` | The user ID in Telegram |
+| `{{ date_of_birth }}` | Date of birth as dd.mm.yyyy |
+| `{{ created_at }}` | The date the subscriber came to the bot, dd.mm.yyyy |
+| `{{ tag }}` | The parameter from the bot start link (more below) |
+
+## The start parameter `{{ tag }}`
+
+`{{ tag }}` is the value a subscriber launched the bot with. When somebody opens the link
+`t.me/your_bot?start=123`, the bot remembers `123`, and you can substitute it with `{{ tag }}`. The value is
+fixed once, on the first entry into the bot, and does not change afterwards. If the bot was launched from an
+ordinary link without a parameter, `{{ tag }}` is empty.
+
+This is handy for splitting scenarios by source. In the [flow builder](/en/constructor) `{{ tag }}` is often
+put into a start block condition: the block fires on `/start;123`, and subscribers with different parameters
+in the link land in different branches of the funnel.
+
+<Note>
+  If the parameter in the link is a click from the [Tracker](/en/tracker), it goes into click attribution, and
+  `{{ tag }}` stays empty in that case. For ad campaign labels use `{{ click_id }}` and the event variables
+  from the table below.
+</Note>
+
+## Tracker event variables
+
+If a subscriber came through a campaign link and postbacks arrive for them, you can substitute conversion data
+into the text. This is a fixed set of fields; they are filled in once a postback arrives for the subscriber and
+are taken from their latest tracker event.
+
+| Token | What it substitutes |
+|---|---|
+| `{{ click_id }}` | The click identifier for affiliate links and postbacks. Created automatically |
+| `{{ event.payout }}` | The payout amount from the latest postback |
+| `{{ event.currency }}` | The payout currency |
+| `{{ event.trader_id }}` | The account identifier at the partner (what the affiliate sends in the postback) |
+| `{{ event.device_type }}` | The subscriber's device type |
+| `{{ event.os_version }}` | The operating system version |
+| `{{ event.link_type }}` | The type of link the subscriber came through |
+
+Values are updated as postbacks arrive for the main events: registration (Reg), first deposit (FTD), repeat
+deposit (RD) and withdrawal.
+
+<Note>
+  Event variables are filled in only for subscribers who already had a postback. The set of fields above is
+  fixed: an arbitrary postback parameter does not become a variable of its own. Where events come from and how
+  to set up postbacks is described in [Tracker](/en/tracker). For `{{ click_id }}` in links and buttons there
+  are examples in [Flow builder](/en/constructor).
+</Note>
+
+## Custom variables
+
+Besides the built-in ones you create your own variables for your own data: a support address, the current
+price, a channel link, the current promo code, anything. Every custom variable in the list shows a "Type". By
+default it is per subscriber: each subscriber may have their own value, and while there is none the bot
+substitutes the default value. The "Global" checkbox makes the value the same across the whole bot: change it
+in one place and it updates in every message where its token is used.
+
+### Where they are managed
+
+Custom variables live in the bot's **Variables** section, which sits in the **Setup** menu group (the same
+group as the flow builder and "AI Settings"). The section is available to the manager role and above.
+
+<Steps>
+  <Step title="Open the Variables section" icon="code">
+    In the bot menu choose the "Setup" group, then "Variables". At the top of the page there is a hint about substitution with `{{ name }}` in messages, conditions and broadcasts.
+  </Step>
+  <Step title="Press «Variable»" icon="plus">
+    The button in the top right corner opens the creation dialog. Enter a **Name**: latin letters, digits and underscores only, and it may not start with a digit. For example `promo_code` or `support_link`.
+  </Step>
+  <Step title="Set a value" icon="pen">
+    In the **Default value** field enter what the bot will substitute. For a global variable this is its value for the whole bot.
+  </Step>
+  <Step title="Choose the variable type" icon="globe">
+    The **Global** checkbox is unticked by default: such a variable stores its value for each subscriber separately. Tick it if you need a single value for the whole bot.
+  </Step>
+  <Step title="Paste it into the text" icon="copy">
+    In the list, clicking the `{{ name }}` token copies it to the clipboard. Paste it into a block's text, a button, a condition or a broadcast.
+  </Step>
+</Steps>
+
+<Warning>
+  Deleting a variable cannot be undone: its value is lost and the token stops being substituted. Make sure it is
+  no longer used anywhere in blocks and broadcasts first.
+</Warning>
+
+## Which value wins
+
+If one name appears in several places, the bot substitutes it by a strict priority:
+
+1. **System variable.** Built-in names such as `first_name` and `tag` always come first.
+2. **Custom variable.** A value set in the "Variables" section.
+3. **Tracker event.** `click_id` and `event.*` are substituted if the name is not taken above.
+
+<Warning>
+  Variable names must not be translated or invented. Only the names from the tables above and the ones you
+  created in the "Variables" section work. `{{ first_name }}` works, while a translated name produces nothing in
+  the message. Invented tokens like `{{ phone }}` or `{{ chat_id }}` also produce nothing, because no such
+  variables exist. Change only the name inside the braces and leave the `{{ }}` braces as they are.
+</Warning>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Where to substitute variables into block text, buttons and conditions.
+  </Card>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    Mass messages with personal substitutions for every subscriber.
+  </Card>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    How an operator writes to a subscriber; substitution works here too.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/en/tracker">
+    Campaigns and postbacks that fill `click_id` and `event.*`.
+  </Card>
+</Columns>

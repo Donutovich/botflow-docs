@@ -1,0 +1,103 @@
+---
+title: "Primeros pasos"
+description: "Registro, workspace, conexión del primer bot y el primer flujo en unos minutos."
+icon: "rocket"
+---
+
+En unos minutos recorrerá la configuración básica y lanzará su primer bot. Necesitará un token de bot de
+[@BotFather](https://t.me/BotFather).
+
+<Info>
+  Una cuenta tiene tres niveles: **empresa** (el nivel superior) → **workspace** (un espacio para un grupo de bots
+  y un equipo) → **bots**. La empresa se crea automáticamente al registrarse y usted pasa a ser su propietario. El
+  workspace y los bots los agrega usted, por eso un bot se conecta dentro de un workspace y no directamente en la
+  cuenta.
+</Info>
+
+## Paso a paso
+
+<Steps>
+  <Step title="Regístrese" icon="user-plus">
+    Cree una cuenta en [botflow.cc](https://botflow.cc) y confirme su correo con el enlace del mensaje. Su empresa se crea junto con la cuenta y usted pasa a ser su propietario.
+  </Step>
+  <Step title="Cree un workspace" icon="folder-plus">
+    Abra la sección «Workspaces» y cree uno nuevo. Es un espacio para un grupo de bots y un equipo (por ejemplo, «Marketing»). Los bots, las difusiones, las campañas y los accesos viven dentro de un workspace, así que los distintos proyectos de una misma empresa no se cruzan.
+  </Step>
+  <Step title="Obtenga un token de @BotFather" icon="robot">
+    Escriba a [@BotFather](https://t.me/BotFather), envíe el comando `/newbot` y defina un nombre y un username. Recibirá un token con el aspecto `123456:ABC...`. Cópielo completo.
+  </Step>
+  <Step title="Conecte el bot al workspace" icon="plug">
+    Abra el workspace, vaya a «Bots», pulse «Conectar bot», pegue el token y pulse «Conectar». El bot aparece en la lista del workspace y se crea apagado.
+  </Step>
+  <Step title="Arme su primer flujo" icon="diagram-project">
+    Abra el editor de flujos del bot y agregue un bloque «Condición de inicio» con el comando `/start` y un mensaje de bienvenida. Arrastre una flecha hasta el siguiente bloque «Estado del diálogo» para continuar la conversación. Más en [Editor de flujos](/es/constructor).
+  </Step>
+  <Step title="Encienda el bot" icon="toggle-on">
+    Un bot nuevo se crea apagado mientras usted configura el flujo. Abra la configuración del bot y mueva el interruptor de actividad a «Encendido»: el bot empezará a responder a los suscriptores.
+  </Step>
+</Steps>
+
+<Note>
+  Mientras el bot está apagado no reacciona a los mensajes. Es a propósito, para que los suscriptores no caigan en
+  un flujo a medio hacer. Encienda el bot cuando el flujo esté listo.
+</Note>
+
+## Cómo está organizada la cuenta
+
+La empresa es el nivel superior: equipo, dominios, tracker y facturación. Un workspace agrupa los bots de un
+proyecto junto con sus difusiones, campañas y accesos. Los bots viven dentro de un workspace, y el acceso de un
+miembro se otorga a nivel de workspace y se aplica a todos sus bots. Los niveles se muestran en
+[Descripción general](/es/index); sobre roles y miembros lea [Configuración](/es/settings).
+
+## De qué se compone su primer flujo
+
+Un flujo se arma en el [editor de flujos](/es/constructor) con bloques unidos por flechas. Los tipos principales:
+
+- **Condición de inicio** es el punto de entrada. Se activa con un comando o una coincidencia (por ejemplo,
+  `/start`).
+- **Estado del diálogo** es un paso de la conversación. Avanzar ocurre solo por una flecha que usted haya
+  arrastrado al bloque siguiente.
+- **Fallback** se activa cuando ninguna condición de inicio coincidió, y no saca al suscriptor de su paso actual.
+  También puede llevarlo allí a propósito: con una flecha o con una rama del bloque «Condición». Entonces se
+  convierte en un paso normal para él.
+- **Condición** ramifica el embudo según los datos del suscriptor: etiquetas, depósitos, país, variables. Las
+  ramas se revisan de arriba abajo y gana la primera que coincide.
+- **Operador con IA** lleva una conversación en vivo: conduce al suscriptor hacia el objetivo del bloque y elige
+  la transición por sí mismo. Se configura en la página [Operador con IA](/es/ai-operator).
+- **Draft** es un bloque de reserva. No se activa hasta que lo cambie a un tipo activo.
+
+<Tip>
+  En los textos y las leyendas de los bloques puede sustituir variables: `{{first_name}}`, `{{username}}` y otras.
+  Los tokens se escriben en latín tal como están. La lista completa está en [Variables](/es/variables).
+</Tip>
+
+## Cómo responder a los suscriptores a mano
+
+Además de las respuestas automáticas del editor de flujos, usted puede conversar con los suscriptores en persona.
+La sección de conversación es la **Mensajería**, que se abre desde el menú del bot como «Mensajes». Allí se ven
+todos los diálogos, su historial y los medios. Usted responde a mano o pasa el diálogo al operador con IA. El
+botón «Mover al bloque» traslada al suscriptor a otro bloque del embudo manualmente: un bloque normal envía su
+contenido, un bloque de diálogo con IA entrega la conversación a la IA, y un bloque «Condición» elige a dónde
+llevar al suscriptor. Más en [Mensajería](/es/messenger).
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Bloques, condiciones, flechas, variables y medios.
+  </Card>
+  <Card title="Operador con IA" icon="sparkles" href="/es/ai-operator">
+    Una conversación en vivo que lleva al suscriptor hasta el objetivo.
+  </Card>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    Responda a los suscriptores a mano o con la IA.
+  </Card>
+  <Card title="Tracker y campañas" icon="chart-line" href="/es/tracker">
+    Traiga tráfico al bot y cuente las conversiones.
+  </Card>
+</Columns>
+
+<Note>
+  Puede invitar a su equipo y configurar los accesos en [Configuración](/es/settings), y recargar el saldo en
+  USDT-TRC20 en [Facturación](/es/billing).
+</Note>

@@ -1,0 +1,135 @@
+---
+title: "Programa de referidos"
+description: "Enlaces de referido con nombre, comisión del 10% del gasto de los referidos, ofertas para los invitados, estadísticas por enlace y retiro en USDT-TRC20."
+icon: "share-nodes"
+---
+
+Invite clientes por sus enlaces y reciba una comisión de su gasto. La sección «Programa de referidos» se abre desde el menú del
+perfil, está disponible para cualquier cuenta y consta de las pestañas **Enlaces**, **Referidos** y **Pagos**.
+
+## Cómo funciona
+
+<Steps>
+  <Step title="Cree un enlace y compártalo" icon="link">
+    Cada cuenta tiene un enlace principal, y usted puede crear más, uno por canal. El enlace lleva al registro, y las empresas invitadas por él aparecen en su lista de referidos.
+  </Step>
+  <Step title="Su referido usa la plataforma" icon="users">
+    Cuando una empresa invitada gasta su saldo en el funcionamiento de los bots y en mensajes, a usted se le acredita una comisión de ese gasto.
+  </Step>
+  <Step title="Retire lo acumulado" icon="wallet">
+    La comisión se acumula en el saldo del programa. Cuando el monto alcanza el mínimo, solicite un pago en USDT-TRC20.
+  </Step>
+</Steps>
+
+## La pestaña «Enlaces»
+
+Arriba de la sección se muestran su enlace de referido principal con un botón «Copiar» y la tasa de comisión. Debajo van las
+fichas de indicadores de todo el tiempo y un gráfico de acumulaciones de 30 días.
+
+<Columns cols={2}>
+  <Card title="Referidos" icon="user-group">
+    Cuántas empresas se registraron por sus enlaces.
+  </Card>
+  <Card title="Por pagar" icon="coins">
+    La comisión acumulada disponible para retirar.
+  </Card>
+  <Card title="En proceso" icon="clock">
+    El monto de las solicitudes de retiro que todavía se están ejecutando.
+  </Card>
+  <Card title="Pagado" icon="circle-check">
+    Cuánto se le ha pagado ya, en todo el tiempo.
+  </Card>
+</Columns>
+
+El gasto de las empresas invitadas se muestra por referido en la pestaña «Referidos».
+
+Debajo del resumen viene la gestión de enlaces. De cada enlace la tabla muestra: el nombre, el código del enlace con un botón de
+copiar, la oferta y el landing, además de las estadísticas del período: clics, registros, conversiones y comisión. Las
+conversiones son cuántos invitados por el enlace recargaron su saldo. El enlace principal no se puede eliminar.
+
+### Crear un enlace
+
+El botón «Crear enlace» abre el formulario:
+
+<Steps>
+  <Step title="Nombre" icon="pen">
+    Un nombre del canal que tenga sentido para usted, por ejemplo «Canal de Telegram». Solo lo ve usted y ayuda a distinguir los enlaces en las estadísticas.
+  </Step>
+  <Step title="Oferta" icon="gift">
+    Una oferta es la propuesta para el invitado. Por defecto se aplica la oferta principal de la plataforma. La oferta **queda fijada al enlace y no cambia después de crearlo**: para usar otra oferta, cree un enlace nuevo.
+  </Step>
+  <Step title="Landing" icon="browser">
+    La página a la que llega el invitado. Por defecto es la página principal.
+  </Step>
+</Steps>
+
+Un enlace listo se puede copiar con el botón de copiar de la fila o desde el menú «⋯». El mismo menú tiene «Editar» (nombre y
+landing) y «Archivar». El enlace principal no se puede archivar.
+
+## Comisión
+
+La tasa de comisión por defecto es del **10%** y se indica sobre las fichas de indicadores.
+
+La comisión se calcula sobre el **gasto** de las empresas invitadas: las tarifas por el funcionamiento de los bots y por los
+mensajes. El gasto en respuestas del operador con IA **no** entra en la base de la comisión. El monto acumulado se muestra sobre
+las fichas de indicadores, y el desglose por invitado está en la pestaña «Referidos».
+
+## La pestaña «Referidos»
+
+Un desglose anonimizado por invitado: la etiqueta «Referido №», la fecha de registro y los montos. De cada referido se ve:
+
+| Columna | Qué muestra |
+| --- | --- |
+| Referido | La etiqueta anonimizada del invitado. |
+| Fecha | Cuándo se registró. |
+| Etapa | Registro, Activo o Conversión. |
+| Fuente | El nombre del enlace por el que llegó. |
+| Oferta | Qué oferta se aplicó. |
+| Gasto | Cuánto gastó el invitado. |
+| Su comisión | Cuánto se le acreditó a usted por él. |
+
+## La pestaña «Pagos»
+
+Los pagos van en USDT por la red TRON (TRC-20), directamente a la blockchain.
+
+<Steps>
+  <Step title="Indique la dirección del monedero" icon="wallet">
+    El campo «Dirección del monedero». Revise la dirección: la transferencia va a la red y no se puede revertir.
+  </Step>
+  <Step title="Indique el monto" icon="coins">
+    El campo «Monto del retiro». Sobre el formulario se ve el saldo disponible, y el botón «Todo» rellena el monto disponible completo. Hay un monto mínimo de retiro, indicado en el formulario.
+  </Step>
+  <Step title="Solicite el pago" icon="paper-plane">
+    Pulse «Retirar». La solicitud pasa una revisión y, después de aprobarse, los fondos salen a la red.
+  </Step>
+</Steps>
+
+Las solicitudes de retiro se reúnen en una tabla con la fecha, el monto, el estado y un enlace a la transacción. Mientras la
+revisión y la transferencia están en curso, el estado se actualiza por sí solo. Debajo va un «Historial»: todas las operaciones
+del programa, las acumulaciones de comisión con un más y los pagos con un menos.
+
+| Estado | Qué significa |
+| --- | --- |
+| Pendiente | La solicitud está creada y espera la revisión. |
+| Aprobada | La solicitud pasó la revisión. |
+| En proceso | El pago se está preparando para enviarse. |
+| Enviado | La transferencia salió a la red y se están acumulando las confirmaciones (se ve un contador de confirmaciones). |
+| Completado | Los fondos están abonados, y hay un enlace a la transacción disponible. |
+| Rechazada | La solicitud se rechazó, con el motivo indicado. |
+| Error | El envío no se logró, con el motivo indicado. |
+
+<Info>
+  Si ya tiene una solicitud en proceso, su monto se muestra en una nota aparte debajo del formulario, para que vea cuánto está
+  ya en camino.
+</Info>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Facturación" icon="wallet" href="/es/billing">
+    El saldo de la empresa, la recarga en USDT-TRC20 y de qué se compone el gasto.
+  </Card>
+  <Card title="Descripción general de la plataforma" icon="house" href="/es/index">
+    Cómo están organizadas la empresa, el workspace y los bots.
+  </Card>
+</Columns>

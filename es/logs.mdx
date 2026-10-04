@@ -1,0 +1,70 @@
+---
+title: "Registros"
+description: "El registro de eventos de los bots y el registro de actividad de la empresa: quién cambió qué y cuándo."
+icon: "list-check"
+---
+
+Los dos registros responden preguntas distintas. El «Registro de eventos» muestra qué pasó con sus bots, mientras el
+«Registro de actividad» en la configuración de la empresa muestra quién cambió la empresa misma.
+
+## Registro de eventos
+
+La sección «Registros» del menú. Un flujo de eventos de los bots con filtros por bot y por tipo de evento, además de una
+búsqueda en la descripción. La lista se pagina con «Anterior» y «Siguiente», y los eventos de hoy llevan la hora. La búsqueda
+en la descripción abarca la página abierta, no todo el registro, así que elija primero un bot y un
+tipo de evento. Al lado hay un botón de exportación a CSV.
+
+| Evento | Cuándo aparece |
+| --- | --- |
+| **Flujo creado** | Apareció un flujo nuevo en el editor. |
+| **Flujo actualizado** | Se cambió el esquema del flujo. |
+| **Flujo eliminado** | Se quitó un flujo del editor. |
+| **Bot conectado** | Se agregó un bot a un workspace. |
+| **Bot apagado** | Se detuvo un bot con el interruptor. |
+| **Suscriptor bloqueado** | Se bloqueó a un suscriptor desde su ficha o desde la conversación. |
+| **Suscriptor eliminado** | Se eliminó a un suscriptor. |
+| **Limpieza de suscriptores** | Hubo una eliminación masiva de suscriptores. |
+
+El registro guarda también otros eventos, entre ellos los de accesos y claves. La tabla de arriba
+enumera los que verá con más frecuencia.
+
+Si a su rol los datos de suscriptores se le muestran ocultos, algunas entradas muestran un aviso en
+lugar de la descripción, indicando que la entrada contiene datos del suscriptor. La entrada en sí se
+queda: se ve que la acción ocurrió, quién la hizo y cuándo. Para ver los datos del suscriptor,
+solicite acceso en la sección «Solicitudes de divulgación».
+
+<Tip>
+  Cuando un embudo se comportó de forma distinta a la que esperaba, empiece por aquí: por la hora de los eventos se ve qué
+  edición del flujo lo provocó.
+</Tip>
+
+## Registro de actividad de la empresa
+
+Configuración de la empresa, el grupo «Equipo», la opción «Registro de actividad». Reúne los cambios de la empresa misma:
+creación y eliminación de workspaces, cambios de roles, bloqueos, traspaso de la propiedad.
+
+| Columna | Qué muestra |
+| --- | --- |
+| **Hora** | Cuándo ocurrió. |
+| **Autor** | Quién lo hizo. Las acciones de la plataforma se marcan como «Sistema». |
+| **Acción** | El tipo de cambio. |
+| **Descripción** | Los detalles del cambio. |
+| **Contexto** | A qué se refiere el cambio. |
+
+El filtro «Todos los tipos» acota la lista a un tipo de acción concreto.
+
+<Info>
+  El registro de actividad lo ven el propietario y los administradores de la empresa. El registro de eventos de los bots
+  está disponible para los miembros con acceso a esos bots.
+</Info>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Configuración" icon="gear" href="/es/settings">
+    Roles, accesos y traspaso de la propiedad, cuyos cambios llegan al registro de actividad.
+  </Card>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Cómo lanzar una difusión, detenerla y leer el informe de entrega.
+  </Card>
+</Columns>

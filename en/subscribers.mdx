@@ -1,0 +1,268 @@
+---
+title: "Subscribers"
+description: "A bot's subscriber base: the list, filters, the card with data and variables, import and export."
+icon: "users"
+---
+
+A subscriber is a person who started your bot, that is, sent it `/start`. From that moment they are in the
+subscriber base and in your funnel. Every subscriber has a Telegram ID, a name and a @username (if they set
+them in Telegram), a subscription date and a status. The "Subscribers" section is the full table of your
+audience for one bot.
+
+<Note>
+  Starting a bot and clicking an ad are different events. A click on a tracking link or a landing may never
+  reach the bot. A subscriber appears only when the person actually pressed "Start" and sent `/start`. For the
+  path from click to bot see [Tracker and campaigns](/en/tracker).
+</Note>
+
+## Where to find it
+
+In the bot menu open the "Audience" group, item "Subscribers". Next to it in the same group sits
+[Tags](/en/tags). The table shows the subscribers of the current bot only: every bot has its own base.
+
+## Subscriber list
+
+Subscribers are shown as a table with these columns.
+
+| Column | What it shows |
+|---|---|
+| **Name** | The subscriber's name. If there is neither a name nor a @username, the row is marked as unnamed. |
+| **Username** | The @username in Telegram, if set. |
+| **Telegram ID** | The numeric user identifier in Telegram. |
+| **Subscribed** | The date the person started the bot. |
+| **Status** | "Active" or "Blocked" (the user blocked the bot). |
+
+Clicking a row opens the subscriber card. On the right of the row there are two buttons: open the dialog (leads
+to the Messenger, called "Messages" in the bot menu) and delete the subscriber. At the bottom of the list the
+"Show more" button loads the next page.
+
+If the base is empty, you see a hint that subscribers will appear once somebody sends `/start` to the bot.
+
+<Tip>
+  You can find a particular person by first name, last name, @username or Telegram ID with the search in the
+  Messenger, when you open a dialog. In the "Subscribers" section itself the audience is narrowed by filters
+  and quick funnel filters, see below.
+</Tip>
+
+## Filters
+
+Above the table there are two selection tools: quick funnel filters and the condition builder (the "Add filter"
+button). Next to them there is always an audience counter, for example "12,233 / 80,000 subscribers": on the
+left how many matched the filter, on the right how many there are in total.
+
+### Quick funnel filters
+
+Chips above the list select funnel stages in one press: `All`, `Reg`, `FD`, `RD`, `Deposits` and slices by
+deposit amount `<$5`, `$5–10`, `$10–100`, `>$100`. Their names are the same in every interface language, and
+what each one means is described in [Filters](/en/filters).
+
+### Condition builder
+
+The "Add filter" button opens the condition builder. Here you select subscribers by tags, funnel stages,
+tracker data and bot variables, joining conditions with AND and OR. An assembled filter can be saved under a
+name and then chosen with one click. The condition builder and saved filters are described in detail in
+[Filters](/en/filters).
+
+<Info>
+  The same filter works as a broadcast audience: the condition assembled here is what you pick when creating a
+  [broadcast](/en/broadcasts). One way to describe an audience, both for selecting and for sending.
+</Info>
+
+## Bulk actions
+
+There is a checkbox to the left of each row. You can mark individual subscribers or everyone at once.
+
+<Steps>
+  <Step title="Select subscribers" icon="square-check">
+    Mark rows one by one, or use the checkbox in the header to select everyone matching the current filter, including those below the visible part of the list.
+  </Step>
+  <Step title="Refine the selection" icon="filter">
+    In the "all matching" mode you can untick individual rows to exclude them from the selection.
+  </Step>
+  <Step title="Apply the action" icon="trash">
+    A panel appears at the bottom with an "N selected" counter and a "Delete" button. Bulk deletion cannot be undone: every message, variable and applied tag goes with the subscribers. No more than 500 individually ticked subscribers are deleted at a time. In the "select all matching" mode there is no limit: everyone under the current filter is deleted. Bulk deletion is available to the "Manager" role and above.
+  </Step>
+</Steps>
+
+## Subscriber card
+
+Clicking a row opens the card. At the top there is the avatar, the full name and the @username. Below come the
+subscriber's data.
+
+### System variables
+
+These are the standard fields the platform fills in itself. Variable names are always in English and must not
+be translated: they are substituted into the funnel and broadcasts exactly as they are.
+
+| Variable | What it means |
+|---|---|
+| `user_id` | The subscriber's identifier in BotFlow. |
+| `telegram_id` | The user identifier in Telegram. |
+| `first_name` | First name. |
+| `last_name` | Last name. |
+| `full_name` | First and last name together. |
+| `username` | The @username in Telegram, if set. |
+| `date_of_birth` | Date of birth, if known. |
+| `created_at` | When the person started the bot (subscription date). |
+| `tag` | The start parameter the person launched the bot with (`t.me/bot?start=123` gives `123`). |
+
+### Custom variables
+
+Besides the system fields, a bot may have its own variables for substitution into messages and conditions. How
+to create and use them is described in [Variables](/en/variables).
+
+### Status and actions
+
+Below the variables there is a status chip: "Active" or "Blocked" (with the block date). At the bottom of the
+card there are two buttons: "Open dialog" (goes to the conversation in the Messenger) and "Delete".
+
+<Warning>
+  Deleting a subscriber cannot be undone. Every message, variable and applied tag goes with them. The platform
+  asks for confirmation before deleting.
+</Warning>
+
+## Traffic source and conversions
+
+The subscriber card shows their data and variables. Where they came from and which conversions they have
+(registration, FTD, RD) is tracked by the Tracker and tied to the subscriber by `click_id`. The quick funnel
+filters above the list (Reg, FD, RD, Deposits) reflect exactly that state, so you can select, for example,
+everyone who registered without a deposit right in the subscriber list.
+
+<Warning>
+  `click_id` is the money identifier for attribution. It ties a future deposit to a specific subscriber and
+  campaign and must not be substituted by hand. More in [Tracker and campaigns](/en/tracker).
+</Warning>
+
+## Importing subscribers
+
+If you already have a base from another service, you can upload it. The "Import" button in the header accepts
+`.xlsx` and `.csv` files.
+
+<Steps>
+  <Step title="Check the import options" icon="sliders">
+    The "More" menu (three dots in the header) has two toggles: detect FTD on import and carry over tags. Both are off by default, so somebody else's labels don't clutter your base.
+  </Step>
+  <Step title="Choose a file" icon="upload">
+    Press "Import" and pick an `.xlsx` or `.csv`. Uploading a large file takes time, and the button shows the progress.
+  </Step>
+  <Step title="Check the result" icon="clipboard-check">
+    After the upload the platform reports how many subscribers were added and how many updated, plus the number of registrations, carried-over labels and errors.
+  </Step>
+</Steps>
+
+<Note>
+  Only rows with a Telegram ID create new subscribers: that is exactly what identifies a subscriber in
+  Telegram. A row without one does not disappear silently — its number is shown in the result.
+</Note>
+
+### Registration date
+
+If the file has a "Registration date" column (`registration_date`, `reg_date`), the platform takes the
+date from it. The usual formats are recognised: `2025-10-03`, `03.10.2025`,
+`2025-10-03T12:00:00+03:00`. A slash date is read as day/month/year, so a file in the American
+month/day/year order is best converted to `2025-10-03`. Cells that could not be read are counted and
+their number appears in the import result. The usual formats are recognised: `2025-10-03`, `03.10.2025`,
+`2025-10-03T12:00:00+03:00`. A slash date is read as day/month/year, so a file in the American
+month/day/year order is best converted to `2025-10-03`. Cells that could not be read are counted and
+their number appears in the import result. Without such a column the registration date is the day the file was uploaded, provided the row
+carries the trading account identifier the platform records the registration by. You can add the date later: upload the same file
+with that column and it replaces the upload date. A later date never replaces a date already known.
+
+### Deposit amounts
+
+The import carries money too. Add any of these columns to the file:
+
+| Column | What it means |
+|---|---|
+| **Deposits amount** | The total of the subscriber's deposits. |
+| **FTD amount** | The amount of the first deposit. |
+| **RD amount** | The amount of the repeat deposits. |
+| **Currency** | The currency of the amounts. |
+
+When the file holds both the total and the FTD amount, the difference goes to the repeat deposits. When
+there is a single column, the whole amount belongs to the first deposit.
+
+One person can hold several trading accounts with the affiliate, and the export gives one row per
+account. Such rows are no longer merged: both accounts' amounts reach the subscriber and their events
+stay separate.
+
+The import result splits amounts by outcome, so it is visible what actually happened: how many amounts
+were recorded, how many were not accepted (foreign currency or an unreadable cell), how many disagree
+with the file's own total, how many were already recorded earlier, and how many rows could not be tied
+to a single account. Re-uploading the same file reports "already recorded" — that is a normal result,
+not an error.
+
+No separate toggle is needed: a column with an amount is reason enough. Numbers are accepted in any usual
+shape: `40`, `40.50`, `40,50`, `$40.50`, `1 234,56`. A value like `1,234` reads as one thousand two hundred
+and thirty-four.
+
+A file from the affiliate network can be uploaded as it is: when it has no Telegram ID but does have a
+`trader_id`, the amounts find their subscriber through it. Such a file creates no new subscribers, and rows
+whose `trader_id` could not be matched unambiguously appear in the result as their own number.
+
+<Note>
+  Uploading the same file again is safe: an amount is written only where there is none yet. Amounts that
+  arrived through the affiliate network's postbacks are never overwritten by a file, and amounts in a
+  currency other than the dollar are not accepted — their number is visible in the result.
+</Note>
+
+## Export
+
+The "CSV" button in the header exports subscribers to a file honouring the current filter: the export matches
+what you see in the list. To get the whole base, clear the filter. This is handy for a backup or for moving
+data.
+
+The "CSV" button opens the "Subscriber columns" window: tick the columns you need and press
+"Download CSV". The choice applies to BOTH surfaces at once — the table on screen and the exported
+file. Beyond the basic fields you can add:
+
+- **Dialog link** — a direct link to the conversation with the subscriber, opens from the sheet in one click.
+- **Country** — the subscriber's country.
+- **Registration date** — when the subscriber registered.
+- **Deposits amount**, **FTD amount**, **Repeat deposits amount**, **Deposits count**, **Had FTD**,
+  **First FTD at**, **Last FTD at**, **Repeat deposit**,
+  **Conversions count**.
+- **Tags**, **Start parameter**, **Last name**, **Click ID**.
+
+Columns appear in the order you ticked them — in the table and in the file alike. The choice is
+remembered per bot. Unticking everything brings the default set back.
+
+<Note>
+  Amounts come from the affiliate network's postbacks and from the import file. When an amount is
+  unknown the column shows 0.00, and the deposit itself stays visible in "Had FTD" and "Deposits
+  count". The split into "FTD amount" and "Repeat deposits amount" is only as precise as the source
+  made it: an import file that carried a single total puts all of it on the first deposit.
+</Note>
+
+## Deleting the base
+
+Besides deleting one by one and bulk deletion by selection, the "More" menu has an item for deleting the whole
+base. It wipes every subscriber of the bot together with the message history.
+
+<Warning>
+  Deleting the whole base cannot be undone. To confirm you must type a word by hand. The data is gone for good,
+  with no recovery.
+</Warning>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Messages" icon="comments" href="/en/messenger">
+    The conversation with a subscriber, manual replies and how operators work.
+  </Card>
+  <Card title="Tags" icon="tag" href="/en/tags">
+    Labels for splitting the audience and launching scenarios.
+  </Card>
+  <Card title="Filters" icon="filter" href="/en/filters">
+    The condition builder and saved audience filters.
+  </Card>
+  <Card title="Variables" icon="brackets-curly" href="/en/variables">
+    A subscriber's system fields and your own bot variables.
+  </Card>
+  <Card title="Broadcasts" icon="paper-plane" href="/en/broadcasts">
+    Mass sending to a chosen audience.
+  </Card>
+  <Card title="Tracker and campaigns" icon="chart-line" href="/en/tracker">
+    Traffic source, clicks and conversions by `click_id`.
+  </Card>
+</Columns>

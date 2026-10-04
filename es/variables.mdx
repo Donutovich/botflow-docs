@@ -1,0 +1,159 @@
+---
+title: "Variables"
+description: "Sustitución de datos del suscriptor en el texto con {{ name }}: variables de sistema, personalizadas y variables de eventos del tracker."
+icon: "brackets-curly"
+---
+
+Una variable es una marca que el bot reemplaza por los datos de un suscriptor concreto en el momento del envío. Usted
+escribe `{{ first_name }}` en el texto y el suscriptor ve su propio nombre. El mismo bloque o la misma difusión llega
+a cada persona de forma personal, sin que usted sustituya nada a mano.
+
+La sintaxis de BotFlow son las llaves dobles: `{{ name }}`. Los espacios dentro de las llaves son opcionales,
+`{{ first_name }}` y `{{first_name}}` funcionan igual.
+
+<Info>
+  La sustitución funciona en todos los lugares donde usted escribe texto a un suscriptor: en el texto y los botones de
+  los bloques del [editor de flujos](/es/constructor), en las condiciones de bloques y flechas, en los mensajes de un
+  operador en la [Mensajería](/es/messenger) y en el texto de las [difusiones](/es/broadcasts).
+</Info>
+
+## Cómo se ve
+
+Suponga que el bloque de inicio contiene:
+
+```
+Hola, {{ first_name }}! Nos alegra verle de nuevo.
+```
+
+A una suscriptora llamada Ana le llega «Hola, Ana! Nos alegra verle de nuevo.». Si la suscriptora no tiene nombre, las
+llaves simplemente desaparecen: «Hola, ! Nos alegra verle de nuevo.». El bot nunca envía el texto literal
+`{{ first_name }}`; una variable sin valor se convierte en una cadena vacía.
+
+## Variables de sistema
+
+Estas variables están integradas y siempre disponibles, no hay que crearlas. Se toman del perfil del suscriptor en
+Telegram y de los datos de su suscripción.
+
+| Token | Qué sustituye |
+|---|---|
+| `{{ first_name }}` | El nombre del perfil de Telegram |
+| `{{ last_name }}` | El apellido del perfil de Telegram |
+| `{{ full_name }}` | Nombre y apellido juntos |
+| `{{ username }}` | El @username del suscriptor en Telegram |
+| `{{ user_id }}` | El identificador del suscriptor en BotFlow |
+| `{{ telegram_id }}` | El ID del usuario en Telegram |
+| `{{ date_of_birth }}` | Fecha de nacimiento en formato dd.mm.aaaa |
+| `{{ created_at }}` | La fecha en que el suscriptor llegó al bot, dd.mm.aaaa |
+| `{{ tag }}` | El parámetro del enlace de inicio del bot (más abajo) |
+
+## El parámetro de inicio `{{ tag }}`
+
+`{{ tag }}` es el valor con el que un suscriptor lanzó el bot. Cuando alguien abre el enlace
+`t.me/su_bot?start=123`, el bot recuerda `123` y usted puede sustituirlo con `{{ tag }}`. El valor se fija una sola
+vez, en la primera entrada al bot, y después no cambia. Si el bot se lanzó desde un enlace normal sin parámetro,
+`{{ tag }}` está vacío.
+
+Es cómodo para separar escenarios por fuente. En el [editor de flujos](/es/constructor) `{{ tag }}` se pone a menudo en
+la condición de un bloque de inicio: el bloque se activa con `/start;123`, y los suscriptores con distinto parámetro
+en el enlace caen en ramas distintas del embudo.
+
+<Note>
+  Si el parámetro del enlace es un clic del [Tracker](/es/tracker), va a la atribución del clic y `{{ tag }}` queda
+  vacío en ese caso. Para las marcas de campañas publicitarias use `{{ click_id }}` y las variables de evento de la
+  tabla de abajo.
+</Note>
+
+## Variables de eventos del tracker
+
+Si un suscriptor llegó por un enlace de campaña y le llegan postbacks, puede sustituir datos de la conversión en el
+texto. Es un conjunto fijo de campos; se rellenan una vez que llega un postback del suscriptor y se toman de su último
+evento del tracker.
+
+| Token | Qué sustituye |
+|---|---|
+| `{{ click_id }}` | El identificador del clic para enlaces de afiliados y postbacks. Se crea automáticamente |
+| `{{ event.payout }}` | El monto del pago del último postback |
+| `{{ event.currency }}` | La moneda del pago |
+| `{{ event.trader_id }}` | El identificador de la cuenta en el socio (lo que la red de afiliados envía en el postback) |
+| `{{ event.device_type }}` | El tipo de dispositivo del suscriptor |
+| `{{ event.os_version }}` | La versión del sistema operativo |
+| `{{ event.link_type }}` | El tipo de enlace por el que llegó el suscriptor |
+
+Los valores se actualizan a medida que llegan postbacks de los eventos principales: registro (Reg), primer depósito
+(FTD), depósito repetido (RD) y retiro.
+
+<Note>
+  Las variables de evento están rellenas solo en los suscriptores que ya tuvieron un postback. El conjunto de campos de
+  arriba es fijo: un parámetro arbitrario del postback no se convierte en una variable propia. De dónde vienen los
+  eventos y cómo configurar los postbacks se describe en [Tracker](/es/tracker). Para `{{ click_id }}` en enlaces y
+  botones hay ejemplos en [Editor de flujos](/es/constructor).
+</Note>
+
+## Variables personalizadas
+
+Además de las integradas, usted crea sus propias variables para sus datos: una dirección de soporte, el precio actual,
+un enlace a un canal, el código promocional vigente, cualquier cosa. Cada variable personalizada de la lista muestra un
+«Tipo». Por defecto es por suscriptor: cada suscriptor puede tener su propio valor, y mientras no lo tenga el bot
+sustituye el valor por defecto. La casilla «Global» hace que el valor sea el mismo para todo el bot: lo cambia en un
+lugar y se actualiza en todos los mensajes donde está su token.
+
+### Dónde se gestionan
+
+Las variables personalizadas viven en la sección **Variables** del bot, que está en el grupo de menú **Configuración**
+(el mismo grupo que el editor de flujos y «Configuración de IA»). La sección está disponible para el rol de gerente y
+superiores.
+
+<Steps>
+  <Step title="Abra la sección Variables" icon="code">
+    En el menú del bot elija el grupo «Configuración» y después «Variables». Arriba de la página hay una indicación sobre la sustitución con `{{ name }}` en mensajes, condiciones y difusiones.
+  </Step>
+  <Step title="Pulse «Variable»" icon="plus">
+    El botón de la esquina superior derecha abre el cuadro de creación. Introduzca un **Nombre**: solo letras latinas, dígitos y guion bajo, y no puede empezar por un dígito. Por ejemplo `promo_code` o `support_link`.
+  </Step>
+  <Step title="Defina un valor" icon="pen">
+    En el campo **Valor por defecto** escriba lo que el bot va a sustituir. Para una variable global ese es su valor para todo el bot.
+  </Step>
+  <Step title="Elija el tipo de variable" icon="globe">
+    La casilla **Global** está desmarcada por defecto: esa variable guarda su valor para cada suscriptor por separado. Márquela si necesita un único valor para todo el bot.
+  </Step>
+  <Step title="Péguela en el texto" icon="copy">
+    En la lista, al hacer clic en el token `{{ name }}` se copia al portapapeles. Péguelo en el texto de un bloque, en un botón, en una condición o en una difusión.
+  </Step>
+</Steps>
+
+<Warning>
+  Eliminar una variable no se puede deshacer: su valor se pierde y el token deja de sustituirse. Asegúrese primero de
+  que ya no se usa en ningún bloque ni difusión.
+</Warning>
+
+## Qué valor gana
+
+Si un mismo nombre aparece en varios lugares, el bot lo sustituye por una prioridad estricta:
+
+1. **Variable de sistema.** Los nombres integrados como `first_name` y `tag` siempre van primero.
+2. **Variable personalizada.** El valor definido en la sección «Variables».
+3. **Evento del tracker.** `click_id` y `event.*` se sustituyen si el nombre no está ocupado arriba.
+
+<Warning>
+  Los nombres de las variables no se traducen ni se inventan. Solo funcionan los nombres de las tablas de arriba y los
+  que usted mismo creó en la sección «Variables». `{{ first_name }}` funciona, mientras que un nombre traducido no
+  sustituye nada. Los tokens inventados como `{{ phone }}` o `{{ chat_id }}` también devuelven una cadena vacía, porque
+  esas variables no existen. Cambie solo el nombre dentro de las llaves y deje las llaves `{{ }}` tal como están.
+</Warning>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Editor de flujos" icon="diagram-project" href="/es/constructor">
+    Dónde sustituir variables en el texto, los botones y las condiciones de un bloque.
+  </Card>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Mensajes masivos con sustituciones personales para cada suscriptor.
+  </Card>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    Cómo un operador escribe a un suscriptor; la sustitución también funciona aquí.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/es/tracker">
+    Campañas y postbacks que rellenan `click_id` y `event.*`.
+  </Card>
+</Columns>

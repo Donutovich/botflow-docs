@@ -1,0 +1,159 @@
+---
+title: "Filtros"
+description: "Selección de suscriptores por condiciones: filtros rápidos de la lista de chats, el constructor de condiciones, filtros guardados y su reutilización en difusiones y en el embudo."
+icon: "filter"
+---
+
+Un filtro es un conjunto de condiciones que un suscriptor debe cumplir para entrar en una selección. Con él acota la
+lista de chats a las personas que necesita: «los que se registraron pero no depositaron», «depósitos desde 10
+dólares», «suscriptores de RU sin etiquetas» y así.
+
+Los filtros no son una sección aparte del menú. Viven dentro de otras secciones y se arman en todas ellas con el
+mismo constructor de condiciones.
+
+<Columns cols={2}>
+  <Card title="Mensajería" icon="comments" href="/es/messenger">
+    Modos de la lista de chats, filtros rápidos del embudo y filtros guardados sobre la lista de diálogos.
+  </Card>
+  <Card title="Suscriptores" icon="users" href="/es/subscribers">
+    Toda la tabla de suscriptores con el mismo constructor de condiciones sobre sus columnas.
+  </Card>
+  <Card title="Editor de flujos" icon="arrows-split-up-and-left" href="/es/constructor">
+    El bloque «Condición» divide a los suscriptores dentro del embudo en ramas, y la condición de cada rama se arma con el mismo constructor.
+  </Card>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    La audiencia de una difusión se define con un filtro guardado o con uno armado en el asistente.
+  </Card>
+</Columns>
+
+Una condición armada se puede **guardar con un nombre**. Ármela una vez, póngale nombre, y la reutiliza en las
+[difusiones](/es/broadcasts) como audiencia y en el bloque «Condición» del [editor de flujos](/es/constructor) como
+rama, sin volver a armarla.
+
+## Filtros rápidos de la lista de chats
+
+En la [Mensajería](/es/messenger), sobre la lista de chats, hay filtros listos que no requieren configuración. El
+botón con el icono de controles a la derecha de la búsqueda abre un menú con cinco modos. Siempre hay exactamente
+uno activo.
+
+| Modo | Qué muestra |
+| --- | --- |
+| Todos los chats | todos los diálogos del bot |
+| No leídos | diálogos con mensajes entrantes sin leer |
+| IA | diálogos que lleva ahora el [operador con IA](/es/ai-operator) |
+| Agente | diálogos pasados a modo manual |
+| Bloqueados | suscriptores que bloquearon el bot |
+
+### Filtros rápidos del embudo
+
+Sobre la lista hay una franja de filtros rápidos del embudo de ventas. Sus nombres son iguales en todos los idiomas
+de la interfaz.
+
+- `All`: todos los chats.
+- `Reg`: existe un evento de registro.
+- `FD`: hubo un primer depósito.
+- `RD`: hubo un depósito repetido.
+- `Deposits`: el total de depósitos es mayor que cero.
+- `<$5`, `$5–10`, `$10–100`, `>$100`: cortes por monto de depósitos.
+
+En la misma franja se muestran los filtros guardados de ese bot, y el botón «Filtro» al final de la fila abre el
+constructor de condiciones. El modo de la lista se suma al resto de la selección, mientras que un filtro rápido, uno
+guardado y uno propio se reemplazan entre sí.
+
+## Constructor de condiciones
+
+El botón «Filtro» (en «Mensajes») o «Agregar filtro» (en «Suscriptores») abre el panel «Filtro de suscriptores». Aquí
+arma una condición con filas separadas.
+
+Cada fila tiene tres partes:
+
+1. **Campo**: por qué filtramos (país, total de depósitos, etiquetas y así).
+2. **Operador**: cómo comparamos (igual a, mayor que, contiene, en los últimos N días).
+3. **Valor**: con qué comparamos. Algunos operadores («vacío», «no vacío») no necesitan valor.
+
+<Steps>
+  <Step title="Agregue la primera condición" icon="plus">
+    Pulse «Agregar condición», elija un campo de la lista, después un operador, e indique un valor.
+  </Step>
+  <Step title="Agregue más condiciones al grupo" icon="layer-group">
+    Las condiciones dentro de un grupo se unen con el interruptor «Y» / «O». «Y» exige todas a la vez, «O» se satisface con cualquiera.
+  </Step>
+  <Step title="Agregue un segundo grupo" icon="code-branch">
+    Una regla como «(A y B) o C» se arma con dos grupos: A y B unidas por «Y» en el primero, C en el segundo. Los grupos entre sí siempre se unen por «O».
+  </Step>
+  <Step title="Aplique" icon="check">
+    Pulse «Aplicar». La lista de chats o la tabla de suscriptores se reconstruye según su condición.
+  </Step>
+  <Step title="Revise el contador" icon="calculator">
+    Junto al filtro aplicado se muestra cuántos suscriptores coinciden: «N suscriptores» o «N / T», donde T son todos los suscriptores del bot.
+  </Step>
+</Steps>
+
+<Note>En un filtro se pueden armar hasta 50 condiciones.</Note>
+
+### Qué campos están disponibles
+
+Los campos están agrupados en la lista desplegable.
+
+| Grupo | Campos |
+| --- | --- |
+| Subscriber | Telegram ID, Username, Nombre, Apellido, País, Parámetro de inicio, Idioma de Telegram, Fecha de nacimiento, Tiene avatar, Fecha de suscripción, Bloqueado por el bot, Fecha de bloqueo, Bloqueado por un administrador, Fecha de bloqueo por administrador, [Etiquetas](/es/tags) |
+| Deposits | Tiene registro, Fecha de registro, Hizo FTD, Fecha del primer FTD, Fecha del último FTD, Depósito repetido, Total de depósitos, Importe del FTD, Importe de depósitos repetidos, Número de depósitos, Número de conversiones, Hizo un retiro |
+| Saved filters | Un filtro guardado como condición |
+| Traffic | País del clic, Ciudad, Región, Idioma del clic, Dispositivo, Tipo de fuente, Campaña, UTM source, FB campaign, FB adset, FB ad, FB campaign name, FB adset name, Proxy / VPN, Tipo de proxy, sub1-sub5 |
+| Dialog | Último mensaje, Dirección del mensaje, No leídos, Espera respuesta |
+| Funnel | Bloque del embudo |
+| Activity | Última actividad |
+| Variables | Sus [variables del bot](/es/variables) con valor por suscriptor; en la lista aparecen con su propio nombre |
+
+<Info>Los eventos del embudo (registro, FTD, RD) vienen del [tracker](/es/tracker) y están listos para usarse en el grupo Deposits como condiciones separadas. No hace falta contarlos por su cuenta.</Info>
+
+### Operadores
+
+El conjunto de operadores depende del tipo de campo.
+
+| Tipo de campo | Operadores |
+| --- | --- |
+| Texto («Nombre», `sub1`, variables) | igual a, distinto de, contiene, no contiene, empieza con, termina con, cualquiera de, ninguno de, vacío, no vacío |
+| Número («Total de depósitos», «Importe del FTD», «Número de depósitos») | igual a, distinto de, mayor que, mayor o igual, menor que, menor o igual, entre |
+| Fecha («Fecha de suscripción», «Fecha del primer FTD») | mayor o igual, menor o igual, entre, en los últimos, vacío, no vacío |
+| Sí / No («Hizo FTD», «Bloqueado por el bot») | igual a |
+| Lista de valores («País», «Dispositivo», «Filtro guardado») | cualquiera de, ninguno de, igual a, distinto de, vacío, no vacío |
+| [Etiquetas](/es/tags) | tiene alguna de, tiene todas de, no tiene ninguna de, tiene solo estas, sin etiquetas, tiene etiquetas |
+
+<Tip>El operador «cualquiera de» es cómodo cuando hay varios valores: introduzca `RU, US, KZ` pulsando Enter después de cada uno, y en la selección entran los suscriptores de cualquiera de esos países.</Tip>
+
+## Guardar un filtro
+
+Una condición armada se puede guardar con un nombre y reutilizar. En el panel del filtro pulse «Guardar como…»,
+introduzca un nombre en el campo «Nombre del filtro» (por ejemplo, `VIP con FTD`) y pulse «Guardar». Para un filtro
+ya guardado aparece al lado «Actualizar el guardado».
+
+Lo que importa sobre los filtros guardados:
+
+- Un filtro pertenece al **bot** y lo ve todo el equipo que tiene acceso a ese bot.
+- Los operadores y los roles superiores pueden crear, renombrar y eliminar filtros.
+- Los filtros favoritos se marcan con una estrella y suben al principio de la franja. Los favoritos son comunes a todo el equipo.
+- Se pueden guardar hasta 50 filtros por bot.
+
+<Warning>Eliminar un filtro no se puede deshacer. Las conversaciones y los suscriptores se quedan donde están, solo se elimina el conjunto de condiciones guardado. Las difusiones que ya arrancaron con ese filtro conservan su audiencia: queda congelada en el lanzamiento. Las ramas de un bloque «Condición» del [editor de flujos](/es/constructor) construidas sobre un filtro eliminado, en cambio, dejan de encontrar a nadie y los suscriptores van por la rama por defecto. Revise sus embudos antes de eliminar un filtro.</Warning>
+
+## Reutilizar filtros
+
+Un filtro guardado se elige como audiencia en las [difusiones](/es/broadcasts): en el paso de audiencia indique un
+filtro guardado o arme uno nuevo en el asistente con el mismo constructor.
+
+Dentro de un embudo las mismas condiciones funcionan en el bloque «Condición» del
+[editor de flujos](/es/constructor): revisa las ramas de arriba abajo y lleva al suscriptor de inmediato por la
+primera que coincide, por ejemplo a los que tienen depósito hacia una oferta personal y al resto al menú general.
+
+<Columns cols={2}>
+  <Card title="Difusiones" icon="paper-plane" href="/es/broadcasts">
+    Envío masivo o programado por un filtro guardado o armado en el momento.
+  </Card>
+  <Card title="Etiquetas" icon="tag" href="/es/tags">
+    Etiquetas manuales y automáticas de los suscriptores, cómodas para armar audiencias.
+  </Card>
+</Columns>
+
+<Note>Antes de que arranque una difusión, el asistente muestra cuántos suscriptores entran en la audiencia elegida. Es el mismo contador en vivo que en el constructor de condiciones.</Note>

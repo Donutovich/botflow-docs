@@ -1,0 +1,155 @@
+---
+title: "Flow builder API"
+description: "External access to a bot by API key: get subscriber data and start a funnel with a callback from your own scripts and services."
+icon: "code"
+---
+
+The flow builder API lets you reach a bot from your scripts and services with a key. Two actions are available
+right now: get a subscriber's data, and start a funnel in the bot by sending a callback on the subscriber's
+behalf.
+
+## Key and access
+
+Keys are created in the bot settings, in the "API keys" section. The section is available to administrators.
+
+<Steps>
+  <Step title="Create a key" icon="key">
+    Open "Bot settings" → "API keys" → "Add API key". Choose the permissions, set a name and press "Generate".
+  </Step>
+  <Step title="Copy the value" icon="copy">
+    Copy the key and paste it into your request. The value can always be viewed later with the copy button in the list.
+  </Step>
+</Steps>
+
+A key's permissions are chosen at creation and cannot be wider than your own: you cannot issue a key for
+reading subscriber data if that data is shown to you masked, and you cannot issue a key for starting
+the bot if you are not allowed to start funnels in this bot. The scopes decide which requests the
+key can make:
+
+| Permission | What it allows |
+|---|---|
+| **Read subscriber information** | Getting a subscriber's data. |
+| **Start the bot** | Starting a funnel in the bot by sending a callback. |
+
+<Note>
+  A read-only key will not work for starting a funnel. Starting needs the "Start the bot" permission.
+</Note>
+
+The key is passed in the `Authorization` header:
+
+```text
+Authorization: Bearer YOUR_KEY
+```
+
+The base address of every request:
+
+```text
+https://botflow.cc/api/v1/bot
+```
+
+## Get a subscriber
+
+Returns the data of this bot's subscriber: name, username, tag, variables and subscription date.
+
+- **Method and path:** `GET /subscribers/{telegram_id}`
+- **Permission:** "Read subscriber information"
+
+| Parameter | Description |
+|---|---|
+| `telegram_id` | The subscriber's Telegram ID, an integer. |
+
+```bash
+curl https://botflow.cc/api/v1/bot/subscribers/123456789 \
+  -H "Authorization: Bearer YOUR_KEY"
+```
+
+The response:
+
+```json
+{
+  "telegram_id": 123456789,
+  "first_name": "Ann",
+  "last_name": null,
+  "username": "ann",
+  "tag": "vip",
+  "is_blocked": false,
+  "subscribed_at": "2026-08-20T10:00:00+00:00",
+  "variables": { "plan": "gold" }
+}
+```
+
+If the bot has no subscriber with that `telegram_id`, a 404 response arrives.
+
+## Start a funnel with a callback
+
+Sends a callback into the bot on the subscriber's behalf, as if they had pressed an inline button. That is how you
+start the branch of the funnel you need from your own service.
+
+- **Method and path:** `POST /fire-callback`
+- **Permission:** "Start the bot"
+
+| Parameter | Description |
+|---|---|
+| `telegram_id` | The subscriber's Telegram ID, an integer. |
+| `callback_text` | The callback value, from 1 to 256 characters. It is caught by "On button press" arrows and by start conditions with the same value. |
+
+```bash
+curl -X POST https://botflow.cc/api/v1/bot/fire-callback \
+  -H "Authorization: Bearer YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"telegram_id": 123456789, "callback_text": "start_promo"}'
+```
+
+The response is always the same: the request is accepted. If the subscriber already exists in the
+target bot, the funnel starts right away; if they do not exist yet, the callback waits for them:
+
+```json
+{ "status": "accepted" }
+```
+
+### Repeated requests
+
+If your service repeats a request on a timeout or a dropped connection, add an `Idempotency-Key` header with your
+own unique value per operation:
+
+```text
+Idempotency-Key: promo-2026-09-27-123456789
+```
+
+With the same key and the same body the platform returns the stored response and the funnel does not start a
+second time. The same key with a different body is a different operation, and such a request gets a 409 response.
+Without the header the behaviour is unchanged: every request starts the funnel.
+
+<Note>
+  A callback does not create a subscriber. If the subscriber does not exist in the target bot yet, the
+  callback waits and fires once they message the bot, for up to 14 days. What happens to an unmatched
+  callback, and which variables are available in the target bot, is described under
+  [Constructor, the "Another bot" action](/en/constructor). A funnel started through the API cannot
+  fire a callback in another bot.
+</Note>
+
+## Errors
+
+On an error you get the matching response code and a body with an explanation.
+
+| Code | What it means |
+|---|---|
+| **401** | An invalid or disabled key, or the employee who created the key is deactivated. |
+| **403** | The key lacks the required permission. |
+| **404** | The subscriber was not found (for the subscriber data request). |
+| **409** | The same `Idempotency-Key` arrived with a different request body. |
+| **422** | Invalid request parameters. |
+| **423** | Working with the bot is temporarily unavailable: check the company balance or contact support. |
+| **429** | The request rate limit was exceeded. |
+| **503** | The request could not be accepted for now, repeat it later. |
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Blocks, conditions and the "Send API request" action, which can also send a callback.
+  </Card>
+  <Card title="Variables" icon="brackets-curly" href="/en/variables">
+    Which subscriber data is available and what it is called.
+  </Card>
+</Columns>

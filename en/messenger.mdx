@@ -1,0 +1,235 @@
+---
+title: "Messenger"
+description: "Chatting with subscribers through your bots: chat list, filters and quick funnel filters, reply templates, media, translation, delivery statuses and handing the conversation to the AI operator."
+icon: "comments"
+---
+
+The Messenger is a chat with your subscribers on top of your bots. In the bot menu it opens as **"Messages"** (the **"Conversations"** group). Operators see every dialog in one window and reply by hand, while some conversations are run by the [AI operator](/en/ai-operator). The section is always open for one selected bot: the chat list on the left, the dialog in the centre, the subscriber card on the right.
+
+<Note>A chat row appears when a subscriber writes to the bot for the first time, and also when they arrive through an invite and their join request is approved. With an invite the bot may write first, but only for a limited time: about 5 minutes, while the subscriber has not replied. After that you can write once they answer. Ad clicks and link visits do not create a chat on their own. Imported subscribers are shown in the list too, even if they have never written to the bot: such chats sit at the bottom.</Note>
+
+## Chat list
+
+The left column holds every dialog of the bot. Each row shows the avatar, the subscriber's name, a preview of the last message and its time. Outgoing previews start with "You:". If the last message was media, an icon replaces the text: 📷 Photo, 🎬 Video, 🎤 Voice message, 📹 Video message, 🎵 Audio, 📎 Document. Unread dialogs carry a counter, and subscribers who blocked the bot carry a "Blocked" badge.
+
+### Search
+
+The "Search" field at the top of the column searches by first name, last name, username and Telegram ID. While the field has a query, only matches stay in the list. The query starts from two characters.
+
+The at sign before a username is optional: "@luis" and "luis" give the same result.
+
+The order is: exact matches first, then those starting with the query, then similar ones. Similar matches cover typos. If you enter a full Telegram ID, that person is pinned as the first row. Among equally good matches, the people you talked to recently come higher.
+
+The first 50 matches are shown. If the person you need is not among them, narrow the query: add the last name or enter the full Telegram ID.
+
+### Chat list modes
+
+The sliders button to the right of the search opens a menu with five modes. Exactly one mode is always active.
+
+| Mode | What it shows |
+| --- | --- |
+| All chats | every dialog of the bot |
+| Unread | dialogs with unread incoming messages |
+| AI | dialogs the AI operator is running right now |
+| Agent | dialogs switched to manual mode (an operator took the conversation over) |
+| Blocked | subscribers who blocked the bot |
+
+### Quick funnel filters
+
+Above the list there is a strip of quick funnel filters: `All`, `Reg`, `FD`, `RD`, `Deposits` and slices by
+deposit amount. What each one means is described in [Filters](/en/filters).
+
+### Saved filters
+
+The same strip shows the saved filters of this bot. Favourites are marked with a star and come first. The "Filter" button at the end of the row opens the condition builder, the same one used for [subscribers](/en/subscribers): assemble any condition (by country, [tracker](/en/tracker) events, deposit amount and so on) and apply it to the chat list. More about them in [Filters](/en/filters).
+
+You can manage a saved filter straight from the strip: right-click it, or long-press on a phone, and a menu opens with "Rename", "Add to favourites" and "Delete". The same gesture on the `All` chip opens "Edit filters" with the whole list of saved filters at once, which is handy for cleaning them up and marking favourites.
+
+The list mode combines with the rest of the selection, while a quick filter, a saved filter and your own condition replace one another: exactly one of the three is active at a time.
+
+## Opening a dialog
+
+Open a chat in the list to load the message history. The dialog is marked as read straight away and the unread counter resets. The down-arrow button returns you to the latest messages.
+
+The ⓘ button ("Subscriber info") in the dialog header opens the "Info" panel with the subscriber card.
+
+If the subscriber has never written anything, the dialog shows that the conversation is empty and you can write first.
+
+### Subscriber panel
+
+The "Info" panel collects everything known about the person plus the actions you can take. Its sections:
+
+- **Activity.** Last active, who is handling the dialog, whether the subscriber blocked the bot and when, whether an admin blocked them, and whether they ever replied to the bot.
+- **Scenario.** The [flow builder](/en/constructor) block the subscriber is standing on.
+- **Attribution.** Campaign, source type, start parameter, `click_id`.
+- **Conversions.** First deposit and its date, total deposits, redeposit.
+- **Contact.** Name, username, Telegram ID, Telegram language, subscription date.
+- **Tags.** The subscriber's [tags](/en/tags): you can add and remove them right here.
+- **Device.** Device, OS version, last event and `trader_id`: everything the tracker sent.
+- **AI usage.** How many tokens and AI operator replies this dialog consumed.
+
+The "handling this conversation" line names whoever answers the subscriber right now: the operator's name and the moment they took the conversation over, the AI operator if the AI is running it, or "switched to manual" if the AI stopped and the dialog has no operator yet.
+
+Every row of a section is always present: if there is no value, it shows a dash. The panel looks the same for every subscriber.
+
+From here you can also block or unblock the subscriber and delete them. Deleting removes every message, variable and list membership, and cannot be undone.
+
+<Note>An operator with anonymous access sees the subscriber's data masked. The "Request data disclosure" button sends a request to a manager: once approved, the real data opens for 15 minutes. A manager handles such requests in the "Disclosure requests" section, more in [Settings](/en/settings).</Note>
+
+## Replying to a subscriber
+
+The input field sits at the bottom of the dialog. Enter sends the message, Shift+Enter adds a line break. A sent message appears in the conversation immediately. Operators write plain text: there is no rich formatting (headings, tables, lists) in the reply field, that is set up in the [flow builder](/en/constructor) and in [broadcasts](/en/broadcasts).
+
+If the subscriber blocked the bot, the input field is disabled and shows "Blocked". It is also disabled with the note that the subscriber has not replied to the bot yet: those are people who came through a channel join request and never wrote to the bot, and Telegram allows writing to them only after they answer. As soon as the person writes, the field opens by itself. Sending is also unavailable when the company balance is exhausted (top up in [Billing](/en/billing)).
+
+### Operator signature
+
+Every message sent by hand carries the name of whoever wrote it next to the time. In teams with several operators it is immediately clear from the conversation who answered what. Bot messages and AI operator replies carry no signature.
+
+## Message menu
+
+Right-click a message (long-press on a phone) to open the actions for it. The set of items depends on the message:
+
+- **Reply.** A quote bar appears above the input field and goes out together with the reply. The reply button that appears on hover does the same.
+- **Copy text.** Copies the message text to the clipboard.
+- **Show translation.** Translates this message into your language inside the conversation; choosing it again brings back the original. Available when the AI operator and translation are enabled.
+- **Resend.** Appears on a message that was not sent and repeats sending the same text and attachment.
+- **Delete.** Removes your message for you and for the subscriber.
+
+## Media
+
+The paperclip button attaches files. The same types are supported as in the [flow builder](/en/constructor) and [broadcasts](/en/broadcasts).
+
+| Type | Notes |
+| --- | --- |
+| Photo | groups into an album |
+| Video | groups into an album |
+| Video message | goes as a separate message, without a caption |
+| Voice message | goes as a separate message |
+| Audio | goes as a separate message |
+| Album | up to 10 photos and videos in one grid |
+
+<Warning>
+Telegram sets rules for grouping, and the platform follows them:
+
+- One album holds up to 10 photos and videos.
+- A voice message and a video message always go as one separate message and never combine with anything.
+- Audio does not go into one album with photos and videos, it goes as its own message.
+- A video message has no caption. If text is typed alongside an attached video message, the send button is blocked.
+</Warning>
+
+Text and caption length is limited by Telegram: 4096 characters without an attachment and 1024 characters together with one. The limit has a counter, and sending is blocked when it is exceeded.
+
+## Variables in messages
+
+In a manual message and in templates you can use [variables](/en/variables) in double curly braces. Values are substituted from the subscriber's data at the moment of sending. Variable names are always in English and must not be translated.
+
+- `{{ first_name }}`, `{{ last_name }}`, `{{ full_name }}` the subscriber's name
+- `{{ username }}` username in Telegram
+- `{{ user_id }}`, `{{ telegram_id }}` identifiers
+- `{{ tag }}` the value from the bot start link (`t.me/bot?start=...`)
+- `{{ created_at }}` subscription date
+- `{{ date_of_birth }}` date of birth
+- `{{ click_id }}` click identifier for attribution
+- `{{ event.<field> }}` fields of the latest postback, for example `{{ event.trader_id }}` the account identifier at the partner
+
+<Info>If a field is empty for that subscriber, the variable is substituted with an empty string and the message is still sent.</Info>
+
+## Reply templates
+
+Frequent answers are best saved as templates and inserted ready-made. There are two ways to insert a template.
+
+### With "/" in the input field
+
+Start the message with `/` and an autocomplete list of matching templates opens under the field. Up and down arrows pick a template, Enter or Tab insert it, Esc hides the list. Exact shortcut matches and the templates you use more often come first. Only the text replaces the leading `/shortcut`, and whatever you typed after it is kept.
+
+### From the templates panel
+
+The `#` button next to the input field opens the panel. A template is inserted from there in one click, and operators also create, edit and delete templates and folders there.
+
+A template consists of a shortcut (for example `/dep`), an optional name, text and an attachment (photo, video or album). Templates with an attachment carry a paperclip icon.
+
+- **Variables.** `{{ ... }}` tokens inside a template work exactly as in an ordinary message and are substituted on sending. In the autocomplete list the active template shows a preview with values already substituted, if its text has variables.
+- **Folders.** Templates are arranged in folders. Deleting a folder does not touch the templates themselves, they simply end up without a folder.
+- **Order.** Recently and frequently used templates rise to the top of the list.
+- **Access.** Operators and roles above them can create and edit templates.
+
+## Manual replies and the AI operator
+
+When a subscriber is standing on an AI dialog block, the AI operator status is visible in the conversation header.
+
+- **The AI agent is replying automatically.** The AI is running the dialog.
+- **You're handling this conversation, AI is paused.** As soon as you send a message by hand, the conversation moves to you and the AI stops answering.
+- **Another operator is handling the conversation, AI is paused.** A colleague took the conversation over. You can release their hold with the same button, and the status names who is handling the dialog.
+- **The conversation is switched to manual, AI stopped.** The AI reached its reply limit and stopped by itself, and the dialog has no operator. Such a dialog is waiting for a human: without an operator's reply the subscriber gets nothing more. Reply limits are configured in the [AI operator](/en/ai-operator).
+
+To hand the conversation back to the AI, press the status icon in the header and choose to return it to the AI. The AI will answer the subscriber's next message. It will not write on its own without an incoming message.
+
+Next to it there is a "Move to block" button (the icon with two arrows). In the list of blocks choose one: an ordinary block sends its content, an AI dialog block hands the conversation to the AI and manual mode is released. A "Condition" block sends no message of its own, it picks where to lead the subscriber based on their data: if no branch matched and there is no default branch, no move happens, the subscriber stays on the previous block, the dialog stays with you, and the platform answers that the block sent them nowhere. Branches and the default branch are set up in the [flow builder](/en/constructor). Only working blocks are listed: a draft placeholder is not offered, and you cannot move a subscriber onto it until you switch it to an active type.
+
+## Message translation
+
+If the AI operator is enabled for the bot and translation is allowed in its settings, translation tools appear in the dialog. The feature is shared across the company and is configured in the [AI operator settings](/en/ai-operator).
+
+- **The whole conversation.** The translation button in the dialog header translates every message into your language. Choosing it again brings back the originals.
+- **A single message.** In the [message menu](#message-menu) "Show translation" translates just that one.
+- **An outgoing message before sending.** Once your reply is typed, you can translate it into the subscriber's language and only then send it.
+- **Auto-translate outgoing.** A toggle in the translation menu: every message of yours is translated into the subscriber's language automatically on sending.
+
+Translated messages are marked, and the original can always be brought back.
+
+## Events in the conversation
+
+Besides messages, the feed shows the subscriber's system events as compact chips. They help you understand the context without leaving the dialog:
+
+- **Registration**, **Deposit**, **Redeposit**, **Withdrawal**, **Recurring partner event**, **Email confirmation** are [tracker](/en/tracker) events.
+- **Join request**, **Request approved**, **Returned to the bot**, **Unsubscribed**, **Reaction**, **Status changed** are Telegram's own events.
+
+System events do not change the chat preview, do not push the chat to the top of the list and do not affect the unread counter.
+
+## Delivery statuses
+
+If Telegram did not accept an outgoing message, a "Not sent" bubble with the exact reason appears instead of the usual one.
+
+| Reason | What it means |
+| --- | --- |
+| The subscriber blocked the bot | the bot can no longer write to them |
+| The subscriber has not replied to the bot yet | they came through an invite, but the window for a first message closed; you can write again after they answer |
+| The media file is unavailable | the attachment was deleted, upload it again and send |
+| The message is too long for Telegram | shorten the text |
+| Markup error | check the formatting |
+| The bot is unavailable in Telegram | a problem with the bot itself |
+| Telegram limit | a temporary rate limit, repeat the send |
+
+A not-sent bubble stays in the conversation, yet it does not become the dialog's last message and does not disturb the unread counter. In the [message menu](#message-menu), "Resend" sends the same text and attachment again and "Delete" removes the bubble.
+
+## Broadcasts in a dialog
+
+Messages from mass [broadcasts](/en/broadcasts) are visible in the conversation too, marked as a broadcast. You cannot delete or edit them from the dialog, because that is broadcast content sent automatically. An operator's manual messages can be deleted. Broadcasts do not count as the dialog's last message and do not affect the unread counter.
+
+Messages with rich formatting (headings, lists, tables) are shown in the conversation with that formatting, exactly as the subscriber sees them in Telegram.
+
+## Deleting your own message
+
+An operator can recall their own outgoing message through the [message menu](#message-menu), item "Delete". The message is removed both for you and for the subscriber.
+
+<Warning>Telegram allows deleting a message on the subscriber's side within 48 hours of sending. Later the bubble disappears for you but stays with the subscriber.</Warning>
+
+Your own message is deleted by its author. A colleague's message or an AI message can be deleted by a member with the manager role or above. Broadcast messages cannot be recalled.
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="AI operator" icon="robot" href="/en/ai-operator">
+    How to set up automatic replies and when a human takes the conversation over.
+  </Card>
+  <Card title="Broadcasts" icon="bullhorn" href="/en/broadcasts">
+    Mass messages to a selected audience.
+  </Card>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Blocks and funnel logic that lead a subscriber to an operator.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/en/tracker">
+    Traffic sources and the events the chat list is filtered by.
+  </Card>
+</Columns>

@@ -1,0 +1,162 @@
+---
+title: "Dominios y proxies"
+description: "Sus propios dominios para los enlaces de tracking y los landings, y proxies para enviar eventos a Facebook CAPI."
+icon: "globe"
+---
+
+Los dominios y los proxies los necesitan las campañas con la fuente **Facebook Ads**. Un dominio sirve los enlaces de
+tracking y los landings, mientras un proxy entrega los eventos de conversión a Facebook. Las campañas con la fuente Telegram
+o con un enlace de invitación no los necesitan.
+
+Las dos secciones viven en «Tracker» y están disponibles para un administrador, el propietario y los miembros con acceso al
+tracker. En el menú horizontal del tracker son las pestañas «Dominios» y «Proxies».
+
+## Dominios
+
+Sus propios dominios son necesarios para los enlaces de tracking y los landings. Sin un dominio conectado los enlaces de
+tracking de las campañas de Facebook no funcionan: el enlace del anuncio pasa por su dominio, lleva al landing y de ahí al
+bot.
+
+Cada dominio se conecta en uno de dos modos. La elección depende de dónde tiene el DNS y quién emite el certificado SSL.
+
+<Columns cols={2}>
+  <Card title="Manual (CNAME)" icon="wrench">
+    Usted crea el registro CNAME en su propio proveedor de DNS. El certificado lo emite y lo mantiene usted. BotFlow comprueba el registro y activa el dominio.
+  </Card>
+  <Card title="CF API" icon="cloud">
+    BotFlow crea la zona y el registro DNS con su token de API de Cloudflare. Cloudflare emite el certificado automáticamente. El token se conecta una sola vez en «Configuración → Integraciones».
+  </Card>
+</Columns>
+
+### Cómo conectar un dominio
+
+<Steps>
+  <Step title="Agregue el dominio" icon="globe">
+    Pulse «Agregar dominio», introduzca un dominio raíz (por ejemplo, `example.com`) o un subdominio (`track.example.com`) y elija el modo. El modo CF API está disponible solo cuando hay un token de API de Cloudflare conectado.
+  </Step>
+  <Step title="Configure el DNS" icon="server">
+    En el modo **Manual** expanda la fila del dominio: el panel muestra el registro CNAME exacto con los campos Source, Type y Target. Créelo en su proveedor de DNS. En el modo **CF API** BotFlow crea el registro por sí mismo; para una zona nueva el panel indica los servidores NS que hay que poner en el registrador del dominio.
+  </Step>
+  <Step title="Compruebe el estado" icon="circle-check">
+    Pulse «Comprobar estado». El dominio se activa cuando el DNS se propaga. Un CNAME se propaga en 5-15 minutos, mientras que cambiar los servidores NS en un registrador puede llevar de unos minutos a un día.
+  </Step>
+</Steps>
+
+### Estados de un dominio
+
+Cada dominio tiene uno de tres estados.
+
+| Estado | Qué significa |
+|---|---|
+| **Activo** | El DNS está bien configurado y el dominio está listo para servir enlaces de tracking. |
+| **En espera** | El registro todavía no se encuentra o se está propagando. Para los dominios en CF API el registro se comprueba automáticamente; para Manual pulse «Comprobar estado» después de crear el CNAME. |
+| **Error** | La comprobación no pasó. Expanda la fila para ver el texto del error y una indicación de configuración. |
+
+<Info>
+  Los subdominios se agrupan bajo su dominio raíz. Expanda la fila de la raíz para ver los subdominios, sus estados y las
+  instrucciones de DNS.
+</Info>
+
+<Warning>
+  Un dominio no se puede desvincular mientras se usa en una campaña o mientras tiene subdominios conectados. Pase primero la
+  campaña a otro dominio o elimine los subdominios. Después de desvincularlo, elimine el registro CNAME en su DNS a mano.
+</Warning>
+
+## Token de API de Cloudflare
+
+El modo CF API crea zonas y registros DNS en su cuenta de Cloudflare automáticamente, para que usted no escriba cada registro
+a mano. Para eso conecte una sola vez un token de API con permisos limitados en «Configuración → Integraciones».
+
+<Steps>
+  <Step title="Cree el token" icon="key">
+    Abra `dash.cloudflare.com/profile/api-tokens`, pulse **Create Token** y elija **Custom token**.
+  </Step>
+  <Step title="Otorgue los permisos" icon="shield-check">
+    El token necesita permisos para gestionar zonas y DNS:
+    <br />• `Zone` / `Zone` / `Read`
+    <br />• `Zone` / `Zone` / `Edit`
+    <br />• `Zone` / `DNS` / `Edit`
+    <br />En Account Resources elija `Include / All accounts`, y en Zone Resources `Include / All zones`.
+  </Step>
+  <Step title="Pegue el token" icon="link">
+    Copie el token y péguelo en el campo de la página de la integración. Pulse «Conectar». El token se usa solo para gestionar sus dominios y no se vuelve a mostrar.
+  </Step>
+</Steps>
+
+Una vez conectado, la página muestra el estado del token y la hora de la última comprobación. El botón «Comprobar conexión»
+vuelve a verificar el token, y «Desconectar» quita la integración.
+
+| Estado del token | Qué significa |
+|---|---|
+| **Activo** | El token es válido y los dominios en modo CF API se gestionan automáticamente. |
+| **No válido** | El token no pasa la comprobación. Revise sus permisos y cree uno nuevo. |
+| **Token revocado** | El token se revocó del lado de Cloudflare. Conecte uno nuevo. |
+
+<Note>
+  Se conecta un token de API de Cloudflare por empresa. Si lo desconecta, los dominios ya creados en modo CF API dejan de
+  gestionarse por la API pero se quedan en su cuenta de Cloudflare.
+</Note>
+
+## Proxies
+
+La Facebook Conversions API (CAPI) no acepta eventos enviados desde direcciones de servidor. Para que los eventos de
+conversión lleguen a Facebook, la plataforma los envía a través de su proxy. Un proxy lo necesitan solo las campañas con la
+fuente Facebook Ads.
+
+### Cómo agregar un proxy
+
+Pulse «Agregar» y rellene los campos.
+
+<Columns cols={2}>
+  <Card title="Nombre" icon="tag">
+    Un nombre claro con el que reconocerá el proxy en la lista. Por ejemplo, `DE residential #1`.
+  </Card>
+  <Card title="Tipo" icon="network-wired">
+    `HTTP / HTTPS` o `SOCKS5`.
+  </Card>
+  <Card title="Host y puerto" icon="server">
+    La dirección del proxy y un puerto de 1 a 65535.
+  </Card>
+  <Card title="Login y contraseña" icon="lock">
+    Opcionales. Rellénelos si el proxy exige autorización.
+  </Card>
+</Columns>
+
+### Comprobar un proxy
+
+El botón de comprobación de la fila de un proxy envía una petición de prueba y muestra el resultado. Por él se ve que el
+proxy funciona antes de lanzar una campaña.
+
+| Estado | Qué significa |
+|---|---|
+| **OK** | El proxy respondió, y se muestra la latencia en milisegundos. |
+| **Timeout** | El proxy no respondió a tiempo. |
+| **No funciona** | El proxy devolvió un error o no está disponible. El texto del error se ve en la fila. |
+| **Sin comprobar** | La comprobación todavía no se ejecutó. |
+
+<Tip>
+  Un proxy se puede reutilizar en varias campañas de Facebook. El proxy se elige en el paso «Tracking» al crear una campaña,
+  junto al dominio y al FB Pixel. Más sobre campañas en [Tracker: descripción general](/es/tracker).
+</Tip>
+
+<Info>
+  Un proxy deshabilitado se marca en la lista y no se usa para enviar. La lista se filtra por estado, y la búsqueda va por
+  nombre o host.
+</Info>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+    Clics, conversiones, métricas de tráfico y creación de campañas de Facebook.
+  </Card>
+  <Card title="Postbacks y afiliados" icon="arrows-rotate" href="/es/postbacks">
+    Recepción de eventos de las redes de afiliados y su paso a Facebook CAPI.
+  </Card>
+  <Card title="Landings" icon="browser" href="/es/landings">
+    Clones de Telegram y landings «HTML personalizado» para el tráfico de Facebook.
+  </Card>
+  <Card title="Equipo y configuración" icon="users" href="/es/settings">
+    Roles, acceso al tracker y conexión de Cloudflare.
+  </Card>
+</Columns>

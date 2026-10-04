@@ -1,0 +1,83 @@
+---
+title: "Panel y métricas"
+description: "La pantalla «Panel» a nivel de empresa, workspace y bot: métricas, tendencias y listas destacadas."
+icon: "gauge"
+---
+
+El Panel es la primera pantalla después de iniciar sesión. Existe en tres niveles, y en cada uno responde una
+pregunta distinta: cómo va la empresa entera, cómo va un equipo concreto y cómo va un bot concreto.
+
+## Panel de la empresa
+
+Un resumen de la actividad de la empresa en el período seleccionado. Las métricas arriba, las tendencias y las
+listas destacadas debajo.
+
+| Métrica | Qué cuenta |
+| --- | --- |
+| **Suscriptores activos** | Cuántos suscriptores están activos ahora en todos los bots de la empresa. |
+| **Suscripciones** | Cuántas personas iniciaron sus bots durante el período. |
+| **Contactos** | Cuántos suscriptores enviaron su primer mensaje. |
+| **Registros** | Registros llegados como postbacks de las redes de afiliados. |
+| **Redepósito** | Depósitos repetidos durante el período. |
+| **Volumen de depósitos** | Depósitos totales del período. |
+
+El período se cambia con las pestañas «Hoy», «Ayer», «Últimos 7 días», «Últimos 30 días», «Todo el tiempo» y
+«Personalizado». El gráfico «Tendencias» muestra suscripciones, contactos y registros por día del período elegido.
+
+Los bloques «Bots principales» y «Campañas principales» muestran dónde está el trabajo: en los bots se ve su número
+de suscriptores, y en las campañas el botón «Todas» lleva a la lista de campañas del tracker.
+
+<Info>
+  Si todavía no tiene bots, en lugar de las métricas aparece la invitación «Comience» con el botón «Ir a los
+  workspaces». Cómo conectar el primer bot se describe en [Primeros pasos](/es/getting-started).
+</Info>
+
+## Panel del workspace
+
+El mismo conjunto de métricas, pero limitado a los bots de ese workspace. Ayuda cuando una empresa tiene varios
+equipos o clientes: cada uno mira su propio panel y no se confunde con cifras ajenas.
+
+El bloque «Mis bots» lista los bots del workspace a los que usted tiene acceso. Si no tiene acceso a ninguno, el
+bloque lo indica.
+
+## Panel del bot
+
+La sección «Panel» en el menú del bot. Muestra las métricas de un solo bot y sus difusiones recientes.
+
+| Métrica | Qué cuenta |
+| --- | --- |
+| **Activos** | Cuántos suscriptores del bot están activos. |
+| **Bloquearon** | Cuántos suscriptores bloquearon el bot. |
+| **Nuevos hoy** y **Nuevos esta semana** | La entrada de suscriptores. |
+| **Suscripciones**, **Contactos**, **Registros**, **FTD**, **RD** | El embudo del bot en el período. |
+| **Reg2FD** | La proporción de registros que llegaron a un primer depósito. |
+| **CR** | La proporción de suscripciones que llegaron a un primer depósito. |
+
+Debajo está el gráfico «Tendencia diaria» y dos bloques de difusiones: «Difusiones recientes» con sus estados
+(«Borrador», «Programada», «Enviando», «Completada», «Cancelada», «Fallida») y «Difusiones programadas».
+
+<Tip>
+  Si no hay métricas para el período, el bloque dice «No hay datos para este período». No es un error: significa que
+  no hubo eventos en esas fechas. Amplíe el período.
+</Tip>
+
+## En qué se diferencia del panel del tracker
+
+El Panel responde «cómo van las cosas», mientras el panel del tracker responde «cómo funciona la compra de
+tráfico». El tracker tiene su propio embudo que empieza en el clic del anuncio, sus propias métricas de coste y sus
+propios desgloses por campaña, fuente y landing.
+
+<Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+  El panel del tracker, el embudo desde el clic, las métricas y la actividad de las campañas.
+</Card>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Primeros pasos" icon="rocket" href="/es/getting-started">
+    Conectar el primer bot y armar el primer embudo.
+  </Card>
+  <Card title="Reportes" icon="table-list" href="/es/reports">
+    Registros de clics y conversiones, cuando necesita eventos fila por fila en lugar de totales.
+  </Card>
+</Columns>
