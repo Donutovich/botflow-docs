@@ -1,0 +1,89 @@
+---
+title: "Postbacks S2S"
+description: "Envío de eventos de conversión a servicios externos: configurar un postback por campaña o global, macros en el URL, el registro de entregas y cómo comprobarlo."
+icon: "arrow-up-right-from-square"
+---
+
+Un postback S2S se usa para enviar información a un servicio externo. Eventos de conversión, por ejemplo: registro, primer
+depósito, depósito repetido. BotFlow envía una petición a su URL en el momento del evento, sustituyendo los valores en las
+macros.
+
+No lo confunda con la sección [Postbacks](/es/postbacks): allí la plataforma **recibe** eventos de las redes de afiliados,
+mientras que aquí los **envía** más allá, por ejemplo al tracker de la fuente de tráfico o a su CRM.
+
+## Cómo agregar un postback
+
+1. Abra «Tracker» y vaya a la pestaña «Postbacks S2S».
+2. Pulse «Agregar».
+3. Rellene los campos:
+
+| Campo | Descripción |
+|---|---|
+| Nombre | Cómo se llamará el postback en la lista y en el registro. |
+| URL | La dirección del servicio externo. Dentro del URL se pueden usar macros, que se sustituyen al enviar. |
+| Método | GET o POST. Con POST los parámetros del URL van en el cuerpo de la petición. |
+| Eventos | En qué eventos enviar el postback. La lista coincide con los tipos de conversión de la empresa. |
+| Campaña | Una campaña concreta, incluidas las orgánicas, o «Global» para todas las campañas a la vez. |
+
+<Info>
+  La opción «Global» está disponible para el propietario y los administradores de la empresa. Un comprador configura
+  postbacks en sus propias campañas.
+</Info>
+
+## Macros integradas
+
+| Macro | Descripción |
+|---|---|
+| `{{click_id}}` | El identificador del clic que une un registro y un depósito. |
+| `{{event_type}}` | El tipo de evento: registration, sale, resale y otros. |
+| `{{status}}` | El estado del evento, si la red lo pasó. |
+| `{{payout}}` | El monto del evento. |
+| `{{currency}}` | La moneda del monto. |
+| `{{tid}}` | El identificador de la transacción del lado de la red. |
+| `{{sub1}}` … `{{sub5}}` | Los parámetros sub del clic. |
+| `{{campaign_id}}` | El identificador de la campaña del evento. |
+| `{{bot_id}}` | El identificador del bot del evento. |
+
+Además de las macros integradas se sustituyen las variables del bot: `{{tag}}` y cualquiera de sus propias variables. Una
+macro desconocida se queda en el URL tal como está, mientras una conocida sin valor se reemplaza por una cadena vacía.
+
+Un URL de ejemplo:
+
+```text
+https://tracker.example.com/postback?cid={{click_id}}&status={{event_type}}&payout={{payout}}
+```
+
+## Registro de entregas
+
+La pestaña «Registro» muestra cada envío: hora, el postback, el estado, el código de respuesta y el URL final.
+
+| Estado | Qué significa |
+|---|---|
+| Entregado | El receptor respondió con un código 2xx o 3xx. |
+| Error | El receptor respondió con un código 4xx o 5xx. Revise el formato del URL del lado del receptor. Un error sin código de respuesta significa que la dirección del postback está mal: revise el campo URL en la configuración. |
+| Error de red | La conexión no se estableció. La plataforma repetirá el envío automáticamente. |
+| Resultado desconocido | La respuesta del receptor no se pudo leer. No habrá reenvío. |
+
+Cada evento se envía una sola vez: si el receptor respondió, no habrá reenvío. Por eso no aparecen conversiones duplicadas
+del lado del receptor.
+
+## Cómo comprobar la configuración
+
+Realice una conversión y revise la pestaña «Registro». Una forma rápida sin tráfico real: en la sección
+[Postbacks](/es/postbacks) pulse «Prueba» en cualquier integración. El evento de prueba sale por todos los postbacks S2S
+activos y aparece en el registro marcado como prueba.
+
+<Warning>
+  Un envío de prueba va al URL real de la configuración del postback. El receptor verá el evento de prueba.
+</Warning>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Postbacks" icon="arrows-rotate" href="/es/postbacks">
+    Recepción de eventos de las redes de afiliados: conexión de una red y coincidencia por click_id.
+  </Card>
+  <Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+    Campañas, reportes y configuración del envío de eventos a Facebook CAPI.
+  </Card>
+</Columns>

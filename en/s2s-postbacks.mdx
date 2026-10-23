@@ -1,0 +1,90 @@
+---
+title: "S2S Postbacks"
+description: "Sending conversion events to external services: setting a postback per campaign or globally, macros in the URL, the delivery log and how to check it."
+icon: "arrow-up-right-from-square"
+---
+
+An S2S postback is used to send information to an external service. Conversion events, for example: registration,
+first deposit, repeat deposit. BotFlow sends a request to your URL at the moment of the event, substituting values
+into the macros.
+
+Don't confuse this with the [Postbacks](/en/postbacks) section: there the platform **receives** events from
+affiliate networks, while here it **sends** them further, for example to the traffic source's tracker or to your
+CRM.
+
+## Adding a postback
+
+1. Open "Tracker" and go to the "S2S Postbacks" tab.
+2. Press "Add".
+3. Fill in the fields:
+
+| Field | Description |
+|---|---|
+| Name | How the postback is called in the list and in the log. |
+| URL | The external service's address. Macros can be used inside the URL and are substituted on sending. |
+| Method | GET or POST. With POST the parameters from the URL go in the request body. |
+| Events | Which events to send the postback on. The list matches the company's conversion types. |
+| Campaign | A specific campaign, including organic ones, or "Global" for every campaign at once. |
+
+<Info>
+  The "Global" option is available to the company owner and administrators. A buyer configures postbacks on their
+  own campaigns.
+</Info>
+
+## Built-in macros
+
+| Macro | Description |
+|---|---|
+| `{{click_id}}` | The click identifier that ties a registration and a deposit together. |
+| `{{event_type}}` | The event type: registration, sale, resale and others. |
+| `{{status}}` | The event status, if the affiliate passed it. |
+| `{{payout}}` | The event amount. |
+| `{{currency}}` | The amount's currency. |
+| `{{tid}}` | The transaction identifier on the affiliate's side. |
+| `{{sub1}}` … `{{sub5}}` | The click's sub parameters. |
+| `{{campaign_id}}` | The identifier of the event's campaign. |
+| `{{bot_id}}` | The identifier of the event's bot. |
+
+Besides the built-in macros, bot variables are substituted: `{{tag}}` and any of your own variables. An unknown
+macro stays in the URL as it is, while a known one with no value is replaced by an empty string.
+
+An example URL:
+
+```text
+https://tracker.example.com/postback?cid={{click_id}}&status={{event_type}}&payout={{payout}}
+```
+
+## Delivery log
+
+The "Log" tab shows every send: time, the postback, the status, the response code and the final URL.
+
+| Status | What it means |
+|---|---|
+| Delivered | The receiver answered with a 2xx or 3xx code. |
+| Failed | The receiver answered with a 4xx or 5xx code. Check the URL format on the receiver's side. An error without a response code means the postback address is wrong: check the URL field in the settings. |
+| Network error | The connection was not established. The platform will repeat the send automatically. |
+| Outcome unknown | The receiver's answer could not be read. There will be no repeat send. |
+
+Each event is sent once: if the receiver answered, there is no repeat send. Duplicate conversions therefore do not
+appear on the receiver's side.
+
+## How to check the setup
+
+Make a conversion and check the "Log" tab. A quick way without real traffic: in the [Postbacks](/en/postbacks)
+section press "Test" on any integration. The test event goes out over every enabled S2S postback and appears in
+the log marked as a test.
+
+<Warning>
+  A test send goes to the real URL from the postback settings. The receiver will see the test event.
+</Warning>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Postbacks" icon="arrows-rotate" href="/en/postbacks">
+    Receiving events from affiliate networks: connecting an affiliate and matching by click_id.
+  </Card>
+  <Card title="Tracker: overview" icon="chart-line" href="/en/tracker">
+    Campaigns, reports and setting up event sending to Facebook CAPI.
+  </Card>
+</Columns>
