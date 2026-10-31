@@ -1,0 +1,142 @@
+---
+title: "Panel y métricas"
+description: "La pantalla «Panel» a nivel de empresa, workspace y bot: métricas, gráficos y listas."
+icon: "gauge"
+---
+
+El Panel existe en tres niveles, y en cada uno responde una pregunta distinta: cómo va la empresa entera, cómo
+va un equipo concreto y cómo va un bot concreto.
+
+Después de iniciar sesión, el propietario y los administradores de la empresa ven el Panel de la empresa.
+Mientras la empresa no tenga ningún workspace, la lista «Pon en marcha BotFlow en 4 pasos» de ese Panel empieza
+por crearlo. Los demás llegan a donde trabajan: el gerente y el controlador al Panel del workspace, el operador y el operador anónimo a
+«Mensajes» del bot, el comprador y el líder de equipo comprador al «Tracker».
+
+## Panel de la empresa
+
+Un resumen de todos los bots de la empresa: la base de suscriptores, los mensajes, las difusiones y el estado de
+los bots. El embudo desde el clic hasta el depósito no está aquí, está en el [tracker](/es/tracker).
+
+El período se cambia con las pestañas «Hoy», «Ayer», «Últimos 7 días», «Últimos 30 días», «Todo el tiempo» y
+«Personalizado». En «Personalizado» usted elige sus propias fechas, hasta 365 días. Por defecto se abre «Últimos 7 días».
+
+Mientras no estén hechos todos los pasos, bajo el encabezado aparece la lista «Pon en marcha BotFlow en 4 pasos»:
+crear un workspace, conectar un bot de Telegram, crear el primer escenario y lanzar la primera difusión. El botón
+«Ocultar» la quita. Debajo hay una línea con el número de espacios de trabajo, bots y suscriptores activos.
+
+### Métricas
+
+| Métrica | Qué cuenta |
+| --- | --- |
+| **Suscriptores totales** | Toda su base de suscriptores en todos los bots de la empresa, incluidos los que han bloqueado el bot. |
+| **Suscriptores activos** | Suscriptores que no han bloqueado el bot: usted puede entregarles mensajes y difusiones, excepto a quienes el bot no puede escribir primero. |
+| **Nuevos suscriptores** | Cuántos nuevos suscriptores llegaron durante el período seleccionado. |
+| **Crecimiento neto** | Nuevos suscriptores menos los que se dieron de baja o bloquearon el bot. Bajo el número se ve cuántos llegaron y cuántos se fueron. |
+| **Mensajes** | Entrantes de los suscriptores y salientes de los bots, incluidas las difusiones. |
+| **Difusiones** | Cuántas difusiones se enviaron durante el período. «Entregado» bajo el número es la proporción de mensajes entregados con éxito. |
+
+La descripción de una métrica se abre con el icono junto a su nombre. En «Nuevos suscriptores», «Mensajes» y
+«Difusiones» se ve junto al número en qué porcentaje cambió respecto al período anterior de la misma duración.
+
+### Gráficos
+
+«Crecimiento de suscriptores» muestra los nuevos suscriptores, las cancelaciones y el crecimiento neto, con el
+total «Neto del periodo» encima del gráfico. «Volumen de mensajes» muestra los entrantes y los salientes. Si el
+período cabe en un día, los gráficos van por horas, si no, por días. En la pestaña «Todo el tiempo» los gráficos
+muestran los últimos 90 días. Si no hubo eventos, en lugar del gráfico dice «No hay datos para el periodo
+seleccionado».
+
+### Bots
+
+La tabla «Bots» muestra cada bot de la empresa, cuántos de sus suscriptores no lo han bloqueado y su estado.
+«Activo» significa que el bot funciona. Si no, el estado indica el motivo: «Token revocado», «Acceso
+denegado», «Error de entrega» o «No disponible». El nombre del bot lleva al bot.
+
+### Difusiones recientes
+
+Hasta ocho de las últimas difusiones de la empresa en el período seleccionado. Una fila muestra el inicio del
+texto de la difusión, el nombre del bot y la hora, y una difusión sin texto dice «Sin texto». A la derecha se ve
+cuántos suscriptores recibieron la difusión de todos, como en la tarjeta de la difusión, y el estado:
+«Programada», «Enviando», «Completada», «Parcial», «Con errores» o «Cancelada». Los borradores no aparecen
+aquí, y una difusión cancelada solo se muestra si alguien llegó a recibirla. Las estadísticas detalladas de una
+difusión se abren en [Difusiones](/es/broadcasts).
+
+### Si usted no es administrador de la empresa
+
+Si usted no tiene permisos de administrador de la empresa, el Panel muestra en lugar del resumen la lista «Mis
+bots»: los bots de todos los workspaces a los que tiene acceso. Si no tiene acceso a ninguno, dice «Usted
+todavía no tiene acceso a ningún bot en esta empresa.»
+
+## Panel del workspace
+
+El embudo de los bots de un workspace, bajo el subtítulo «Actividad del workspace». Ayuda cuando una empresa
+tiene varios equipos o clientes: cada uno mira su propio panel y no se confunde con cifras ajenas.
+
+El período se cambia con las pestañas «Hoy», «Ayer», «Últimos 7 días», «Últimos 30 días», «Todo el tiempo» y
+«Personalizado», por defecto se abre «Hoy». Bajo el encabezado está el número de bots del workspace y de sus
+suscriptores activos.
+
+El bloque superior muestra «Suscriptores activos». Si en el período llegaron depósitos con importe, junto a él
+se ven «Volumen de depósitos» y el número de FTD. Mientras no haya bots o no tengan suscriptores activos, en
+lugar de este bloque aparece la invitación «Comience» con el botón «Ir a los workspaces». Cómo conectar el
+primer bot se describe en [Primeros pasos](/es/getting-started).
+
+| Métrica | Qué cuenta |
+| --- | --- |
+| **Suscripciones** | Cuántas personas se suscribieron a sus bots durante el período. |
+| **Contactos** | Cuántos suscriptores enviaron al bot su primer mensaje. |
+| **Registros** | Registros de los postbacks de las redes de afiliados. |
+| **FTD** | Primeros depósitos de los postbacks de las redes de afiliados. |
+| **Redepósito** | Depósitos repetidos de los postbacks de las redes de afiliados. |
+
+Junto a cada número se ve en qué porcentaje cambió respecto al período anterior de la misma duración.
+
+El gráfico «Tendencias» muestra suscripciones, contactos, registros, FTD y RD. Si el período cabe en un día, el
+gráfico va por horas, si no, por días. En la pestaña «Todo el tiempo» muestra los últimos 90 días.
+
+En «Campañas principales» están las cinco campañas con más FTD en el período y, con el mismo número de FTD, con
+más suscripciones. Cada una muestra sus FTD y suscripciones. En «Bots principales» están los cinco bots con más
+FTD, cada uno con sus FTD y el número de suscriptores que no lo han bloqueado. Si no hubo eventos en el período,
+«Campañas principales» dice «Sin datos para el período».
+
+Una campaña de «Campañas principales» se abre en el tracker, y el enlace «Todas» lleva a la lista de campañas
+del tracker. Solo se abren las campañas a las que usted tiene acceso en el tracker: el comprador, las suyas;
+el líder de equipo comprador, las suyas y las de sus compradores; el propietario, todas las campañas de la
+empresa; un administrador con el permiso «Tracker», todas las campañas de los workspaces de su ámbito de
+acceso. Las demás campañas aparecen en la lista, pero no se abren. Sin acceso al tracker no hay enlace
+«Todas».
+
+## Panel del bot
+
+La pantalla «Panel» en el menú del bot: el nombre del bot, su @username y el mismo embudo que el workspace, para
+un solo bot. Tiene las mismas pestañas de período, el bloque superior, las métricas, «Tendencias» y las
+«Campañas principales» de este bot. Sus campañas se abren en el tracker igual que en el Panel del workspace.
+
+Si Telegram no deja a la plataforma trabajar con el bot, arriba aparece «Bot no disponible» con el motivo.
+Mientras el bot no tenga suscriptores activos, en lugar del bloque superior aparece la invitación «Comience».
+
+<Tip>
+  «No hay datos para el período seleccionado» no es un error: no hubo eventos en las fechas elegidas. Amplíe el
+  período.
+</Tip>
+
+## En qué se diferencia del panel del tracker
+
+El Panel responde «cómo van las cosas», mientras el panel del tracker responde «cómo funciona la compra de
+tráfico». El tracker tiene su propio embudo que empieza en el clic del anuncio, sus propias métricas de coste y sus
+propios desgloses por campaña, fuente y landing.
+
+<Card title="Tracker: descripción general" icon="chart-line" href="/es/tracker">
+  El panel del tracker, el embudo desde el clic, las métricas y la actividad de las campañas.
+</Card>
+
+## Qué sigue
+
+<Columns cols={2}>
+  <Card title="Primeros pasos" icon="rocket" href="/es/getting-started">
+    Conectar el primer bot y armar el primer embudo.
+  </Card>
+  <Card title="Reportes" icon="table-list" href="/es/reports">
+    Registros de clics y conversiones, cuando necesita eventos fila por fila en lugar de totales.
+  </Card>
+</Columns>

@@ -1,0 +1,227 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "BotFlow",
+  "description": "BotFlow, CRM-платформа для управления Telegram-ботами: конструктор воронок, переписки, рассылки, ИИ-оператор, трекер.",
+  "colors": {
+    "primary": "#0A0A0B",
+    "light": "#E5E5E6",
+    "dark": "#0A0A0B"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude"
+    ]
+  },
+  "navigation": {
+    "languages": [
+      {
+        "language": "ru",
+        "default": true,
+        "groups": [
+          {
+            "group": "Начало",
+            "pages": [
+              "ru/index",
+              "ru/getting-started",
+              "ru/dashboards"
+            ]
+          },
+          {
+            "group": "Конструктор",
+            "pages": [
+              "ru/constructor",
+              "ru/ai-operator",
+              "ru/variables",
+              "ru/bot-settings"
+            ]
+          },
+          {
+            "group": "Общение и аудитория",
+            "pages": [
+              "ru/messenger",
+              "ru/broadcasts",
+              "ru/tags",
+              "ru/filters",
+              "ru/subscribers"
+            ]
+          },
+          {
+            "group": "Трекер",
+            "pages": [
+              "ru/tracker",
+              "ru/campaigns",
+              "ru/landings",
+              "ru/postbacks",
+              "ru/s2s-postbacks",
+              "ru/reports",
+              "ru/tracker-settings",
+              "ru/domains-proxies"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "ru/api-konstruktora"
+            ]
+          },
+          {
+            "group": "Аккаунт",
+            "pages": [
+              "ru/billing",
+              "ru/referral",
+              "ru/settings",
+              "ru/logs",
+              "ru/account-security"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "groups": [
+          {
+            "group": "Start",
+            "pages": [
+              "en/index",
+              "en/getting-started",
+              "en/dashboards"
+            ]
+          },
+          {
+            "group": "Flow builder",
+            "pages": [
+              "en/constructor",
+              "en/ai-operator",
+              "en/variables",
+              "en/bot-settings"
+            ]
+          },
+          {
+            "group": "Conversations and audience",
+            "pages": [
+              "en/messenger",
+              "en/broadcasts",
+              "en/tags",
+              "en/filters",
+              "en/subscribers"
+            ]
+          },
+          {
+            "group": "Tracker",
+            "pages": [
+              "en/tracker",
+              "en/campaigns",
+              "en/landings",
+              "en/postbacks",
+              "en/s2s-postbacks",
+              "en/reports",
+              "en/tracker-settings",
+              "en/domains-proxies"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "en/api-konstruktora"
+            ]
+          },
+          {
+            "group": "Account",
+            "pages": [
+              "en/billing",
+              "en/referral",
+              "en/settings",
+              "en/logs",
+              "en/account-security"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "es",
+        "groups": [
+          {
+            "group": "Inicio",
+            "pages": [
+              "es/index",
+              "es/getting-started",
+              "es/dashboards"
+            ]
+          },
+          {
+            "group": "Editor de flujos",
+            "pages": [
+              "es/constructor",
+              "es/ai-operator",
+              "es/variables",
+              "es/bot-settings"
+            ]
+          },
+          {
+            "group": "Conversaciones y audiencia",
+            "pages": [
+              "es/messenger",
+              "es/broadcasts",
+              "es/tags",
+              "es/filters",
+              "es/subscribers"
+            ]
+          },
+          {
+            "group": "Tracker",
+            "pages": [
+              "es/tracker",
+              "es/campaigns",
+              "es/landings",
+              "es/postbacks",
+              "es/s2s-postbacks",
+              "es/reports",
+              "es/tracker-settings",
+              "es/domains-proxies"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "es/api-konstruktora"
+            ]
+          },
+          {
+            "group": "Cuenta",
+            "pages": [
+              "es/billing",
+              "es/referral",
+              "es/settings",
+              "es/logs",
+              "es/account-security"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Открыть BotFlow",
+      "href": "https://botflow.cc"
+    }
+  },
+  "footer": {
+    "socials": {
+      "website": "https://botflow.cc"
+    }
+  }
+}
