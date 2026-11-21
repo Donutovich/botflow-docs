@@ -1,0 +1,141 @@
+---
+title: "Dashboard and metrics"
+description: "The Dashboard screen at company, workspace and bot level: metrics, charts and lists."
+icon: "gauge"
+---
+
+The Dashboard exists at three levels, and at each one it answers a different question: how the whole company
+is doing, how a particular team is doing and how a particular bot is doing.
+
+After you log in, the company owner and administrators see the company Dashboard. While the company has no
+workspace yet, the "Get BotFlow running in 4 steps" checklist there starts with creating one. Everyone else
+lands where they work: a manager or controller on the workspace Dashboard, an operator or anonymous operator in the bot's
+"Messages", a buyer or team lead buyer in the "Tracker".
+
+## Company dashboard
+
+A summary across all of the company's bots: the subscriber base, messages, broadcasts and the state of the
+bots. The funnel from the click to the deposit is not here, it lives in the [tracker](/en/tracker).
+
+The period is switched with the tabs "Today", "Yesterday", "Last 7 days", "Last 30 days", "All time" and
+"Custom". In "Custom" you set your own dates, up to 365 days. "Last 7 days" opens by default.
+
+Until every step is done, a "Get BotFlow running in 4 steps" checklist shows under the header: create a
+workspace, connect a Telegram bot, create your first scenario and launch your first broadcast. The "Hide"
+button removes it. Below is a line with the number of workspaces, bots and active subscribers.
+
+### Metrics
+
+| Metric | What it counts |
+| --- | --- |
+| **Total subscribers** | Your entire subscriber base across all of the company's bots, including those who have blocked the bot. |
+| **Active subscribers** | Subscribers who haven't blocked the bot: you can deliver messages and broadcasts to them, except those the bot can't message first. |
+| **New subscribers** | How many new subscribers arrived during the selected period. |
+| **Net growth** | New subscribers minus those who unsubscribed or blocked the bot. Under the number you see how many came and how many left. |
+| **Messages** | Incoming from subscribers and outgoing from bots, including broadcasts. |
+| **Broadcasts** | How many broadcasts were sent during the period. "Delivered" under the number is the share of messages successfully delivered. |
+
+The description of a metric opens from the icon next to its name. "New subscribers", "Messages" and
+"Broadcasts" show next to the number by how many percent it changed against the previous period of the same
+length.
+
+### Charts
+
+"Subscriber growth" shows new subscribers, unsubscribes and net growth, with the "Net for the period" total
+above the chart. "Message volume" shows incoming and outgoing messages. If the period fits within one day, the
+charts go by hour, otherwise by day. On the "All time" tab the charts show the last 90 days. If there were no
+events, the chart says "No data for the selected period".
+
+### Bots
+
+The "Bots" table lists every bot of the company, how many of its subscribers haven't blocked it, and its
+status. "Active" means the bot works. Otherwise the status gives the reason: "Token revoked", "Access
+denied", "Delivery error" or "Unavailable". The bot's name takes you to the bot.
+
+### Recent broadcasts
+
+Up to eight of the company's latest broadcasts for the selected period. A row shows the start of the
+broadcast text, the bot name and the time, and a broadcast without text reads "No text". On the right you
+see how many subscribers got the broadcast out of all of them, as on the broadcast card, and the status:
+"Scheduled", "Sending", "Completed", "Partial", "Failed" or "Cancelled". Drafts do not appear here, and a
+cancelled broadcast shows only if someone got it before the cancel. The detailed statistics of a broadcast
+open in [Broadcasts](/en/broadcasts).
+
+### If you are not a company admin
+
+If you don't have company admin rights, the Dashboard shows a "My bots" list instead of the summary: the bots
+of every workspace you have access to. If you have access to none, it says "You don't have access to any bots
+in this company yet."
+
+## Workspace dashboard
+
+The funnel of the bots of one workspace, under the "Workspace activity" subtitle. This helps when a company
+has several teams or clients: each looks at its own dashboard and is not distracted by someone else's
+numbers.
+
+The period is switched with the tabs "Today", "Yesterday", "Last 7 days", "Last 30 days", "All time" and
+"Custom", "Today" opens by default. Under the header is the number of the workspace's bots and their active subscribers.
+
+The top block shows "Active subscribers". If deposits with an amount came in during the period, "Deposit
+volume" and the number of FTD show next to it. While there are no bots or they have no active subscribers,
+this block is replaced by a "Get started" prompt with a "Go to workspaces" button. How to connect your first
+bot is described in [Getting started](/en/getting-started).
+
+| Metric | What it counts |
+| --- | --- |
+| **Subscribes** | How many people subscribed to your bots during the period. |
+| **Contacts** | How many subscribers sent the bot their first message. |
+| **Registrations** | Registrations from affiliate network postbacks. |
+| **FTD** | First deposits from affiliate network postbacks. |
+| **Redeposit** | Repeat deposits from affiliate network postbacks. |
+
+Next to each number you see by how many percent it changed against the previous period of the same length.
+
+The "Trends" chart shows subscribes, contacts, registrations, FTD and RD. If the period fits within one day,
+the chart goes by hour, otherwise by day. On the "All time" tab it shows the last 90 days.
+
+"Top campaigns" holds the five campaigns with the most FTD in the period, and with equal FTD the most
+subscribes. Each shows its FTD and subscribes. "Top bots" holds the five bots with the most FTD, each with
+its FTD and the number of subscribers who haven't blocked it. If there were no events in the period, "Top
+campaigns" says "No data for the period".
+
+A campaign in "Top campaigns" opens in the tracker, and the "All" link leads to the tracker's campaign list.
+Only the campaigns available to you in the tracker open: for a buyer their own, for a team lead buyer their
+own and their buyers', for the owner every campaign of the company, for an administrator with the "Tracker"
+capability every campaign of the workspaces in their access scope. Other campaigns are listed in the top but
+do not open. Without tracker access there is no "All" link.
+
+## Bot dashboard
+
+The "Dashboard" screen in the bot menu: the bot's name, its @username and the same funnel as the workspace
+has, for one bot. It has the same period tabs, the top block, the metrics, "Trends" and this bot's "Top
+campaigns". Campaigns in the top open in the tracker the same way as on the workspace Dashboard.
+
+If Telegram doesn't let the platform work with the bot, "Bot unavailable" shows at the top with the reason.
+While the bot has no active subscribers, the top block is replaced by a "Get started" prompt.
+
+<Tip>
+  "No data for the selected period" is not an error: there were no events on the selected dates. Widen the
+  period.
+</Tip>
+
+## How this differs from the tracker dashboard
+
+The Dashboard answers "how are things going", while the tracker dashboard answers "how is traffic buying
+working". The tracker has its own funnel that starts at the ad click, its own cost metrics and its own
+breakdowns by campaign, source and landing.
+
+<Card title="Tracker: overview" icon="chart-line" href="/en/tracker">
+  The tracker dashboard, the funnel from the click, metrics and campaign activity.
+</Card>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Getting started" icon="rocket" href="/en/getting-started">
+    Connecting your first bot and building your first funnel.
+  </Card>
+  <Card title="Reports" icon="table-list" href="/en/reports">
+    Click and conversion logs, when you need per-row events rather than totals.
+  </Card>
+</Columns>
