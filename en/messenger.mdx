@@ -1,0 +1,269 @@
+---
+title: "Messenger"
+description: "Chatting with subscribers through your bots: chat list, filters and quick funnel filters, reply templates, media, translation, delivery statuses and handing the conversation to the AI operator."
+icon: "comments"
+---
+
+The Messenger is a chat with your subscribers on top of your bots. In the bot menu it opens as **"Messages"** (the **"Inbox"** group). Operators see every dialog in one window and reply by hand, while some conversations are run by the [AI operator](/en/ai-operator). The section is always open for one selected bot: the chat list on the left, the dialog in the centre, the subscriber card on the right.
+
+Connected [Telegram accounts](/en/telegram-accounts) have the same "Messages" section. How their chats differ from the chats of bots is described in [Chats of Telegram accounts](#chats-of-telegram-accounts).
+
+<Note>A chat row appears when a subscriber writes to the bot for the first time, and also when they arrive through an invite and their join request is approved. With an invite the bot may write first, but only for a limited time: about 5 minutes, while the subscriber has not replied. After that you can write once they answer. Ad clicks and link visits do not create a chat on their own. Imported subscribers are shown in the list too, even if they have never written to the bot: such chats sit at the bottom.</Note>
+
+## Chat list
+
+The left column holds every dialog of the bot. Each row shows the avatar, the subscriber's name, a preview of the last message and its time. Outgoing previews start with "You:". If the last message was media, an icon replaces the text: 📷 Photo, 🎬 Video, 🎤 Voice message, 📹 Video message, 🎵 Audio, 📎 Document. Unread dialogs carry a counter, and subscribers who blocked the bot carry a "Blocked" badge.
+
+### Search
+
+The "Search" field at the top of the column searches by first name, last name, username and Telegram ID. While the field has a query, only matches stay in the list. The query starts from two characters.
+
+The at sign before a username is optional: "@luis" and "luis" give the same result.
+
+The order is: exact matches first, then those starting with the query, then similar ones. Similar matches cover typos. If you enter a full Telegram ID, that person is pinned as the first row. Among equally good matches, the people you talked to recently come higher.
+
+The first 50 matches are shown. If the person you need is not among them, narrow the query: add the last name or enter the full Telegram ID.
+
+### Chat list modes
+
+The sliders button to the right of the search opens a menu with five modes. Exactly one mode is always active.
+
+| Mode | What it shows |
+| --- | --- |
+| All chats | every dialog of the bot |
+| Unread | dialogs with unread incoming messages |
+| AI | dialogs the AI operator is running right now |
+| Agent | dialogs switched to manual mode (an operator took the conversation over) |
+| Blocked | subscribers who blocked the bot |
+
+### Quick funnel filters
+
+Above the list there is a strip of quick funnel filters: `All`, `Reg`, `FD`, `RD`, `Deposits` and slices by
+deposit amount. What each one means is described in [Filters](/en/filters).
+
+### Saved filters
+
+The same strip shows the saved filters of this bot. Favorites are marked with a star and come first. The "Filter" button at the end of the row opens the condition builder, the same one used for [subscribers](/en/subscribers): assemble any condition (by country, [tracker](/en/tracker) events, deposit amount and so on) and apply it to the chat list. More about them in [Filters](/en/filters).
+
+You can manage a saved filter straight from the strip: right-click it, or long-press on a phone, and a menu opens with "Rename", "Add to favorites" and "Delete". The same gesture on the `All` chip opens "Edit filters" with the whole list of saved filters at once, which is handy for cleaning them up and marking favorites. The menu opens to an operator and higher roles.
+
+The list mode combines with the rest of the selection, while a quick filter, a saved filter and your own condition replace one another: exactly one of the three is active at a time.
+
+The chosen saved filter stays in the page address: it is kept when you open and close a dialog or reload the page, and it travels in a link to the list. If a colleague deletes the filter the list is open on, the list goes back to `All` and a "Filter deleted" notice appears. If the filter was not deleted but is no longer available to you, the list goes back to `All` too, and the notice reads "The filter is no longer available".
+
+If the list cannot be shown with the chosen filter, for example the saved filter has already been deleted, the reason and a "Reset filter" button appear instead of the chats. The button brings the list back to `All` and the "All chats" mode.
+
+## Opening a dialog
+
+Open a chat in the list to load the message history. Opening it does not clear unread: the dialog stays unread until an operator, the funnel or the AI operator replies to the subscriber, so the team sees which dialogs still wait for a reply. An operator message with the reason "Telegram has not confirmed sending" counts as a reply too: Telegram may deliver it later. Broadcasts do not clear unread. The down-arrow button returns you to the latest messages.
+
+The ⓘ button ("Subscriber info") in the dialog header opens the "Info" panel with the subscriber card.
+
+If the subscriber has never written anything, the dialog shows that the conversation is empty and you can write first.
+
+### Subscriber panel
+
+The "Info" panel collects everything known about the person plus the actions you can take. Its sections:
+
+- **Tags.** The subscriber's [tags](/en/tags): you can add and remove them right here.
+- **Dialog.** Last active, who is leading the dialog, whether the subscriber blocked the bot and when, whether an admin blocked them, and whether they ever replied to the bot.
+- **Funnel.** The [flow builder](/en/constructor) block the subscriber is standing on.
+- **Traffic source.** Campaign, source type, start parameter, Click ID and the subscriber's country, the same one the "Country" condition of the [filters](/en/filters) selects by. If the click has a country, a device, UTM source, FB Campaign, FB Adset, FB Ad ID or sub1-sub5, those rows follow, the click's country as the "Click country" row.
+- **Deposits.** Registration date, first deposit and its date, deposits amount, repeat deposit, conversion count.
+- **Contact.** Name, username, Telegram ID, Telegram language, subscription date.
+- **Tracker.** Source, device, OS version, last event and `trader_id`: everything the tracker sent.
+- **AI usage.** How many tokens and [AI operator](/en/ai-operator) replies this dialog consumed.
+
+The "Leading the dialog" line names whoever answers the subscriber right now: the operator's name and the moment they took the conversation over, "AI operator" if the AI is running it, or "Switched to manual" if the AI stopped and the dialog has no operator yet.
+
+The rows of the Dialog, Funnel, Deposits and Contact sections and the main rows of the Traffic source section are always present: if there is no value, the row shows a dash. The click details and the rows of the Tracker section appear only when that data exists.
+
+From here you can also block or unblock the subscriber and delete them. Deleting removes every message, variable and list membership, and cannot be undone.
+
+<Note>An anonymous operator sees the subscriber's data masked. The "Request data disclosure" button sends a request to a manager: once approved, the real data opens for 15 minutes. A manager handles such requests in the "Disclosure requests" section, more in [Settings](/en/settings).</Note>
+
+## Replying to a subscriber
+
+The input field sits at the bottom of the dialog. Enter sends the message, Shift+Enter adds a line break. A sent message appears in the conversation immediately. Operators write plain text: there is no rich formatting (headings, tables, lists) in the reply field, that is set up in the [flow builder](/en/constructor) and in [broadcasts](/en/broadcasts).
+
+If the subscriber blocked the bot, the input field is disabled and shows "Blocked". It is also disabled with the note that the subscriber has not replied to the bot yet: those are people who came through a channel join request and never wrote to the bot, and Telegram allows writing to them only after they answer. As soon as the person writes, the field opens by itself. Sending is also unavailable when the company balance is exhausted (top up in [Billing](/en/billing)).
+
+### Operator signature
+
+Every message sent by hand carries the name of whoever wrote it next to the time. In teams with several operators it is immediately clear from the conversation who answered what. Bot messages and AI operator replies carry no signature.
+
+## Message menu
+
+Right-click a message (long-press on a phone) to open the actions for it. The set of items depends on the message:
+
+- **Reply.** A quote bar appears above the input field and goes out together with the reply. The reply button that appears on hover does the same.
+- **Copy text.** Copies the message text to the clipboard.
+- **Show translation.** Translates this message into your language inside the conversation; choosing it again brings back the original. Available when the AI operator and translation are enabled.
+- **Resend.** Appears on an operator message that was not sent and repeats sending the same text and attachments. A message the subscriber received only in part has no such item: a resend would deliver the part they already have a second time. Nor does a message with the reason "Telegram has not confirmed sending": Telegram may deliver it later, and the subscriber would get two identical messages.
+- **Delete.** Removes your message for you and for the subscriber. A message with the reason "Telegram has not confirmed sending" has no such item.
+
+## Media
+
+The paperclip button attaches files. The same types are supported as in the [flow builder](/en/constructor) and [broadcasts](/en/broadcasts).
+
+| Type | Notes |
+| --- | --- |
+| Photo | groups into an album |
+| Video | groups into an album |
+| Video message | goes as a separate message, without a caption |
+| Voice message | goes as a separate message |
+| Audio | goes as a separate message |
+| Album | up to 10 photos and videos in one grid |
+
+<Warning>
+Telegram sets rules for grouping, and the platform follows them:
+
+- One album holds up to 10 photos and videos.
+- A voice message and a video message always go as one separate message and never combine with anything.
+- Audio does not go into one album with photos and videos, it goes as its own message.
+- A video message has no caption. If text is typed alongside an attached video message, the send button is blocked.
+</Warning>
+
+A message can hold at most 100 files: a file past that number is not uploaded.
+
+Text and caption length is limited by Telegram: 4096 characters without an attachment and 1024 characters together with one. The limit has a counter, and sending is blocked when it is exceeded.
+
+## Variables in messages
+
+In a manual message and in templates you can use [variables](/en/variables) in double curly braces. Values are substituted from the subscriber's data at the moment of sending. Variable names are always in English and must not be translated.
+
+- `{{ first_name }}`, `{{ last_name }}`, `{{ full_name }}` the subscriber's name
+- `{{ username }}` username in Telegram
+- `{{ user_id }}`, `{{ telegram_id }}` identifiers
+- `{{ tag }}` the value from the bot start link (`t.me/bot?start=...`)
+- `{{ created_at }}` subscription date
+- `{{ date_of_birth }}` date of birth
+- `{{ click_id }}` click identifier for attribution
+- `{{ event.<field> }}` fields of the latest postback, for example `{{ event.trader_id }}` the account identifier at the partner
+
+<Info>If a field is empty for that subscriber, the variable is substituted with an empty string and the message is still sent.</Info>
+
+## Reply templates
+
+Frequent answers are best saved as templates and inserted ready-made. There are two ways to insert a template.
+
+### With "/" in the input field
+
+Start the message with `/` and an autocomplete list of matching templates opens under the field. Up and down arrows pick a template, Enter or Tab insert it, Esc hides the list. Exact shortcut matches and the templates you use more often come first. Only the text replaces the leading `/shortcut`, and whatever you typed after it is kept.
+
+### From the templates panel
+
+The `#` button next to the input field opens the panel. A template is inserted from there in one click, and operators also create, edit and delete templates and folders there.
+
+A template consists of a shortcut (for example `/dep`), an optional name, text and an attachment (photo, video or album). Templates with an attachment carry a paperclip icon.
+
+- **Variables.** `{{ ... }}` tokens inside a template work exactly as in an ordinary message and are substituted on sending. In the autocomplete list the active template shows a preview with values already substituted, if its text has variables.
+- **Folders.** Templates are arranged in folders. Deleting a folder does not touch the templates themselves, they simply end up without a folder.
+- **Order.** Recently and frequently used templates rise to the top of the list.
+- **Access.** Operators and roles above them can create and edit templates.
+
+## Manual replies and the AI operator
+
+When a subscriber is standing on an AI dialog block, the AI operator status is visible in the conversation header.
+
+- **The AI agent is replying automatically.** The AI is running the dialog.
+- **You're handling this conversation, AI is paused.** As soon as you send a message by hand, the conversation moves to you and the AI stops answering.
+- **Another operator is handling the conversation, AI is paused.** A colleague took the conversation over. You can release their hold with the same button, and the status names who is handling the dialog.
+- **The conversation is switched to manual, AI stopped.** The AI reached its reply limit and stopped by itself, and the dialog has no operator. Such a dialog is waiting for a human: without an operator's reply the subscriber gets nothing more. Reply limits are configured in the [AI operator](/en/ai-operator).
+
+To hand the conversation back to the AI, press the status icon in the header and choose to return it to the AI. The AI will answer the subscriber's next message. It will not write on its own without an incoming message.
+
+Next to it there is a "Move to block" button (the icon with two arrows). In the list of blocks choose one: an ordinary block sends its content, an AI dialog block hands the conversation to the AI and manual mode is released. A "Condition" block sends no message of its own, it picks where to lead the subscriber based on their data: if no branch matched and there is no default branch, no move happens, the subscriber stays on the previous block, the dialog stays with you, and the platform answers that the block sent them nowhere. Branches and the default branch are set up in the [flow builder](/en/constructor). Only working blocks are listed: a draft placeholder is not offered, and you cannot move a subscriber onto it until you switch it to an active type.
+
+## Message translation
+
+If the AI operator is enabled for the bot and translation is allowed in its settings, translation tools appear in the dialog. The feature is shared across the company and is configured in the [AI operator settings](/en/ai-operator).
+
+- **The whole conversation.** The translation button in the dialog header translates every message into your language. Choosing it again brings back the originals.
+- **A single message.** In the [message menu](#message-menu) "Show translation" translates just that one.
+- **An outgoing message before sending.** Once your reply is typed, you can translate it into the subscriber's language and only then send it.
+- **Auto-translate outgoing.** A toggle in the translation menu: every message of yours is translated into the subscriber's language automatically on sending.
+
+Translated messages are marked, and the original can always be brought back.
+
+## Events in the conversation
+
+Besides messages, the feed shows the subscriber's system events as compact chips. They help you understand the context without leaving the dialog:
+
+- **Registration**, **Deposit**, **Repeat deposit**, **Withdrawal**, **RevShare**, **Email confirmation** are [tracker](/en/tracker) events.
+- **Join request**, **Request approved**, **Left the channel**, **Unblocked the bot**, **Blocked the bot**, **Reaction**, **Status changed** are Telegram's own events. For an exit made by an administrator or by Telegram itself, the label gets "removed by an administrator" or "removed by Telegram".
+
+System events do not change the chat preview, do not push the chat to the top of the list and do not affect the unread counter.
+
+## Delivery statuses
+
+If Telegram did not accept an outgoing message, a "Not sent" bubble with the exact reason appears instead of the usual one.
+
+| Reason | What it means |
+| --- | --- |
+| The subscriber blocked the bot | the bot can no longer write to them |
+| The subscriber has not replied to the bot yet | they came through an invite, but the window for a first message closed; you can write again after they answer |
+| The media file is unavailable | the attachment was deleted, upload it again and send |
+| The message is too long for Telegram | shorten the text |
+| File is too large | Telegram does not accept a file this size, upload a smaller file |
+| Markup error | check the formatting |
+| The bot is unavailable on Telegram | a problem with the bot itself |
+| Telegram limit | a temporary rate limit, repeat the send |
+| The subscriber received only part of the message | the beginning of the message already reached the subscriber, send the missing part separately |
+| Telegram has not confirmed sending | BotFlow doesn't know whether the message reached the subscriber. Telegram may deliver it later, so do not send it again: the subscriber may get two identical messages |
+| The subscriber received only part of the message. Telegram has not confirmed sending | the beginning of the message already reached the subscriber, and BotFlow doesn't know whether the rest did |
+
+A not-sent bubble stays in the conversation, yet it does not become the dialog's last message and does not disturb the unread counter. In the [message menu](#message-menu), "Resend" sends the same text and attachments again and "Delete" removes the bubble.
+
+An operator message with the reason "Telegram has not confirmed sending" behaves like a sent one: it becomes the dialog's last message, clears unread and pauses the AI operator. It cannot be resent: if Telegram delivers it later, the subscriber would get it twice. It cannot be deleted either: Telegram did not answer the send, so BotFlow cannot remove the message from the subscriber's chat. Funnel messages and AI operator replies can have the same reason; they do not change the preview or the unread counter. Do not move the subscriber into the same block with "Move to block": the block's message would go out again.
+
+If no answer to a send arrives, for example because the connection dropped, a "No connection" notice appears with the message text and a "Copy text" button. The notice stays on screen until you close it or copy the text. The input stays empty so the message does not go out twice. If the message was sent, it appears in the conversation by itself. If it is still not there after you open the dialog again, copy the text and send it again. If there is no connection before you press the send button, nothing is sent and the text stays in the input.
+
+## Broadcasts in a dialog
+
+Messages from mass [broadcasts](/en/broadcasts) are visible in the conversation too, marked as a broadcast. You cannot delete or edit them from the dialog, because that is broadcast content sent automatically. An operator's manual messages can be deleted. Broadcasts do not count as the dialog's last message and do not affect the unread counter.
+
+Messages with rich formatting (headings, lists, tables) are shown in the conversation with that formatting, exactly as the subscriber sees them in Telegram.
+
+## Deleting your own message
+
+An operator can recall their own outgoing message through the [message menu](#message-menu), item "Delete". The message is removed both for you and for the subscriber.
+
+<Warning>Telegram allows deleting a message on the subscriber's side within 48 hours of sending. Later the bubble disappears for you but stays with the subscriber.</Warning>
+
+Your own message is deleted by its author. A colleague's message or an AI message can be deleted by a member with the manager role or above. Broadcast messages cannot be recalled, and a message with the reason "Telegram has not confirmed sending" cannot be deleted.
+
+## Chats of Telegram accounts
+
+For a [Telegram account](/en/telegram-accounts) the "Messages" section shows its private chats with people: your team reads them and replies on behalf of the Telegram account. The chat list, the search, the dialog, the "Info" panel, the reply field and the message menu work as with bots. The differences:
+
+- **Filters.** There are three modes, as in Telegram: "All chats", "Unread" and "Archived Chats". Chats from the Telegram archive are not part of "All chats" or of the unread counter, but the search finds them. Quick funnel filters, saved filters and the condition builder are the same as for bots, without the fields an account has no data for, see [Filters](/en/filters#for-a-telegram-account).
+- **Conversation only.** There is no AI operator, no translation, no "Move to block" button and no deleting a subscriber. The "Block" button blocks the other person in Telegram itself, see [Blocking the other person](/en/telegram-accounts#blocking-the-other-person). The "Info" panel holds the other person's tags, last activity, "Leading the dialog", "User blocked", contact with the subscription date, the Click ID and the country, the "Deposits" block and the "Media" tab. The subscription date here is when BotFlow first recorded the chat: for chats found when the Telegram account was connected, it is the time of the connection.
+- **Replying.** Messages go out as text and with attachments, with or without a reply to a particular message. Templates work as with bots, templates with attachments included.
+- **"Typing".** While a team member types a reply, the other person sees in Telegram that the Telegram account is typing. When the other person is typing or recording voice, it shows at the top of the chat and in the chat list.
+- **Reads.** As with bots, a chat stays unread until someone replies to the other person. Unlike bots, a reply with the reason "Telegram has not confirmed sending" does not clear unread. Once Telegram confirms that a team member's reply was sent, the other person's messages are marked as read in Telegram itself too, and the check marks on your messages show whether the other person read them. More in [Reads](/en/telegram-accounts#reads).
+- **Sending pace.** Telegram limits how often messages go out, so one Telegram account's messages have a pause between them, and chats where the other person hasn't written yet get messages less often.
+- **History.** Older messages are loaded from Telegram when you scroll the chat up. Files are downloaded from Telegram when they are opened.
+- **Calls.** Calls show as a line in the chat, you can't call from BotFlow. Calls do not change unread: a missed call does not make a chat unread.
+
+The "Not sent" reasons of Telegram accounts are their own; they are listed in [Telegram accounts](/en/telegram-accounts#why-a-message-was-not-sent).
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="AI operator" icon="robot" href="/en/ai-operator">
+    How to set up automatic replies and when a human takes the conversation over.
+  </Card>
+  <Card title="Broadcasts" icon="bullhorn" href="/en/broadcasts">
+    Mass messages to a selected audience.
+  </Card>
+  <Card title="Flow builder" icon="diagram-project" href="/en/constructor">
+    Blocks and funnel logic that lead a subscriber to an operator.
+  </Card>
+  <Card title="Tracker" icon="chart-line" href="/en/tracker">
+    Traffic sources and the events the chat list is filtered by.
+  </Card>
+  <Card title="Telegram accounts" icon="circle-user" href="/en/telegram-accounts">
+    Chatting with people on behalf of a regular Telegram account.
+  </Card>
+</Columns>

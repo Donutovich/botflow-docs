@@ -1,0 +1,544 @@
+---
+title: "Telegram accounts"
+description: "A regular Telegram account in BotFlow: logging in by QR code or phone number, chats with people, reads, replies and sending pace, tracking clients by postbacks, disconnecting, deleting and payment."
+icon: "mobile"
+---
+
+Besides bots, you can connect a regular Telegram account to a workspace. Private chats of this Telegram account
+with people will appear in the "Messages" section: workspace members will be able to read and reply to them, as
+in Telegram itself. The other person sees a real person, not a bot.
+
+<Note>
+  Only private chats with people come to the platform. Groups, channels, bots, "Saved Messages" and Telegram
+  service messages are not shown in BotFlow. You can't start a new chat from BotFlow: the chats come from
+  Telegram itself.
+</Note>
+
+## Read before connecting
+
+Before the login BotFlow shows a screen with the terms of connecting. BotFlow will log in to your Telegram account
+as one more device. BotFlow is not affiliated with Telegram: it is a third-party client that works through the
+Telegram API.
+
+The risks this screen warns about:
+
+- Telegram may restrict or ban a Telegram account that works through third-party services. No service can
+  guarantee that this won't happen: Telegram makes the decision.
+- Telegram limits the pace of messages: when you send often, it pauses or limits sending.
+- Telegram may show the people you chat with a mark in your profile saying that you use an unofficial Telegram
+  client.
+- A BotFlow session will appear in the Devices section in Telegram. Its login location there will be that of our
+  server, not your city.
+- You can disconnect the Telegram account in BotFlow or in Telegram itself: "Settings" → "Devices", the BotFlow
+  session, "Terminate Session".
+
+<Tip>
+  Connect a work Telegram account that has been in use for a long time and is tied to a regular SIM card: Telegram
+  restricts new and virtual numbers faster.
+</Tip>
+
+### What BotFlow does on behalf of the Telegram account
+
+- Receives the messages of private chats and loads earlier ones when an employee scrolls a chat up.
+- Sends the replies of employees.
+- Shows the other person that the Telegram account is typing while an employee writes a reply.
+- Deletes sent messages for both sides when an employee deletes them.
+- Blocks and unblocks the other person when an employee does so.
+- Marks messages as read when an employee replies.
+- Downloads photos, videos and files when an employee opens them in a chat.
+- Downloads the profile photos of the Telegram account and of the people you talk to when they show on screen.
+- Never writes first to people the Telegram account has no chat with.
+
+The bottom of the screen, above the "Continue" button, shows the price: "$1.00 a day per connected Telegram
+account, messages at the usual rates." The same line stands under the subtitle of the "Telegram accounts" section.
+More in [Payment](#payment).
+
+## Connecting
+
+<Steps>
+  <Step title="Press «Connect» and choose «Telegram account»" icon="plug">
+    Open the workspace and go to "Bots". The "Connect" button opens a menu: "Bot" connects a bot using a token
+    from @BotFather, "Telegram account" connects a regular Telegram account using a QR code or phone number.
+  </Step>
+  <Step title="Read the terms" icon="triangle-exclamation">
+    A screen with the terms opens first: the risks, what BotFlow does on behalf of the Telegram account, and the
+    price. Press "Continue".
+  </Step>
+  <Step title="Log in by QR code" icon="qrcode">
+    Open Telegram on your phone, go to "Settings" → "Devices" → "Add Device" and point your phone at the screen.
+    Scan the code with another device where Telegram is open: a phone can't scan its own screen.
+  </Step>
+  <Step title="Or log in by phone number" icon="phone">
+    Press "Log in by phone number", confirm your country code and enter the phone number of the Telegram account.
+    Telegram will send a login code, most often to the Telegram app on your other device, sometimes by SMS, a
+    phone call, email or through Fragment. Enter it in the "Code" field.
+  </Step>
+  <Step title="Enter the password" icon="key">
+    If the Telegram account is protected with an additional password, enter it in the "Password" field. If you
+    forgot it, recover it in the Telegram app on a device where you are already logged in: "Settings" → "Privacy
+    and Security" → "Two-Step Verification".
+  </Step>
+  <Step title="Done" icon="circle-check">
+    You will see "Telegram account connected". The Telegram account's card appears in the "Telegram accounts"
+    section of the "Bots" page, and its chats start appearing in the "Messages" section.
+  </Step>
+</Steps>
+
+<Warning>
+  Don't forward the code or take a screenshot of it: Telegram will cancel such a code. Copy it or type it in.
+  Don't request the code many times in a row: Telegram limits the number of logins by phone number per day.
+</Warning>
+
+### Who can connect
+
+The company owner or an administrator can connect a Telegram account to a workspace, and so can a manager of that
+workspace. Only the person who started a login sees it.
+
+Telegram accounts can be connected when the company has money on its balance, wherever it came from: a top-up, a
+promo code, a bonus or a promo credit. A company with no money on its balance connects them after a top-up of $50 or
+more.
+
+Until then the "Telegram account" item of the "Connect" menu shows the line "You can connect Telegram accounts after
+the first top-up of $50 or more." For those who can top up the balance, this item opens the "Top up the balance"
+screen with the "Top up balance" button, which leads to [Billing](/en/billing). For everyone else the item says:
+"The company owner or an admin with billing access can top up the balance." Billing access comes with the "Billing"
+toggle described in [Administrator capabilities](/en/settings#administrator-capabilities).
+
+While the company's balance is exhausted, a new Telegram account can't be connected.
+
+### How many you can connect
+
+The number of Telegram accounts is limited for the whole company, not per workspace. The subtitle of the "Telegram
+accounts" section shows how many are connected and how many you can have, for example "Connected in the company: 1
+of 2." When all places are taken, a new Telegram account can be connected once one of the connected ones is
+disconnected or deleted. A Telegram account being deleted takes a place until BotFlow ends its session in Telegram.
+
+A Telegram account connects to BotFlow in one place only. If it is already connected in another workspace or
+another company, the login stops with "This Telegram account is already connected". Disconnect it where it is
+connected, or terminate the BotFlow session in Telegram: "Settings" → "Devices".
+
+### Login limits
+
+- A login gets 10 minutes. If time runs out, start over.
+- The code gets 5 attempts, and so does the password. When the attempts run out, start the login over: Telegram
+  will send a new code.
+- If the codes for this login have run out, log in by QR code or start the login over.
+- One login at a time runs in a workspace. While another Telegram account is being connected there, BotFlow shows
+  "Another Telegram account is being connected to this workspace right now" and in how many minutes to try again.
+- The number of login attempts per hour and per day is limited, and so is the number of logins running at once in
+  the company and across BotFlow. When a limit is reached, BotFlow shows "Too many attempts" and "Try again in …"
+  with a countdown, and the "Start over" button becomes available when the time is up. If the wait is unknown or
+  longer than a day, "Please try again later." shows instead of the countdown.
+- The number of logins with one phone number per day is limited too. Then "Too many attempts. Please try again
+  later." appears above the number field: enter another number or log in by QR code.
+
+### The Telegram account won't connect
+
+Check:
+
+- whether Telegram is open on the device you scan the QR code with;
+- whether the number and the country code are entered correctly;
+- whether the 10 minutes for the login have run out;
+- whether Telegram has restrictions on this Telegram account.
+
+If BotFlow says "Logging in by number won't work", Telegram asks to confirm the login in a way BotFlow doesn't
+have: log in by QR code. "The login was canceled in Telegram" means that "Terminate", "Undo" or "No, it's not
+me!" was tapped on another device. Start the login over.
+
+## Chats
+
+The Telegram account's card in the "Bots" section opens its chats. In the bot switcher of the navigation bar
+Telegram accounts have their own "Telegram accounts" group, and in the command palette (Ctrl+K) their own "Go to
+Telegram account" group. Next to a workspace in the workspace switcher and in the command palette, the number of
+bots and Telegram accounts shows as icons: the robot is a bot, the phone is a Telegram account, and hovering
+shows the words. The "Workspaces" page writes the same numbers in words and lists the workspace's Telegram
+accounts under its bots. The Telegram account menu has three groups: "Inbox"
+with "Messages", "Audience" with "Tags" and "Setup" with "Flow builder", "Disclosure requests" and "Settings".
+
+Everyone with access to the workspace can read the chats and reply. An anonymous operator sees the other people
+anonymised, as with bots, and can request data disclosure. How roles work is described in
+[Settings](/en/settings#telegram-accounts).
+
+### First fill
+
+Right after connecting, BotFlow walks through the Telegram account's chat list from the newest to the oldest, then
+through the archive, and the chats appear in the "Messages" section as it goes. For a Telegram account with many
+chats this takes a while. Messages that were in a chat before connecting are loaded from Telegram when you scroll
+the chat up.
+
+### Chat list
+
+The chat list, the search, the dialog and the "Info" panel work as in the bots' [Messenger](/en/messenger). The
+differences:
+
+- **Filters.** There are three modes, as in Telegram: "All chats", "Unread" and "Archived Chats". Chats from the
+  Telegram archive are not part of "All chats" or of the unread counter, but the search finds them. Quick funnel
+  filters, saved filters and the condition builder work as for bots, within the chosen mode. Fields the account's
+  conversations have no data for are absent: the Traffic group, "Start parameter", "Telegram language", "Date of
+  birth", blocking by the bot and by an admin, "Funnel block" and variables. The "User blocked" field is there. More
+  in [Filters](/en/filters#for-a-telegram-account).
+- **The "unread" mark.** A chat marked as unread in Telegram carries a counter without a number. The mark is removed
+  when a team member replies in that chat or when the chat is opened in Telegram.
+- **The "Info" panel.** It holds the other person's tags, last activity, "Leading the dialog", "User blocked",
+  contact with the subscription date, the Click ID and the country under "Traffic source", the "Deposits" block, the
+  "Block" button and the "Media" tab. "Leading the dialog" names the team member whose reply from BotFlow last went to
+  the other person, and the time of that reply. The subscription date is when BotFlow first recorded the chat: for
+  chats found at the connection, it is the time of the connection. The registration and the deposits in the
+  "Deposits" block come from the affiliate's postbacks. Telegram accounts have no funnel or AI.
+
+### What a chat shows
+
+- The other person's profile photo in the chat list, at the top of the chat and in the "Info" panel. If the
+  person has no photo or has hidden it, their initials stand in its place, as in Telegram. An anonymous operator
+  doesn't see a photo set for the contact in the Telegram account itself: the initials stand in its place too.
+- Incoming and outgoing messages, including the ones sent from the phone and from other Telegram apps.
+- Edited messages are marked "edited". A message deleted in Telegram is replaced by a "Message deleted" plaque:
+  its content is not kept.
+- Calls show as a line in the chat: "Incoming Call", "Outgoing Call", "Missed Call", "Canceled Call", and video
+  calls too. You can't call from BotFlow.
+- Chat events show as a centred line: a pinned message, auto-delete turned on and off, "History was cleared", a
+  contact joining Telegram, the other person's reaction ("Reaction"). A reaction changes neither the chat preview
+  nor the unread state.
+- Messages with auto-delete disappear from BotFlow too when their timer runs out.
+- Self-destructing photos and videos open only in Telegram on the phone. In the chat a line stands in their place,
+  for example "Self-destructing photo".
+- Messages BotFlow does not show appear as the line "This message is currently not supported."
+- What the other person is doing right now: "typing", "recording voice", "recording video", "sending a photo",
+  "sending a video" or "sending file". It shows at the top of the chat and in the chat list in place of the last
+  message, as in Telegram.
+
+### Files
+
+BotFlow downloads photos, videos, voice messages, video messages, audio and documents from Telegram when they are
+opened. Opening a large file for the first time may take a while. Files over 100 MB don't open in BotFlow: you can
+see them in Telegram. While a Telegram account is disconnected, the files of its chats don't open. If a file
+didn't open, you see "Couldn't load" and the "Retry" button in its place.
+
+### History and how long it is kept
+
+BotFlow keeps the messages of Telegram accounts for the last 90 days. Older messages are removed from BotFlow only,
+they stay in Telegram. The last message of every chat is always kept, so a chat nobody wrote in for a long time
+does not drop out of the list.
+
+Older messages are loaded from Telegram when you scroll the chat up. Loaded messages are kept for 90 days from the
+moment of loading. If Telegram asks to wait, the top of the chat shows when loading resumes, for example "Loading
+resumes at 14:30." If loading failed, you see "Couldn't load" and the "Retry" button. While the Telegram account
+is disconnected, old messages are not loaded.
+
+### Blocking the other person
+
+The "Block" button in the "Info" panel, under "Actions", blocks the other person in Telegram itself, like blocking
+in the Telegram app. Before blocking, BotFlow asks for confirmation, as Telegram does. The "Unblock" button lifts
+the block at once, without asking. While Telegram carries out a block or an unblock, the button is unavailable. If
+Telegram refused, BotFlow shows the reason, and the button can be pressed again.
+
+While the other person is blocked, the message field is closed with the caption "User blocked", and [blocks on
+postback events](#blocks-on-postback-events) don't fire for them: the chat shows just the event. Both start right
+after pressing "Block" and end right after pressing "Unblock". The "User blocked" row in the "Info" panel shows when
+Telegram blocked the other person. Blocking and unblocking in the Telegram app show in BotFlow the same way,
+including blocks made before the account was connected to BotFlow.
+
+## Reads
+
+A chat of a Telegram account stays unread until someone replies to the other person, as with bots. Opening the chat
+in BotFlow and reading it on the phone do not clear unread. A reply does: a team member's message from BotFlow, a
+reply from the phone or from other Telegram apps, and also the Telegram Business "Greeting Message" and "Away
+Message". Calls and chat events do not change unread: a missed call does not make a chat unread, and an outgoing
+call does not count as a reply. While a team member's message waits to be sent and shows the clock, the chat stays
+in "Unread".
+
+Once Telegram confirms that a reply from BotFlow was sent, BotFlow marks the other person's messages as read in
+Telegram itself too: the other person sees two check marks together with the reply, and on the phone the chat
+becomes read. Until there is a reply, BotFlow does not mark the chat as read in Telegram. Messages the other person
+wrote after the reply stay unread.
+
+On the first connection, BotFlow takes the unread state from Telegram: a chat read on the phone before connecting
+comes in as read and becomes unread with the other person's next message.
+
+On your messages one check mark means "Unread" and two check marks mean "Read". The same marks stand next to the
+last message in the chat list.
+
+<Note>
+  Voice and video messages played in BotFlow stay unplayed in Telegram.
+</Note>
+
+## Replies and sending pace
+
+### Replying
+
+From a Telegram account's chat you send text and attachments: photos, videos, voice messages, video messages,
+audio and albums of up to 10 photos and videos. The paperclip button attaches them by the same rules as with bots,
+described in [Media](/en/messenger#media). To reply to a particular message, choose "Reply" in its menu.
+[Reply templates](/en/messenger#reply-templates) work as with bots, templates with attachments included.
+
+While a team member types a reply, the other person sees in Telegram that the Telegram account is typing.
+
+A message sent from BotFlow carries the name of the team member who wrote it next to the time, as with bots: see
+[Operator signature](/en/messenger#operator-signature).
+
+While a message is being sent, a clock stands next to it. If sending failed, the message shows "Not sent" and the
+reason. A message with attachments may go out to Telegram as several messages, for example an album and a voice
+message. If the other person received only part of it, the reason is "The other person received only part of the
+message" followed by why the rest did not go out.
+
+If BotFlow refused the message or no answer to the send arrived, for example because the connection dropped, the
+text goes back into the input. Sending again does not deliver a second copy if the first one went out. If another
+chat is open by then or the input already holds a new text, an error notice appears with the message text and a
+"Copy text" button. The notice stays on screen until you close it or copy the text.
+
+### Deleting and cancelling
+
+Your own message sent from BotFlow is deleted through the message menu, item "Delete": the message will be deleted
+for you and for the other person. A colleague's message can be deleted by a member with the manager role or above.
+Messages sent from the phone are deleted in Telegram itself. A deleted message leaves a plaque with the name of who
+deleted it, for example "Message deleted by Ivan".
+
+A message still waiting to be sent can be deleted, and it won't go out. If it is already being sent, BotFlow
+answers "The message is already being sent. You can delete it once it is sent."
+
+### Resending
+
+A message that was not sent has a "Resend" item in its menu. The item is missing when a resend would change
+nothing: the other person is unavailable or deleted their account, accepts messages only from Premium users or
+charges for each message, the Telegram account itself blocked them, the text is too long, an attachment was
+deleted or Telegram did not accept it, or the other person doesn't accept voice and video messages.
+
+For a message the other person received only in part, "Resend" sends only what did not get there: the other
+person won't see the part they have a second time.
+
+### Sending pace
+
+Telegram limits the pace of messages, so BotFlow sends the messages of one Telegram account no more often than
+once every 5 seconds. If you press send earlier, a hint "Try again in 0:04." appears over the button and the text
+stays in the field. When Telegram asks to wait, this interval grows, but to a minute at most, and then gradually
+returns to 5 seconds.
+
+### Chats where the other person hasn't written yet
+
+In a chat where the other person has never written to the Telegram account, BotFlow sends more carefully:
+
+- no more than one message every 3 minutes;
+- no more than 20 messages to such chats in any 24 hours;
+- in the first 72 hours after connecting, no more than 5 messages in any 24 hours.
+
+A message over these limits waits its turn. Once the other person replies, the limit no longer applies to their
+chat.
+
+### How long a message waits
+
+A message waits to be sent for 15 minutes at most. If it couldn't go out in that time, it becomes "Not sent" with
+the reason "Not sent in time". If Telegram set a pause longer than the message can wait, the reason is "Telegram
+limit, try resending".
+
+### Sending paused
+
+If Telegram asked the Telegram account to wait before sending, its state is "Sending paused", and the card shows
+when sending resumes, for example "Sending resumes at 14:30." Messages that can wait until the end of the pause
+go out by themselves.
+
+### Restricted
+
+If Telegram considered the sending to be spam, it restricts the Telegram account. Its state is "Restricted":
+"Telegram has restricted sending messages. You can reply to those who message you first." Messages to chats where
+the other person hasn't written yet become "Not sent" right away. If Telegram also forbids replies, messages go
+out to no chat at all.
+
+Some of these restrictions lift by themselves within a few hours. You can check the restriction with
+[@SpamBot](https://t.me/SpamBot) inside Telegram. Once Telegram lifts the restriction, the owner or an
+administrator presses "Limit lifted" on the Telegram account's card or on its settings page. If the restriction is
+still in place, Telegram sets it again after the very first send, and the state comes back.
+
+### Why a message was not sent
+
+| Reason | What it means |
+| --- | --- |
+| Not sent in time | The message did not go out within 15 minutes. |
+| Telegram limit, try resending | Telegram's pause ends later than the message could wait. |
+| Telegram has restricted sending messages | The Telegram account is restricted, and the other person hasn't written first. |
+| Telegram only allows reading messages | The Telegram account is frozen. |
+| Telegram has not confirmed sending | BotFlow doesn't know whether the message reached the other person. |
+| The other person blocked the Telegram account | The other person no longer accepts messages from this Telegram account. |
+| User blocked | The Telegram account itself blocked the other person. You can unblock them in the "Info" panel. |
+| The other person is unavailable on Telegram | Telegram doesn't let you write to this person. |
+| Telegram account disconnected | The Telegram account was disconnected or stopped before sending. |
+| The other person received only part of the message | The beginning of the message is with the other person already. Why the rest did not go out follows. |
+| The media file is unavailable because it was deleted | The attachment was deleted from BotFlow. Upload it again and resend. |
+| Telegram did not accept the file | Telegram refused the attachment. |
+| The other person's name and "doesn't accept voice and video messages" | The other person forbade sending them voice and video messages. |
+
+## Tracking clients
+
+The other person in a Telegram account's chat gets a Click ID as soon as they appear in BotFlow, the same as a bot
+subscriber. The Click ID is shown in the "Info" panel under "Traffic source", with a copy button next to it.
+
+### A link with the Click ID
+
+For the partner network to tie a registration and a deposit to the other person, send them a link with the
+`{{ click_id }}` variable in a message or a [reply template](/en/messenger#reply-templates). On sending, BotFlow puts
+that person's Click ID into the link. The partner network's postbacks find the other person by the Click ID the same
+way as a bot subscriber: see [Postbacks](/en/postbacks).
+
+### Blocks on postback events
+
+The Telegram account menu has a "Flow builder" section. Telegram account blocks fire on postback events:
+"Registration", "Deposit" and "Repeat deposit". The event is picked in the block condition from the "System events"
+list; clicking it again removes it from the condition. A block without an event does not fire.
+
+The block's "Actions" offer:
+
+- "Add tag" and "Remove tag": the tag is applied to the conversation with the other person and is managed in the
+  "Tags" section.
+- "Send API request" to an "External URL" or to "Another bot", as in the bots'
+  [Flow builder](/en/constructor#send-api-request). Variables work in the request address, for example
+  `{{ click_id }}` and `{{ event.payout }}`.
+
+The Telegram account sends no messages, buttons or follow-ups from blocks, and it has no arrows between blocks.
+
+Blocks keep firing when the Telegram account is disconnected: after the "Disconnect" button in BotFlow and after its
+session ends, for example if Telegram ended it or it was ended in Telegram itself. A [bot that is
+off](/en/bot-settings#activity) works the same way. Blocks don't fire only for a deleted Telegram account and for
+the other person the Telegram account blocked: then the chat shows just the event. As with bots, blocks don't fire while the company's balance is exhausted.
+
+### Registrations and deposits in campaigns
+
+Registrations and deposits of a Telegram account's contacts show in [Campaigns](/en/campaigns), in the row of this
+Telegram account with the "Organic" source. The row appears with the first postback, even when it comes after the
+Telegram account was deleted. The owner and the administrators of the company see it.
+
+## Telegram account states
+
+The state shows on the Telegram account's card in the "Bots" section and on its settings page, with the reason in
+a line below it.
+
+| State | What it means |
+| --- | --- |
+| Connected | The Telegram account works: messages come in and go out. |
+| Sending paused | Telegram asked to wait before sending. The card shows when sending resumes. |
+| Restricted | Telegram restricted sending: you can reply to those who message you first. |
+| Frozen | Telegram only allows reading messages. The "Submit an appeal" button leads to the appeal in Telegram: appeal from this Telegram account before the date on the card, or Telegram will delete it. |
+| Stopped | The company's work is stopped, for example the balance is exhausted. Messages don't come in or go out until the company works again. |
+| Disconnecting | BotFlow is ending its session in Telegram. |
+| Disconnected | The BotFlow session in Telegram has ended. The chats stay in BotFlow, the reason is on the card. |
+| Banned | Telegram banned this Telegram account. |
+
+The disconnect reasons on the card:
+
+- "The session was terminated in Telegram." The BotFlow session was ended in Telegram itself, in the Devices
+  section.
+- "Disconnected by an employee." The owner or an administrator pressed "Disconnect".
+- "Disconnected for non-payment." The company's balance stayed exhausted for 30 days.
+- "Disconnected by the platform." The BotFlow platform ended the session.
+- "The session broke off because of a BotFlow failure."
+- "The Telegram account was deleted in Telegram." Such a Telegram account can't be connected again.
+
+## Telegram account settings
+
+The "Settings" item of the Telegram account menu, or "Telegram account settings" in its card's menu, opens a page
+with information about the Telegram account and actions:
+
+- **Profile photo, "Name in Telegram" and username.** They are changed in the Telegram app.
+- **Phone number.** Only the owner and the company administrators see it.
+- **"Connected on".**
+- **"Title".** The Telegram account's name for your team, up to 64 characters. Only company staff see it, people in
+  Telegram don't. When a title is set, BotFlow shows the Telegram account under it. The title is changed by the
+  owner, administrators and managers of the workspace.
+- **"Service notifications".** The last 20 notifications Telegram sent to this Telegram account. The digits in
+  them are hidden. Only the owner and the company administrators see them.
+- **"Disconnect Telegram account" and "Delete Telegram account".** For the owner and administrators.
+
+## Disconnecting and connecting again
+
+The owner and administrators can disconnect a Telegram account: the "Disconnect" item of the card's menu or of the
+settings page. BotFlow will end its session in the Telegram account. The chats will stay on the platform, and new
+messages will stop coming. While a Telegram account is disconnected, including for non-payment, the files of its
+chats don't open and the profile photos of the Telegram account and of the people show as initials. No rent is
+charged for a disconnected Telegram account. You can also disconnect it in Telegram itself: "Settings" →
+"Devices", the BotFlow session, "Terminate Session".
+
+A disconnected Telegram account is connected again with the "Connect again" button on its card: log in to the same
+Telegram account by QR code or phone number. You will see "Telegram account connected again" and "Your earlier
+chats are kept."
+
+Who can connect it again:
+
+- after "Disconnected by an employee": the owner or an administrator;
+- after "Disconnected for non-payment": the company owner or an administrator;
+- in the other cases: whoever can connect Telegram accounts to this workspace;
+- a Telegram account that was already in the company and is now disconnected in another workspace is brought back
+  with its chats only by the company owner or an administrator.
+
+## Deleting
+
+The owner and administrators can delete a Telegram account: the "Delete" item of the card's menu or the "Delete
+Telegram account" button on the settings page. The Telegram account will disappear from all lists, and BotFlow will
+end its session in Telegram right away. Chats and tags will be deleted and cannot be restored. In Telegram itself
+the chats stay.
+
+While BotFlow is ending the session, the section shows the "Telegram account is being deleted" line, and the
+Telegram account takes a place in the company's limit. The data is erased gradually.
+
+What is erased: the chats and messages, the people the Telegram account talks to with their tags and variables,
+the disclosure requests about them, the title for your team, and the files and profile photos of the Telegram
+account and of the people BotFlow downloaded from Telegram.
+
+What stays:
+
+- the row of the Telegram account in "Campaigns" with its registrations and deposits. As with a deleted bot, it is
+  kept for 365 days and then deleted. While it is kept, new postbacks about former contacts count in it, and blocks
+  on events don't fire for them;
+- the Click IDs of former contacts, without names or chats, so their postbacks still count. Each Click ID is kept
+  for 365 days after the contact is erased and then deleted;
+- log rows with the title or the name of the Telegram account, for example "Telegram account connected" and
+  "Telegram account deleted". Log rows are kept for 180 days;
+- log rows about disclosure requests together with the reason text of the request;
+- the transaction history with the charges for the Telegram account.
+
+The same Telegram account can be connected again, but as a new one: the chats come again from Telegram, while the
+other people's tags and other data from BotFlow don't come back. The contacts get new Click IDs, and postbacks for
+links sent before the delete count in the row of the deleted Telegram account. While its data is being erased and
+for 30 days after that, only the owner or an administrator can connect it to this company.
+
+<Note>
+  To delete a workspace, delete its Telegram accounts first.
+</Note>
+
+## Payment
+
+- **Rent.** $1 a day per connected Telegram account, including one with sending paused, a restricted one and a
+  frozen one. A disconnected or deleted Telegram account is not paid for, and neither is any Telegram account
+  while the company is stopped.
+- **Messages.** Paid as with bots: incoming ones and the ones sent from BotFlow. Messages that were not sent are
+  not paid for.
+- **Free.** Messages sent from the phone, loaded history, calls and chat events.
+
+When the balance is exhausted, the Telegram account's connection holds for 15 more minutes, so a payment a minute
+late doesn't interrupt anything. Then the Telegram account is "Stopped": messages don't come in or go out. After a
+top-up it starts receiving messages again, and incoming messages that arrived while the company was stopped are
+not charged. After 30 days without payment BotFlow ends its session in the Telegram account: the card shows
+"Disconnected for non-payment", and the company owner or an administrator can connect it again. More in
+[Billing](/en/billing#telegram-accounts).
+
+## Viewing by BotFlow staff
+
+A BotFlow staff member can open the chats of a Telegram account only to view them: they can't reply, delete
+messages or mark them as read. Every such opening is written to the logs as the row "Viewed by a platform admin".
+A BotFlow staff member can change the constructor blocks and tags of a Telegram account, and such changes are
+written as the row "Changed by a platform admin". The owner and the company administrators see both rows. More in
+[Logs](/en/logs).
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Messenger" icon="comments" href="/en/messenger">
+    The chat list, search, templates and the message menu.
+  </Card>
+  <Card title="Billing" icon="wallet" href="/en/billing">
+    Topping up the balance and spending on bots and Telegram accounts.
+  </Card>
+  <Card title="Settings" icon="users" href="/en/settings">
+    Team roles and who can do what with Telegram accounts.
+  </Card>
+  <Card title="Logs" icon="list-check" href="/en/logs">
+    Who connected, disconnected and deleted Telegram accounts.
+  </Card>
+</Columns>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 32" width="152" height="32" fill="none">
+  <rect y="2" width="28" height="28" rx="7" fill="#F7F8F8"/>
+  <text x="14" y="22" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="800" fill="#0A0A0B">B</text>
+  <text x="38" y="22" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="19" font-weight="600" letter-spacing="-0.02em" fill="#F7F8F8">BotFlow</text>
+</svg>
